@@ -1,0 +1,580 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MX Completou Ganhou</title>
+    <!-- Tailwind CSS para um design rápido e moderno -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
+        }
+        .premio-box {
+            animation: pulse-glow 2s infinite;
+            background: linear-gradient(135deg, #1e1b4b 0%, #000000 100%);
+            border: 2px solid #FFD700;
+        }
+        .neon-text-teal {
+            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
+        }
+        /* Custom scrollbar para clima de jogo */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-[#0A0A0A] text-gray-100 font-sans antialiased min-h-screen pb-24">
+
+    <!-- APP CONTAINER (Max-w ideal para Mobile-First) -->
+    <div class="max-w-md mx-auto px-4 pt-4 select-none">
+        
+        <!-- HEADER COMPACTO -->
+        <header class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
+            <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
+            <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
+                <span>🪙</span> <span id="balance-display">0</span> <span class="text-xs text-gray-400">MX</span>
+            </div>
+        </header>
+
+        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
+        <div class="premio-box rounded-xl p-3 text-center mb-6 text-sm">
+            <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
+            <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
+            
+            <!-- BARRA DE PROGRESSO -->
+            <div class="mt-3">
+                <div class="flex justify-between text-xs text-gray-400 mb-1 font-semibold">
+                    <span>Progresso do Álbum</span>
+                    <span id="progress-text">0 / 24 Cards</span>
+                </div>
+                <div class="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden border border-gray-700">
+                    <div id="progress-bar" class="bg-gradient-to-r from-amber-400 to-[#00F5D4] h-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABAS DE NAVEGAÇÃO COM ÍCONES -->
+        <div class="grid grid-cols-3 gap-1 bg-gray-900 p-1 rounded-xl mb-6 border border-gray-800">
+            <button onclick="switchTab('cards')" id="btn-tab-cards" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-amber-400 text-black flex flex-col items-center justify-center gap-0.5">
+                <span class="text-base">🎴</span>
+                <span>MX CARDS</span>
+            </button>
+            <button onclick="switchTab('produtos')" id="btn-tab-produtos" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5">
+                <span class="text-base">🛍️</span>
+                <span>MX PRODUTOS</span>
+            </button>
+            <button onclick="switchTab('premios')" id="btn-tab-premios" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5 relative">
+                <span class="text-base">🎁</span>
+                <span class="flex items-center gap-1">BAÚ <span id="reward-badge" class="hidden w-2 h-2 bg-red-500 rounded-full"></span></span>
+            </button>
+        </div>
+
+        <!-- ================= TAB: MX CARDS ================= -->
+        <div id="tab-cards" class="tab-content space-y-6">
+            <!-- AÇÃO: OBTER PACOTES -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
+                <h3 class="text-sm font-bold text-gray-300 mb-3">Abasteça sua Coleção</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="openPack('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition shadow-md active:scale-95 flex items-center justify-center gap-1.5">
+                        📦 Abrir p/ 🪙50 MX
+                    </button>
+                    <button onclick="openPack('pix')" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition shadow-md active:scale-95 flex items-center justify-center gap-1.5">
+                        ⚡ Compre Pacote (PIX)
+                    </button>
+                </div>
+                <button onclick="cheatCoins()" class="mt-2 text-[10px] text-gray-600 hover:text-gray-400 underline block mx-auto">Adicionar +500 Moedas (Modo Teste)</button>
+            </div>
+
+            <!-- GRID DOS 24 CARDS -->
+            <div>
+                <h2 class="text-xs font-bold text-amber-400 tracking-wider uppercase mb-3 flex justify-between">
+                    <span>Sua Coleção</span>
+                    <span class="text-gray-500">Clique no repetido para reciclar</span>
+                </h2>
+                <div class="grid grid-cols-3 gap-2.5" id="cards-grid">
+                    <!-- Gerado Dinamicamente pelo JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB: MX PRODUTOS ================= -->
+        <div id="tab-produtos" class="tab-content hidden space-y-4">
+            <div class="bg-gray-900/60 p-3 rounded-lg border border-gray-800 text-xs text-gray-400 flex items-center gap-2">
+                <span>🔥</span>
+                <p>Clique na <strong>foto do produto</strong> para ver mais imagens e detalhes. Cupons ativos reduzem o valor automaticamente!</p>
+            </div>
+            <div class="space-y-3" id="products-list">
+                <!-- Gerado Dinamicamente pelo JS -->
+            </div>
+        </div>
+
+        <!-- ================= TAB: MEUS PRÊMIOS ================= -->
+        <div id="tab-premios" class="tab-content hidden space-y-4">
+            <h2 class="text-sm font-bold text-amber-400 tracking-wider mb-3">Seus Cupons e Vales-Brinde</h2>
+            <div class="space-y-3" id="rewards-list">
+                <!-- Gerado Dinamicamente pelo JS -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- NOTIFICAÇÃO MODAL POP-UP (CONQUISTAS / BRINDES / PACUTES) -->
+    <div id="modal-alert" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
+        <div class="bg-gray-900 border-2 border-amber-400 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl overflow-y-auto max-h-[90vh]">
+            <div class="text-4xl mb-2" id="modal-icon">🏆</div>
+            <h3 class="text-base font-black text-white mb-2" id="modal-title">Parabéns!</h3>
+            <div class="text-sm text-gray-300 mb-4 leading-relaxed" id="modal-message">Mensagem aqui</div>
+            <button id="modal-btn" onclick="closeModal()" class="w-full bg-amber-400 hover:bg-amber-300 text-black font-black py-2.5 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-1">Continuar</button>
+        </div>
+    </div>
+
+    <!-- MODAL: GALERIA E DETALHES DO PRODUTO -->
+    <div id="modal-gallery" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-950 border border-gray-800 rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl flex flex-col">
+            <div class="p-4 border-b border-gray-800 flex justify-between items-start">
+                <div>
+                    <span id="gallery-brand" class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">MARCA</span>
+                    <h3 id="gallery-title" class="text-sm font-black text-white leading-tight">Nome do Produto</h3>
+                </div>
+                <button onclick="closeGallery()" class="text-gray-400 hover:text-white text-lg font-bold bg-gray-900 p-1.5 rounded-lg border border-gray-800">&times;</button>
+            </div>
+            <div class="p-4 flex flex-col items-center justify-center bg-black/40 border-b border-gray-900">
+                <div id="gallery-main-container" class="w-full h-48 flex items-center justify-center overflow-hidden rounded-xl border border-gray-800 bg-gray-900">
+                    <img id="gallery-main-img" src="" class="max-w-full max-h-full object-contain p-2" alt="Destaque">
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-3 w-full" id="gallery-thumbs">
+                    <!-- Inserido dinamicamente via JS -->
+                </div>
+            </div>
+            <div class="p-4 space-y-3 flex-1 overflow-y-auto">
+                <div>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Descrição do Produto</h4>
+                    <p id="gallery-desc" class="text-xs text-gray-300 mt-1 leading-relaxed">Descrição detalhada aqui...</p>
+                </div>
+                <div class="pt-2 border-t border-gray-900 flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] text-gray-500 block font-semibold">Preço Especial</span>
+                        <span id="gallery-price" class="text-base font-black text-[#00F5D4]">R$ 0,00</span>
+                    </div>
+                    <button id="gallery-buy-btn" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black px-4 py-2 rounded-xl text-xs font-black transition tracking-wider flex items-center gap-1">
+                        💬 COMPRAR NO WHATS
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: MOTOR COMPLETO DO APLICATIVO -->
+    <script>
+        // BANCO DE DADOS - ATUALIZADO COM OS CAMINHOS "Cards Prod/"
+        const PRODUCTS_DATA = [
+            { 
+                id: 1, 
+                name: "Ulanzi Tripé TT88", 
+                brand: "Ulanzi", 
+                price: 149.90, 
+                main_image: "Cards Prod/ulanzi TT88 01.jpg", 
+                images: ["Cards Prod/ulanzi TT88 1.jpg", "Cards Prod/ulanzi TT88 2.jpg", "Cards Prod/ulanzi TT88 3.jpg"], 
+                desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives ou vídeos externos com estabilidade absoluta." 
+            },
+            { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "", images: ["", "", ""], desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos e cenários musicais." },
+            { id: 3, name: "Mic Lapela Ulanzi A200", brand: "Ulanzi", price: 299.90, main_image: "", images: ["", "", ""], desc: "Microfone de lapela sem fio com excelente cancelamento de ruído. Captação limpa e nítida para vlogs ou tutoriais direto no celular." },
+            { id: 4, name: "Microfone FIFINE AM8", brand: "Fifine", price: 439.90, main_image: "", images: ["", "", ""], desc: "Microfone dinâmico profissional com conexões XLR e USB, além de iluminação RGB personalizável. O queridinho dos streamers e podcasters pelo custo-benefício." },
+            { id: 5, name: "Suporte Fifine BM88", brand: "Fifine", price: 329.90, main_image: "", images: ["", "", ""], desc: "Braço articulado de perfil baixo (low-profile). Deixa seu setup limpo, escondendo-se abaixo do monitor e oferecendo movimentação extremamente suave." },
+            { id: 6, name: "Microfone FIFINE AM8T", brand: "Fifine", price: 499.90, main_image: "", images: ["", "", ""], desc: "Kit completo do consagrado microfone dinâmico AM8 acompanhado de um braço articulado robusto de fábrica. Pronto para estúdio." },
+            { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "", images: ["", "", ""], desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Leve o seu rock e metal para qualquer lugar com som de alta fidelidade." },
+            { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "", images: ["", "", ""], desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração, carregamento rápido e áudio balanceado com graves presentes." },
+            { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "", images: ["", "", ""], desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal. Conforto excelente para horas de audição diária." },
+            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "", images: ["", "", ""], desc: "Versão Pro com Cancelamento de Ruído Ativo (ANC) avançado e drivers refinados para áudio de alta resolução. Isole-se do mundo exterior." },
+            { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "", images: ["", "", ""], desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição para áudio cristalino." },
+            { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "", images: ["", "", ""], desc: "Fone de ouvido no estilo Headphone (Over-Ear) com Cancelamento Ativo de Ruído (ANC) absurdo de até 43dB. Graves profundos e almofadas ultra macias." },
+            { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "", images: ["", "", ""], desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria para viagens longas." },
+            { id: 14, name: "Tronsmart Mirtune S100", brand: "Tronsmart", price: 459.90, main_image: "", images: ["", "", ""], desc: "Caixa de som portátil premium com alça integrada. Som expansivo de alta potência ideal para festas ao ar livre ou churrascos." },
+            { id: 15, name: "Tronsmart Bang 2", brand: "Tronsmart", price: 699.90, main_image: "", images: ["", "", ""], desc: "Uma verdadeira fera sonora! Muita potência, luzes de LED rítmicas integradas e tecnologia patenteada SoundPulse para áudio sem distorções." },
+            { id: 16, name: "Edifier M206BT", brand: "Edifier", price: 399.90, main_image: "", images: ["", "", ""], desc: "Sistema de caixas 2.1 com Subwoofer dedicado em madeira. Graves que fazem o ambiente tremer, com conexões Bluetooth e auxiliar." },
+            { id: 17, name: "Mi TV STICK 4K 2ª Gen", brand: "Xiaomi", price: 329.90, main_image: "", images: ["", "", ""], desc: "Transforme qualquer TV em uma Smart TV veloz com resolução 4K Ultra HD. Suporte a comandos de voz e todos os apps de streaming do mercado." },
+            { id: 18, name: "Climatizador Ventisol 16L", brand: "Ventisol", price: 489.90, main_image: "", images: ["", "", ""], desc: "Climatizador residencial potente com grande reservatório de 16 litros. Ar fresco, umidificado e filtrado para o seu máximo conforto em dias quentes." },
+            { id: 19, name: "Gamesir G8 Galileo Plus", brand: "Gamesir", price: 479.90, main_image: "", images: ["", "", ""], desc: "O controle definitivo para jogos de celular. Analógicos com efeito Hall (não dão drift), gatilhos de precisão e encaixe firme ergonômico." },
+            { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 999.90, main_image: "", images: ["", "", ""], desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Áudio incrivelmente cristalino usado pelos maiores produtores profissionais." },
+            { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "", images: ["", "", ""], desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal e fidelidade sonora cirúrgica." },
+            { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "", images: ["", "", ""], desc: "Monitores de áudio ativos clássicos em madeira. Som puríssimo, linear e sem distorções, excelente para edição ou audição de estúdio de entrada." },
+            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "", images: ["", "", ""], desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos, produtores ou audiófilos exigentes." },
+            { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "", images: ["", "", ""], desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto. Som encorpado, agudos brilhantes e graves quentes." }
+        ];
+
+        let userState = {
+            coins: 100,
+            inventory: {},
+            coupons: { edifier: false, qcy: false, tronsmart: false, coibeu: 0, fone: 0 },
+            wonGrandPrize: false,
+            milestones: { pct25: false, pct50: false, pct75: false }
+        };
+
+        window.onload = function() {
+            if (localStorage.getItem('mx_user_state')) {
+                const saved = JSON.parse(localStorage.getItem('mx_user_state'));
+                if (!saved.milestones) saved.milestones = { pct25: false, pct50: false, pct75: false };
+                userState = saved;
+            }
+            updateUI();
+        };
+
+        function saveState() {
+            localStorage.setItem('mx_user_state', JSON.stringify(userState));
+        }
+
+        function cheatCoins() {
+            userState.coins += 500;
+            saveState();
+            updateUI();
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            
+            document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
+                el.classList.remove('bg-amber-400', 'text-black');
+                el.classList.add('text-gray-400');
+            });
+            const activeBtn = document.getElementById(`btn-tab-${tabName}`);
+            activeBtn.classList.add('bg-amber-400', 'text-black');
+            activeBtn.classList.remove('text-gray-400');
+
+            if(tabName === 'premios') {
+                document.getElementById('reward-badge').classList.add('hidden');
+            }
+        }
+
+        function getProductFinalDetails(p) {
+            let finalPrice = p.price;
+            let discountText = "";
+            if (p.brand === "Edifier" && userState.coupons.edifier) { finalPrice = p.price * 0.85; discountText = "🔥 15% OFF ATIVADO"; }
+            else if (p.brand === "QCY" && userState.coupons.qcy) { discountText = "🚚 FRETE GRÁTIS ATIVADO"; }
+            else if (p.brand === "Tronsmart" && userState.coupons.tronsmart) { finalPrice = p.price * 0.90; discountText = "🔥 10% OFF ATIVADO"; }
+            return { finalPrice, discountText };
+        }
+
+        function updateUI() {
+            document.getElementById('balance-display').innerText = userState.coins;
+            
+            let uniqueOwned = 0;
+            PRODUCTS_DATA.forEach(p => {
+                if (userState.inventory[p.id] && userState.inventory[p.id] > 0) uniqueOwned++;
+            });
+            
+            document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
+            const pct = (uniqueOwned / 24) * 100;
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+
+            // MARCOS DE PROGRESSO
+            if (uniqueOwned >= 6 && !userState.milestones.pct25) {
+                userState.milestones.pct25 = true;
+                saveState();
+                showModal("💥 ÓTIMO COMEÇO!", "Você completou <strong>25%</strong> do álbum! A sua jornada rumo ao prêmio começou com o pé direito. Continue abrindo pacotes que o MX SUPER PIX está no seu radar! 🚀", "⚡");
+                return;
+            }
+            if (uniqueOwned >= 12 && !userState.milestones.pct50) {
+                userState.milestones.pct50 = true;
+                saveState();
+                showModal("🌓 METADE JÁ FOI!", "Sensacional! Você atingiu <strong>50%</strong> do álbum completo. Metade dos cards já estão na sua mão. O funil está apertando e a sua chance de ganhar só aumenta. Não para agora! 🔥", "🌟");
+                return;
+            }
+            if (uniqueOwned >= 18 && !userState.milestones.pct75) {
+                userState.milestones.pct75 = true;
+                saveState();
+                showModal("⚡ SANGUE NOS OLHOS!", "Falta muito pouco! Você bateu <strong>75%</strong> do álbum! Apenas mais alguns cards separam você do topo. Quem tem foco chega lá. Vai deixar outro levar? 💰", "🔥");
+                return;
+            }
+            if (uniqueOwned === 24 && !userState.wonGrandPrize) {
+                userState.wonGrandPrize = true;
+                saveState();
+                showVictoryModal();
+                return;
+            }
+
+            // Construir Grid de Cards
+            const grid = document.getElementById('cards-grid');
+            grid.innerHTML = '';
+            
+            PRODUCTS_DATA.forEach(p => {
+                const count = userState.inventory[p.id] || 0;
+                const isOwned = count > 0;
+                
+                const cardEl = document.createElement('div');
+                cardEl.className = `relative rounded-xl p-2 flex flex-col items-center justify-between text-center border h-36 transition-all ${
+                    isOwned 
+                    ? 'bg-gray-900 border-[#00F5D4]/40 shadow-sm shadow-[#00F5D4]/20 cursor-pointer hover:border-amber-400/40' 
+                    : 'bg-gray-950 border-gray-800 opacity-40'
+                }`;
+                
+                if (isOwned) {
+                    cardEl.onclick = (e) => {
+                        if (!e.target.closest('button')) openGallery(p.id);
+                    };
+                }
+                
+                const mainImg = p.main_image;
+                const imgHTML = mainImg 
+                    ? `<img src="${mainImg}" class="w-12 h-12 object-contain my-1 rounded" alt="${p.name}">`
+                    : `<div class="w-12 h-12 bg-gray-800 rounded my-1 flex items-center justify-center text-[10px] text-gray-500 font-bold border border-gray-700">📸 #${p.id}</div>`;
+                
+                cardEl.innerHTML = `
+                    <span class="text-[10px] font-bold text-gray-500 absolute top-1 left-1.5">#${String(p.id).padStart(2, '0')}</span>
+                    ${count > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-amber-400 text-black text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-md animate-bounce">x${count}</span>` : ''}
+                    
+                    ${imgHTML}
+                    
+                    <div class="text-[10px] font-bold leading-tight ${isOwned ? 'text-gray-200' : 'text-gray-600'} line-clamp-2 px-0.5">
+                        ${isOwned ? p.name : `Card Oculto`}
+                    </div>
+                    
+                    ${count > 1 ? `
+                        <button onclick="recycleCard(${p.id})" class="w-full bg-amber-400/20 hover:bg-amber-400 text-amber-300 hover:text-black transition text-[9px] py-0.5 rounded font-extrabold uppercase flex items-center justify-center gap-0.5">
+                            ♻️ Reciclar
+                        </button>
+                    ` : `<div class="text-[9px] text-gray-500 font-semibold">${p.brand}</div>`}
+                `;
+                grid.appendChild(cardEl);
+            });
+
+            // Construir Aba Produtos
+            const prodList = document.getElementById('products-list');
+            prodList.innerHTML = '';
+            
+            PRODUCTS_DATA.forEach(p => {
+                const { finalPrice, discountText } = getProductFinalDetails(p);
+                const mainImg = p.main_image;
+                const prodImgHTML = mainImg 
+                    ? `<img src="${mainImg}" onclick="openGallery(${p.id})" class="w-14 h-14 object-contain rounded bg-black/40 border border-gray-800 p-1 cursor-pointer hover:scale-105 transition" alt="${p.name}">`
+                    : `<div onclick="openGallery(${p.id})" class="w-14 h-14 bg-gray-950 rounded flex items-center justify-center text-[10px] text-gray-600 border border-gray-800 cursor-pointer hover:border-amber-400 transition font-bold">📸 Foto</div>`;
+
+                const prodEl = document.createElement('div');
+                prodEl.className = "bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center gap-3 justify-between";
+                prodEl.innerHTML = `
+                    <div class="flex items-center gap-3 flex-1">
+                        ${prodImgHTML}
+                        <div class="flex-1">
+                            <span class="text-[10px] uppercase font-bold text-amber-400 tracking-wider">${p.brand}</span>
+                            <h4 onclick="openGallery(${p.id})" class="text-xs font-bold text-white leading-tight line-clamp-1 cursor-pointer hover:underline">${p.name}</h4>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs font-black text-[#00F5D4]">R$ ${finalPrice.toFixed(2)}</span>
+                                ${discountText ? `<span class="text-[8px] bg-red-950 text-red-400 font-extrabold px-1 py-0.5 rounded border border-red-900/50">${discountText}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="buyProduct('${p.name}')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white px-2.5 py-2 rounded-lg text-xs font-bold transition border border-gray-700 shrink-0 flex items-center gap-1">
+                        💬 Comprar
+                    </button>
+                `;
+                prodList.appendChild(prodEl);
+            });
+
+            // Construir Aba Prêmios
+            const rewardsList = document.getElementById('rewards-list');
+            rewardsList.innerHTML = '';
+            let hasRewards = false;
+
+            if (userState.coupons.edifier) { hasRewards = true; rewardsList.appendChild(createRewardCard("🎟️ Cupom Edifier (15% OFF)", "Aplicado automaticamente na aba de produtos da Edifier.", "Usar Desconto 🏷️", () => switchTab('produtos'))); }
+            if (userState.coupons.qcy) { hasRewards = true; rewardsList.appendChild(createRewardCard("🚚 Cupom QCY (Frete Grátis)", "Aplicado automaticamente na linha de fones QCY.", "Usar Desconto 🏷️", () => switchTab('produtos'))); }
+            if (userState.coupons.tronsmart) { hasRewards = true; rewardsList.appendChild(createRewardCard("🎟️ Cupom Tronsmart (10% OFF)", "Aplicado automaticamente nas caixas Tronsmart.", "Usar Desconto 🏷️", () => switchTab('produtos'))); }
+            if (userState.coupons.coibeu > 0) { hasRewards = true; rewardsList.appendChild(createRewardCard(`🎁 Vale-Brinde Régua Coibeu (x${userState.coupons.coibeu})`, "Você ganhou uma régua/extensão de alta qualidade!", "Resgatar via WhatsApp 💬", () => window.open('https://wa.me/seu-numero', '_blank'))); }
+            if (userState.coupons.fone > 0) { hasRewards = true; rewardsList.appendChild(createRewardCard(`🎁 Vale-Brinde Fone Bluetooth (x${userState.coupons.fone})`, "Você ganhou um fone de ouvido bluetooth totalmente grátis!", "Resgatar via WhatsApp 💬", () => window.open('https://wa.me/seu-numero', '_blank'))); }
+
+            if (!hasRewards) {
+                rewardsList.innerHTML = `
+                    <div class="text-center py-8 text-xs text-gray-500 border border-dashed border-gray-800 rounded-xl">
+                        Nenhum cupom ou brinde físico encontrado por enquanto.<br>Abra mais pacotes para tentar a sorte!
+                    </div>
+                `;
+            }
+        }
+
+        function createRewardCard(title, desc, btnText, onClickFn) {
+            const div = document.createElement('div');
+            div.className = "bg-gradient-to-br from-gray-900 to-black border border-amber-400/30 rounded-xl p-3.5 flex flex-col justify-between gap-3 shadow-lg shadow-amber-400/5";
+            div.innerHTML = `
+                <div>
+                    <h4 class="text-sm font-black text-amber-400">${title}</h4>
+                    <p class="text-xs text-gray-400 mt-1">${desc}</p>
+                </div>
+            `;
+            const btn = document.createElement('button');
+            btn.className = "w-full bg-amber-400 hover:bg-amber-300 text-black text-xs font-black py-2 rounded-lg transition uppercase tracking-wider flex items-center justify-center gap-1";
+            btn.innerText = btnText;
+            btn.onclick = onClickFn;
+            div.appendChild(btn);
+            return div;
+        }
+
+        function openGallery(productId) {
+            const p = PRODUCTS_DATA.find(prod => prod.id === productId);
+            if (!p) return;
+
+            const { finalPrice } = getProductFinalDetails(p);
+
+            document.getElementById('gallery-brand').innerText = p.brand;
+            document.getElementById('gallery-title').innerText = p.name;
+            document.getElementById('gallery-desc').innerText = p.desc;
+            document.getElementById('gallery-price').innerText = `R$ ${finalPrice.toFixed(2)}`;
+            
+            document.getElementById('gallery-buy-btn').onclick = () => buyProduct(p.name);
+
+            const thumbsContainer = document.getElementById('gallery-thumbs');
+            thumbsContainer.innerHTML = '';
+
+            const mainImgElement = document.getElementById('gallery-main-img');
+
+            for (let i = 0; i < 3; i++) {
+                const thumbEl = document.createElement('div');
+                thumbEl.className = `h-12 rounded border flex items-center justify-center overflow-hidden cursor-pointer bg-gray-900 transition ${i === 0 ? 'border-amber-400' : 'border-gray-800'}`;
+                
+                const imgUrl = p.images[i];
+                if (imgUrl) {
+                    thumbEl.innerHTML = `<img src="${imgUrl}" class="max-w-full max-h-full object-contain p-1">`;
+                    thumbEl.onclick = function() {
+                        mainImgElement.src = imgUrl;
+                        document.querySelectorAll('#gallery-thumbs > div').forEach(d => d.classList.replace('border-amber-400', 'border-gray-800'));
+                        thumbEl.classList.replace('border-gray-800', 'border-amber-400');
+                    };
+                } else {
+                    thumbEl.innerHTML = `<span class="text-[9px] font-bold text-gray-500">Foto ${i+1}</span>`;
+                    thumbEl.onclick = function() {
+                        document.getElementById('gallery-main-container').innerHTML = `<div class="text-xs font-bold text-gray-500">📸 Sem Foto ${i+1} Cadastrada</div>`;
+                        document.querySelectorAll('#gallery-thumbs > div').forEach(d => d.classList.replace('border-amber-400', 'border-gray-800'));
+                        thumbEl.classList.replace('border-gray-800', 'border-amber-400');
+                    };
+                }
+                thumbsContainer.appendChild(thumbEl);
+            }
+
+            if (p.images[0]) {
+                document.getElementById('gallery-main-container').innerHTML = `<img id="gallery-main-img" src="${p.images[0]}" class="max-w-full max-h-full object-contain p-2" alt="Destaque">`;
+            } else {
+                document.getElementById('gallery-main-container').innerHTML = `<div class="text-xs font-bold text-gray-500">📸 Sem Foto 1 Cadastrada</div>`;
+            }
+
+            document.getElementById('modal-gallery').classList.remove('hidden');
+        }
+
+        function closeGallery() {
+            document.getElementById('modal-gallery').classList.add('hidden');
+        }
+
+        function recycleCard(id) {
+            if (userState.inventory[id] && userState.inventory[id] > 1) {
+                userState.inventory[id]--;
+                userState.coins += 10;
+                saveState();
+                updateUI();
+            }
+        }
+
+        function openPack(type) {
+            if (type === 'coins') {
+                if (userState.coins < 50) {
+                    showModal("🪙 Moedas Insuficientes", "Você precisa de 50 MX Coins para trocar por um pacote. Recicle cartas repetidas ou use o botão de testes!", "🪙");
+                    return;
+                }
+                userState.coins -= 50;
+            } else {
+                showModal("⚡ Copie o Código PIX", "Simulação de Gateway de Pagamento:<br><br><code class='bg-black text-[10px] p-2 block rounded border border-gray-800 select-all'>00020126360014BR.GOV.BCB.PIX0114mxshopfake...</code><br>Após o pagamento simulado, clique abaixo para receber seu pacote.", "💳");
+            }
+
+            let htmlCards = `<div class="grid grid-cols-3 gap-2 my-4">`;
+
+            for (let i = 0; i < 3; i++) {
+                if (Math.random() < 0.15) {
+                    const prizeType = Math.floor(Math.random() * 5);
+                    document.getElementById('reward-badge').classList.remove('hidden');
+                    
+                    let prizeTitle = "";
+                    let iconEmoji = "🎁";
+                    
+                    if (prizeType === 0) { userState.coupons.edifier = true; prizeTitle = "Cupom 15% Edifier"; iconEmoji = "🎟️"; }
+                    else if (prizeType === 1) { userState.coupons.qcy = true; prizeTitle = "Frete Grátis QCY"; iconEmoji = "🚚"; }
+                    else if (prizeType === 2) { userState.coupons.tronsmart = true; prizeTitle = "Cupom 10% Tronsmart"; iconEmoji = "🎟️"; }
+                    else if (prizeType === 3) { userState.coupons.coibeu++; prizeTitle = "Régua Coibeu"; }
+                    else if (prizeType === 4) { userState.coupons.fone++; prizeTitle = "Fone Bluetooth"; }
+
+                    htmlCards += `
+                        <div class="bg-gradient-to-b from-amber-950/40 to-black p-2 rounded-xl border border-amber-400 flex flex-col items-center justify-center text-center h-28 shadow-md">
+                            <span class="text-2xl">${iconEmoji}</span>
+                            <span class="text-[9px] font-black text-amber-400 mt-1 uppercase leading-tight line-clamp-2">${prizeTitle}</span>
+                        </div>
+                    `;
+                } else {
+                    const cardId = Math.floor(Math.random() * 24) + 1;
+                    userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
+                    const p = PRODUCTS_DATA.find(prod => prod.id === cardId);
+
+                    const cardImg = p.main_image;
+                    const cardImgHTML = cardImg 
+                        ? `<img src="${cardImg}" class="w-10 h-10 object-contain rounded bg-black/40 p-0.5">`
+                        : `<div class="w-10 h-10 bg-gray-800 rounded flex items-center justify-center text-[10px] font-bold text-gray-500">📸</div>`;
+
+                    htmlCards += `
+                        <div class="bg-gray-950 p-2 rounded-xl border border-gray-800 flex flex-col items-center justify-between text-center h-28 shadow-sm">
+                            <span class="text-[8px] font-bold text-gray-600 self-start">#${String(cardId).padStart(2, '0')}</span>
+                            ${cardImgHTML}
+                            <span class="text-[9px] font-bold text-gray-300 line-clamp-2 leading-tight mt-1">${p.name}</span>
+                        </div>
+                    `;
+                }
+            }
+            htmlCards += `</div>`;
+
+            saveState();
+            updateUI();
+
+            showModal("Pacote Aberto! 📦", `Você abriu o seu pacote de recompensas e encontrou estes 3 itens: ${htmlCards}`, "📦");
+        }
+
+        function buyProduct(name) {
+            window.open(`https://wa.me/seu-numero?text=Olá!%20Gostaria%20de%20comprar%20o%20produto:%20${encodeURIComponent(name)}`, '_blank');
+        }
+
+        function showModal(title, msg, icon = "🏆") {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerHTML = msg;
+            document.getElementById('modal-icon').innerText = icon;
+            
+            const btn = document.getElementById('modal-btn');
+            btn.innerText = "Continuar ➡️";
+            btn.onclick = closeModal;
+            
+            document.getElementById('modal-alert').classList.remove('hidden');
+        }
+
+        function showVictoryModal() {
+            document.getElementById('modal-title').innerText = "ÁLBUM COMPLETADO! 👑";
+            document.getElementById('modal-icon').innerText = "👑";
+            
+            document.getElementById('modal-message').innerHTML = `
+                <div class="text-amber-400 font-black text-xl animate-pulse mb-3">🏆 VOCÊ É O GRANDE VENCEDOR! 🏆</div>
+                <p class="text-xs text-gray-300">Você provou ser um colecionador de elite da <strong>MX Digital Shop</strong> e completou todos os 24 cards da temporada!</p>
+                <div class="bg-black/60 p-3 rounded-xl border border-amber-400/40 my-4 text-center">
+                    <span class="text-xs text-gray-400 block uppercase font-bold">Seu Prêmio Cadastrado:</span>
+                    <span class="text-lg font-black text-white">💰 SUPER PIX R$ 1.000,00</span>
+                </div>
+                <p class="text-[11px] text-gray-400">Clique no botão abaixo para gerar o seu código de validação único e efetuar o resgate direto com o nosso suporte via WhatsApp!</p>
+            `;
+            
+            const btn = document.getElementById('modal-btn');
+            btn.innerText = "👉 RESGATAR MEU PIX AGORA 💰";
+            btn.onclick = function() {
+                window.open('https://wa.me/seu-numero?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20PIX!', '_blank');
+            };
+            
+            document.getElementById('modal-alert').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-alert').classList.add('hidden');
+            updateUI();
+        }
+    </script>
+</body>
+</html>
