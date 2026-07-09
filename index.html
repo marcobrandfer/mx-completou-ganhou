@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MX Completou Ganhou</title>
+    <!-- Tailwind CSS Versão Estável para Funcionamento Local (file://) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes pulse-glow {
@@ -47,8 +48,10 @@
 </head>
 <body class="bg-[#0A0A0A] text-gray-100 font-sans antialiased min-h-screen pb-24">
 
+    <!-- APP CONTAINER (Mobile-First) -->
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
         
+        <!-- HEADER COMPACTO -->
         <header class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
             <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
             <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
@@ -56,6 +59,7 @@
             </div>
         </header>
 
+        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
         <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-4 text-sm">
             <div id="prize-status-collecting">
                 <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
@@ -64,11 +68,12 @@
             <div id="prize-status-completed" class="hidden">
                 <p class="text-[#00F5D4] font-extrabold tracking-widest text-xs">🎉 PARABÉNS! VOCÊ COMPLETOU E GANHOU! 🎉</p>
                 <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
-                <button onclick="window.open('https://wa.me/seu-numero?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20de%201000%20reais!', '_blank')" class="mt-2.5 w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black py-2 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
+                <button onclick="window.open('https://wa.me/5541997257227?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20de%201000%20reais!', '_blank')" class="mt-2.5 w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black py-2 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
                     🎁 RETIRAR PRÊMIO
                 </button>
             </div>
             
+            <!-- BARRA DE PROGRESSO -->
             <div class="mt-3">
                 <div class="flex justify-between text-xs text-gray-400 mb-1 font-semibold">
                     <span>Progresso do Álbum</span>
@@ -80,6 +85,7 @@
             </div>
         </div>
 
+        <!-- SEÇÃO: CHECK-IN DIÁRIO -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 mb-4 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
                 <span class="text-lg">📆</span>
@@ -93,6 +99,7 @@
             </button>
         </div>
 
+        <!-- ABAS DE NAVEGAÇÃO -->
         <div class="grid grid-cols-3 gap-1 bg-gray-900 p-1 rounded-xl mb-6 border border-gray-800">
             <button onclick="switchTab('cards')" id="btn-tab-cards" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-amber-400 text-black flex flex-col items-center justify-center gap-0.5">
                 <span class="text-base">🎴</span>
@@ -108,8 +115,10 @@
             </button>
         </div>
 
+        <!-- ================= TAB: MX CARDS ================= -->
         <div id="tab-cards" class="tab-content space-y-6">
             
+            <!-- ÁREA DE COMPRA DE PACOTES E RESGATE -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center space-y-3">
                 <div id="vip-free-pack-box">
                     <button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black text-xs py-3 rounded-lg border-2 border-white/20 active:scale-95 transition flex items-center justify-center gap-2">
@@ -122,7 +131,8 @@
                     <button onclick="triggerPackOpening('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full">
                         📦 Abrir p/ 🪙5 MX
                     </button>
-                    <button onclick="triggerPackOpening('pix')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full">
+                    <!-- INTEGRADO: LINK DO WHATSAPP DE COMPRA DE PACOTE -->
+                    <button onclick="window.open('https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20Pacotes%20de%20MX%20Cards.%20Como%20fa%C3%A7o%20para%20realizar%20o%20pagamento%20e%20liberar%20meu%20acesso%3F', '_blank')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full cursor-pointer">
                         ⚡ Compre Pacote (R$ 5,00)
                     </button>
                 </div>
@@ -132,14 +142,17 @@
                 </div>
             </div>
 
+            <!-- SEÇÃO VALE BRINDE INSTANTÂNEO -->
             <div>
                 <h2 class="text-xs font-bold text-[#00F5D4] tracking-wider uppercase mb-3 neon-text-teal">
                     🎁 VALES BRINDE INSTANTÂNEOS
                 </h2>
                 <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container">
-                    </div>
+                    <!-- Gerados dinamicamente via JS (Slot Prata e Slot Ouro) -->
+                </div>
             </div>
 
+            <!-- ÁLBUM REGULAR EM 2 COLUNAS -->
             <div>
                 <h2 class="text-xs font-bold text-amber-400 tracking-wider uppercase mb-3 flex justify-between">
                     <span>Sua Coleção (24 Cards)</span>
@@ -149,6 +162,7 @@
             </div>
         </div>
 
+        <!-- ================= TAB: MX PRODUTOS ================= -->
         <div id="tab-produtos" class="tab-content hidden space-y-4">
             <div class="bg-gray-900/60 p-3 rounded-lg border border-gray-800 text-xs text-gray-400 flex items-center gap-2">
                 <span>🔥</span>
@@ -157,6 +171,7 @@
             <div class="space-y-3" id="products-list"></div>
         </div>
 
+        <!-- ================= TAB: MEUS PRÊMIOS ================= -->
         <div id="tab-premios" class="tab-content hidden space-y-4">
             <h2 class="text-sm font-bold text-amber-400 tracking-wider mb-3">Seus Cupons e Vales-Brinde</h2>
             <div class="space-y-3" id="rewards-list"></div>
@@ -164,6 +179,7 @@
 
     </div>
 
+    <!-- TELA REVELAÇÃO EXCLUSIVA: ANIMAÇÃO DO PACOTE (SUSPENSE) -->
     <div id="pack-animation-overlay" class="fixed inset-0 bg-[#050505]/95 backdrop-blur-xl z-[100] hidden flex flex-col items-center justify-center p-6 transition-all duration-300">
         <div class="w-52 h-72 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-700 rounded-2xl border-4 border-amber-300 shadow-[0_0_50px_rgba(255,215,0,0.4)] p-4 flex flex-col justify-between items-center text-center animate-pack-shake">
             <span class="text-[10px] font-black tracking-widest text-black bg-white px-3 py-1 rounded-full uppercase shadow">MX VIP CLUB</span>
@@ -176,6 +192,7 @@
         <p class="text-sm font-black text-amber-400 tracking-widest uppercase mt-8 animate-pulse text-center">Aguarde os cards...</p>
     </div>
 
+    <!-- POP-UP NOTIFICAÇÃO MODAL GERAL -->
     <div id="modal-alert" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
         <div class="bg-gray-900 border-2 border-amber-400 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="text-4xl mb-2" id="modal-icon">🏆</div>
@@ -185,6 +202,7 @@
         </div>
     </div>
 
+    <!-- MODAL: GALERIA DE INSPEÇÃO GERAL E TELA DE PRINT DOS BRINDES -->
     <div id="modal-gallery" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-gray-950 border border-gray-800 rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl flex flex-col">
             <div class="p-4 border-b border-gray-800 flex justify-between items-start">
@@ -199,6 +217,7 @@
                 <div id="gallery-main-container" class="w-full h-80 flex items-center justify-center overflow-hidden rounded-xl bg-gray-900 shadow-inner"></div>
             </div>
 
+            <!-- ÁREA TEXTO DINÂMICA -->
             <div class="p-4 space-y-3 flex-1 overflow-y-auto">
                 <div id="gallery-product-desc-box">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Descrição do Produto</h4>
@@ -207,9 +226,10 @@
                 
                 <div id="gallery-brinde-desc-box" class="hidden text-center bg-teal-950/40 border border-teal-800/60 p-3 rounded-xl">
                     <p class="text-xs font-black text-[#00F5D4] uppercase">📸 INSTRUÇÕES DE RESGATE 📸</p>
-                    <p class="text-[11px] text-gray-300 mt-1 font-semibold">Faça o Print do seu MX Brinde Card e envie para o Grupo oficial do WhatsApp para validar seu prêmio!</p>
+                    <p class="text-[11px] text-gray-300 mt-1 font-semibold">Faça o Print do seu MX Brinde Card e envie no atendimento para validar seu prêmio!</p>
                 </div>
 
+                <!-- BOTÕES DE AÇÃO E BOTÃO 'VOLTAR AO ÁLBUM' -->
                 <div class="pt-2 border-t border-gray-900 flex flex-col gap-2">
                     <div class="flex items-center justify-between" id="gallery-footer-action">
                         <div>
@@ -232,6 +252,7 @@
         </div>
     </div>
 
+    <!-- SCRIPTS DE LOGICA E DADOS -->
     <script>
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives ou vídeos externos com estabilidade absoluta." },
@@ -243,7 +264,7 @@
             { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "MXCARD7.jpg", desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Som de alta fidelidade." },
             { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração, carregamento rápido e áudio balanceado." },
             { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "MXCARD9.jpg", desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal perfeita." },
-            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Ativo (ANC) avançado e drivers refinados para áudio de alta resolução." },
+            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Activo (ANC) avançado e drivers refinados para áudio de alta resolução." },
             { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "MXCARD11.jpg", desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição." },
             { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "MXCARD12.jpg", desc: "Fone de ouvido no estilo Headphone com Cancelamento Ativo de Ruído de até 43dB. Almofadas macias."} ,
             { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "MXCARD13.jpg", desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria." },
@@ -264,8 +285,8 @@
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            hasBrindeCard: false,     // Brinde Prata
-            hasBrindeCardGold: false, // Brinde Ouro
+            hasBrindeCard: false,     
+            hasBrindeCardGold: false, 
             coupons: { edifier: false, qcy: false, tronsmart: false, instantaneo: false },
             wonGrandPrize: false,
             milestones: { pct25: false, pct50: false, pct75: false },
@@ -310,9 +331,7 @@
             } catch(e){}
         }
 
-        // --- SISTEMA INTEGRAÇÃO POPSTATE (ANTI-FUGA DO BOTÃO VOLTAR DO CELULAR) ---
         window.addEventListener('popstate', function(event) {
-            // Se o usuário apertar voltar no celular, fechamos as janelas sem sair da página
             closeGalleryDirect();
             closeModalDirect();
         });
@@ -346,7 +365,6 @@
             document.getElementById('modal-message').innerText = "Você pegou suas 🪙 2 moedas MX diárias de hoje! Volte amanhã para garantir mais.";
             document.getElementById('modal-icon').innerText = "🪙";
             
-            // Empurra estado no histórico para o voltar do celular funcionar
             window.history.pushState({modal: 'alert'}, "");
             document.getElementById('modal-alert').classList.remove('hidden');
         }
@@ -434,14 +452,13 @@
                 prizeBox.className = "premio-box rounded-xl p-3 text-center mb-4 text-sm";
             }
 
-            // Metas de Coleção
             if (uniqueOwned >= 6 && !userState.milestones.pct25) { userState.milestones.pct25 = true; userState.coupons.qcy = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
             if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
             if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
 
             updateCheckInTimer();
 
-            // RENDERIZAÇÃO DOS DOIS VALES BRINDES
+            // RENDERING DOS VALES BRINDE
             const brindesContainer = document.getElementById('brindes-duplos-container');
             if (brindesContainer) {
                 brindesContainer.innerHTML = '';
@@ -466,7 +483,7 @@
                     slotOuro.className = "relative rounded-xl border-2 border-amber-400 shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block";
                     slotOuro.onclick = () => openBrindeInspector('ouro');
                     slotOuro.innerHTML = `
-                        <img src="MXBrindcardgold.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'">
+                        <img src="MXBrindecardgold.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'">
                         <span class="absolute bottom-1 inset-x-1 bg-amber-400 text-black text-[9px] py-1 rounded font-black uppercase text-center tracking-wider block">👑 BRINDE OURO</span>
                     `;
                 } else {
@@ -478,7 +495,7 @@
                 brindesContainer.appendChild(slotOuro);
             }
 
-            // RENDERIZAÇÃO DO ÁLBUM EM 2 COLUNAS
+            // RENDERING DO ÁLBUM
             const grid = document.getElementById('cards-grid');
             if (grid) {
                 grid.innerHTML = '';
@@ -553,7 +570,7 @@
                 });
             }
 
-            // Renderizar Baú de Prêmios
+            // Renderizar Baú de Prêmios (INTEGRADO: LINKS OFICIAIS NO BAÚ)
             const rewardsList = document.getElementById('rewards-list');
             if (rewardsList) {
                 rewardsList.innerHTML = '';
@@ -561,9 +578,9 @@
 
                 if (userState.hasBrindeCard) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🎁 VALE 1 PACOTE PRATA EXTRA!", "Você tem um cupom prata ativo! Tire o print do card na aba inicial e envie no grupo.", "VER CARD BRINDE PRATA", "cards"); }
                 if (userState.hasBrindeCardGold) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("👑 VALE 1 SUPER PACOTE OURO!", "Você tem um cupom de brinde ouro! Tire o print do card dourado para resgatar prêmios top.", "VER CARD BRINDE OURO", "cards"); }
-                if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🚚 CUPOM FRETE GRÁTIS QCY", "Liberado ao completar 25% do álbum! Válido para qualquer produto QCY.", "RESGATAR NO WHATSAPP"); }
-                if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🎧 15% OFF EM EDIFIER", "Liberado ao completar 50% do álbum! Desconto aplicado na aba de produtos.", "RESGATAR NO WHATSAPP"); }
-                if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🔊 10% OFF EM TRONSMART", "Liberado ao completar 75% do álbum! Desconto aplicado na aba de produtos.", "RESGATAR NO WHATSAPP"); }
+                if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🚚 CUPOM FRETE GRÁTIS QCY", "Liberado ao completar 25% do álbum! Válido para qualquer produto QCY.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
+                if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🎧 15% OFF EM EDIFIER", "Liberado ao completar 50% do álbum! Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
+                if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🔊 10% OFF EM TRONSMART", "Liberado ao completar 75% do álbum! Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
 
                 if (!temPremio) {
                     rewardsList.innerHTML = `<div class="text-center py-8 text-xs text-gray-500"><p class="text-xl mb-1">🔒</p><p>Seu baú está vazio.</p></div>`;
@@ -572,7 +589,7 @@
         }
 
         function criarTemplatePremio(titulo, desc, acao, redirectTab = null) {
-            const clickAction = redirectTab ? `onclick="switchTab('${redirectTab}')"` : `onclick="window.open('https://wa.me/seu-numero', '_blank')"`;
+            const clickAction = redirectTab ? `onclick="switchTab('${redirectTab}')"` : `onclick="window.open('https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F', '_blank')"`;
             return `
                 <div class="bg-gray-900 border border-amber-400/40 rounded-xl p-3 flex flex-col justify-between gap-2">
                     <div>
@@ -586,7 +603,21 @@
             `;
         }
 
-        // INSPEÇÃO EXCLUSIVA DE BRINDES (PRINT)
+        function criarTemplatePremioManual(titulo, desc, linkManual) {
+            return `
+                <div class="bg-gray-900 border border-amber-400/40 rounded-xl p-3 flex flex-col justify-between gap-2">
+                    <div>
+                        <h4 class="text-xs font-black text-amber-400 tracking-wide">${titulo}</h4>
+                        <p class="text-[11px] text-gray-300 mt-0.5 leading-tight">${desc}</p>
+                    </div>
+                    <button onclick="window.open('${linkManual}', '_blank')" class="w-full bg-amber-400 text-black text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0 cursor-pointer">
+                        RESGATAR NO WHATSAPP
+                    </button>
+                </div>
+            `;
+        }
+
+        // INTEGRADO: LINKS DE ENVIO DE PRINT DOS BRINDES
         function openBrindeInspector(tipo) {
             document.getElementById('gallery-product-desc-box').classList.add('hidden');
             document.getElementById('gallery-brinde-desc-box').classList.remove('hidden');
@@ -603,17 +634,16 @@
                 container.innerHTML = `<img src="MXBrindecard.jpg" class="w-full h-full object-contain rounded-xl" onerror="showFallbackBrindeGeral('PRATA', '#00F5D4')">`;
                 buyBtn.className = "bg-gradient-to-r from-teal-500 to-emerald-600 text-black px-5 py-2.5 rounded-xl text-xs font-black tracking-wider border-0 cursor-pointer w-full text-center";
                 buyBtn.innerText = "🟢 ENVIAR PRINT NO GRUPO PRATA";
-                buyBtn.onclick = () => window.open("https://wa.me/seu-numero?text=Tirei%20o%20MX%20Brinde%20Card%20Prata!%20Aqui%20esta%20o%20meu%20print.", "_blank");
+                buyBtn.onclick = () => window.open("https://wa.me/5541997257227?text=Ol%C3%A1%21%20Ganhei%20o%20Vale-Brinde%20e%20estou%20enviando%20o%20print%20da%20tela%20para%20resgatar%20meu%20pr%C3%AAmio%21", "_blank");
             } else {
                 document.getElementById('gallery-brand').innerText = "MX LENDÁRIO";
                 document.getElementById('gallery-title').innerText = "Vale Brinde Ouro Especial";
-                container.innerHTML = `<img src="MXBrindcardgold.jpg" class="w-full h-full object-contain rounded-xl" onerror="showFallbackBrindeGeral('OURO', '#F59E0B')">`;
+                container.innerHTML = `<img src="MXBrindecardgold.jpg" class="w-full h-full object-contain rounded-xl" onerror="showFallbackBrindeGeral('OURO', '#F59E0B')">`;
                 buyBtn.className = "bg-gradient-to-r from-amber-400 to-yellow-600 text-black px-5 py-2.5 rounded-xl text-xs font-black tracking-wider border-0 cursor-pointer w-full text-center";
                 buyBtn.innerText = "👑 ENVIAR PRINT NO GRUPO VIP OURO";
-                buyBtn.onclick = () => window.open("https://wa.me/seu-numero?text=💥%20EU%20ACHEI%20O%20CARD%20GOLD!%20Quero%20validar%20meu%20brinde%20premium.", "_blank");
+                buyBtn.onclick = () => window.open("https://wa.me/5541997257227?text=Ol%C3%A1%21%20Ganhei%20o%20Vale-Brinde%20e%20estou%20enviando%20o%20print%20da%20tela%20para%20resgatar%20meu%20pr%C3%AAmio%21", "_blank");
             }
 
-            // Ativa o gatilho anti-retorno do celular antes de exibir a modal
             window.history.pushState({modal: 'gallery'}, "");
             document.getElementById('modal-gallery').classList.remove('hidden');
         }
@@ -630,7 +660,7 @@
             `;
         }
 
-        // INSPEÇÃO NORMAL DO ÁLBUM REGULAR
+        // INTEGRADO: LINK DE COMPRA DO PRODUTO ESPECÍFICO
         function openGallery(productId) {
             document.getElementById('gallery-product-desc-box').classList.remove('hidden');
             document.getElementById('gallery-brinde-desc-box').classList.add('hidden');
@@ -658,12 +688,11 @@
             const buyBtn = document.getElementById('gallery-buy-btn');
             buyBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0 cursor-pointer";
             buyBtn.innerText = "🟢 COMPRE PELO WHATSAPP";
-            buyBtn.onclick = () => window.open(`https://wa.me/seu-numero?text=Quero%20comprar%20o%20${encodeURIComponent(p.name)}%20com%20o%20preco%20especial%20do%20App!`, '_blank');
+            buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F`, '_blank');
 
             const mainImgContainer = document.getElementById('gallery-main-container');
             mainImgContainer.innerHTML = `<img src="${p.main_image}" class="w-full h-full object-contain rounded-xl" onerror="showFallbackCard('${p.brand}', '${p.name}', ${p.id})">`;
 
-            // Ativa o gatilho anti-retorno do celular antes de exibir a modal
             window.history.pushState({modal: 'gallery'}, "");
             document.getElementById('modal-gallery').classList.remove('hidden');
         }
@@ -685,22 +714,11 @@
 
         document.addEventListener('keydown', function(e) { if (e.key === "Escape") { closeGallery(); closeModal(); } });
         
-        // Funções para fechamento manual (clicando no X ou no botão customizado Voltar)
-        function closeGallery() { 
-            window.history.back(); // Volta o histórico via código, o que disparará o popstate limpando a tela com segurança
-        }
-        function closeModal() { 
-            window.history.back(); 
-        }
+        function closeGallery() { window.history.back(); }
+        function closeModal() { window.history.back(); }
 
-        // Funções diretas executadas pela History API (Popstate) para evitar loops de fechar
-        function closeGalleryDirect() {
-            document.getElementById('modal-gallery').classList.add('hidden');
-        }
-        function closeModalDirect() {
-            document.getElementById('modal-alert').classList.add('hidden');
-            updateUI();
-        }
+        function closeGalleryDirect() { document.getElementById('modal-gallery').classList.add('hidden'); }
+        function closeModalDirect() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
         
         function triggerPackOpening(type) {
             if (type === 'coins' && userState.coins < 5) return;
@@ -776,7 +794,6 @@
             document.getElementById('modal-message').innerHTML = `Você encontrou estes 3 itens: ${htmlCards}`;
             document.getElementById('modal-icon').innerText = "📦";
             
-            // Injeta o estado no histórico para o pacote aberto também respeitar o voltar do celular
             window.history.pushState({modal: 'alert'}, "");
             document.getElementById('modal-alert').classList.remove('hidden');
         }
