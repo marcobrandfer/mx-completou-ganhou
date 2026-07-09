@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MX Completou Ganhou</title>
+    <!-- Tailwind CSS Versão Estável para Funcionamento Local (file://) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes pulse-glow {
@@ -13,6 +14,16 @@
         @keyframes success-glow {
             0%, 100% { box-shadow: 0 0 15px rgba(0, 245, 212, 0.6); border-color: #00F5D4; }
             50% { box-shadow: 0 0 25px rgba(0, 245, 212, 0.9); border-color: #00F5D4; }
+        }
+        @keyframes pack-shake {
+            0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
+            15% { transform: scale(1.08) rotate(-5deg); }
+            30% { transform: scale(1.08) rotate(5deg); filter: drop-shadow(0 0 30px rgba(255,215,0,0.9)); }
+            45% { transform: scale(1.08) rotate(-4deg); }
+            60% { transform: scale(1.08) rotate(4deg); }
+            75% { transform: scale(1.15) rotate(-2deg); filter: drop-shadow(0 0 45px rgba(0,245,212,1)); }
+            90% { transform: scale(1.15) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
         }
         .premio-box {
             animation: pulse-glow 2s infinite;
@@ -27,6 +38,9 @@
         .neon-text-teal {
             text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
         }
+        .animate-pack-shake {
+            animation: pack-shake 0.5s ease-in-out infinite;
+        }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
@@ -34,8 +48,10 @@
 </head>
 <body class="bg-[#0A0A0A] text-gray-100 font-sans antialiased min-h-screen pb-24">
 
+    <!-- APP CONTAINER (Mobile-First) -->
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
         
+        <!-- HEADER COMPACTO -->
         <header class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
             <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
             <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
@@ -43,7 +59,8 @@
             </div>
         </header>
 
-        <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-6 text-sm">
+        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
+        <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-4 text-sm">
             <div id="prize-status-collecting">
                 <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
                 <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
@@ -56,6 +73,7 @@
                 </button>
             </div>
             
+            <!-- BARRA DE PROGRESSO -->
             <div class="mt-3">
                 <div class="flex justify-between text-xs text-gray-400 mb-1 font-semibold">
                     <span>Progresso do Álbum</span>
@@ -67,6 +85,21 @@
             </div>
         </div>
 
+        <!-- SEÇÃO: CHECK-IN DIÁRIO -->
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 mb-4 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">📆</span>
+                <div>
+                    <h4 class="font-bold text-gray-200">Recompensa Diária</h4>
+                    <p class="text-[10px] text-gray-400">Garanta moedas MX grátis todo dia</p>
+                </div>
+            </div>
+            <button id="btn-checkin" onclick="claimDailyCheckin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer">
+                🪙 Pegar +2 MX
+            </button>
+        </div>
+
+        <!-- ABAS DE NAVEGAÇÃO -->
         <div class="grid grid-cols-3 gap-1 bg-gray-900 p-1 rounded-xl mb-6 border border-gray-800">
             <button onclick="switchTab('cards')" id="btn-tab-cards" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-amber-400 text-black flex flex-col items-center justify-center gap-0.5">
                 <span class="text-base">🎴</span>
@@ -82,51 +115,54 @@
             </button>
         </div>
 
+        <!-- ================= TAB: MX CARDS ================= -->
         <div id="tab-cards" class="tab-content space-y-6">
             
+            <!-- ÁREA DE COMPRA DE PACOTES E RESGATE -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center space-y-3">
-                
                 <div id="vip-free-pack-box">
                     <button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black text-xs py-3 rounded-lg border-2 border-white/20 active:scale-95 transition flex items-center justify-center gap-2">
                         🎉 RESGATAR PACOTE VIP GRÁTIS
                     </button>
                 </div>
-
                 <div class="h-px bg-gray-800/60 my-2"></div>
-
                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="openPack('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full block">
+                    <button onclick="triggerPackOpening('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full">
                         📦 Abrir p/ 🪙5 MX
                     </button>
-                    <button onclick="openPack('pix')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full block">
+                    <button onclick="triggerPackOpening('pix')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full">
                         ⚡ Compre Pacote (R$ 5,00)
                     </button>
                 </div>
-                
                 <div class="flex justify-center gap-4 mt-1 border-t border-gray-800/60 pt-2.5">
-                    <button onclick="cheatCoinsAndBrinde()" class="text-[10px] text-gray-500 hover:text-gray-300 underline bg-transparent border-0 cursor-pointer">🪙 +50 Moedas & Liberar Brinde</button>
+                    <button onclick="cheatCoinsAndBrinde()" class="text-[10px] text-gray-500 hover:text-gray-300 underline bg-transparent border-0 cursor-pointer">🪙 +50 Moedas & Liberar Brindes</button>
                     <button onclick="resetGame()" class="text-[10px] text-red-500 hover:text-red-400 font-bold underline bg-transparent border-0 cursor-pointer">♻️ Resetar Jogo</button>
                 </div>
             </div>
 
+            <!-- SEÇÃO NOVO FORMATO: DOIS ESPAÇOS PARA VALE BRINDE (PRATA E OURO) -->
             <div>
                 <h2 class="text-xs font-bold text-[#00F5D4] tracking-wider uppercase mb-3 neon-text-teal">
-                    🎁 VALE BRINDE INSTANTÂNEO
+                    🎁 VALES BRINDE INSTANTÂNEOS
                 </h2>
-                <div class="flex justify-center min-h-[180px]" id="brinde-card-container">
-                    </div>
+                <!-- Mudado para Grid de 2 colunas para alinhar lado a lado com tamanho ideal -->
+                <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container">
+                    <!-- Gerados dinamicamente via JS (Espaço Prata e Espaço Ouro) -->
+                </div>
             </div>
 
+            <!-- ÁLBUM REGULAR (REFORMULADO DE 3 PARA 2 COLUNAS - MUITO MAIOR E VISÍVEL) -->
             <div>
                 <h2 class="text-xs font-bold text-amber-400 tracking-wider uppercase mb-3 flex justify-between">
                     <span>Sua Coleção (24 Cards)</span>
-                    <span class="text-gray-500">Clique para inspecionar</span>
+                    <span class="text-gray-500">Toque para inspecionar</span>
                 </h2>
-                <div class="grid grid-cols-3 gap-2.5" id="cards-grid"></div>
+                <div class="grid grid-cols-2 gap-3.5" id="cards-grid"></div>
             </div>
         </div>
 
+        <!-- ================= TAB: MX PRODUTOS ================= -->
         <div id="tab-produtos" class="tab-content hidden space-y-4">
             <div class="bg-gray-900/60 p-3 rounded-lg border border-gray-800 text-xs text-gray-400 flex items-center gap-2">
                 <span>🔥</span>
@@ -135,6 +171,7 @@
             <div class="space-y-3" id="products-list"></div>
         </div>
 
+        <!-- ================= TAB: MEUS PRÊMIOS ================= -->
         <div id="tab-premios" class="tab-content hidden space-y-4">
             <h2 class="text-sm font-bold text-amber-400 tracking-wider mb-3">Seus Cupons e Vales-Brinde</h2>
             <div class="space-y-3" id="rewards-list"></div>
@@ -142,15 +179,30 @@
 
     </div>
 
+    <!-- TELA REVELAÇÃO EXCLUSIVA: ANIMAÇÃO DO PACOTE (SUSPENSE) -->
+    <div id="pack-animation-overlay" class="fixed inset-0 bg-[#050505]/95 backdrop-blur-xl z-[100] hidden flex flex-col items-center justify-center p-6 transition-all duration-300">
+        <div class="w-52 h-72 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-700 rounded-2xl border-4 border-amber-300 shadow-[0_0_50px_rgba(255,215,0,0.4)] p-4 flex flex-col justify-between items-center text-center animate-pack-shake">
+            <span class="text-[10px] font-black tracking-widest text-black bg-white px-3 py-1 rounded-full uppercase shadow">MX VIP CLUB</span>
+            <div class="text-7xl my-auto filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">📦</div>
+            <div class="w-full">
+                <h3 class="text-lg font-black text-black leading-none uppercase tracking-wide">ABRINDO...</h3>
+                <p class="text-[9px] font-bold text-gray-950 tracking-wider mt-1 uppercase opacity-80">Sintonizando Sorte</p>
+            </div>
+        </div>
+        <p class="text-sm font-black text-amber-400 tracking-widest uppercase mt-8 animate-pulse text-center">Aguarde os cards...</p>
+    </div>
+
+    <!-- POP-UP NOTIFICAÇÃO MODAL GERAL -->
     <div id="modal-alert" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-6">
         <div class="bg-gray-900 border-2 border-amber-400 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="text-4xl mb-2" id="modal-icon">🏆</div>
             <h3 class="text-base font-black text-white mb-2" id="modal-title">Parabéns!</h3>
             <div class="text-sm text-gray-300 mb-4 leading-relaxed" id="modal-message"></div>
-            <button id="modal-btn" onclick="closeModal()" class="w-full bg-amber-400 text-black font-black py-2.5 rounded-xl text-xs uppercase tracking-wider">Continuar</button>
+            <button id="modal-btn" onclick="closeModal()" class="w-full bg-amber-400 text-black font-black py-2.5 rounded-xl text-xs uppercase tracking-wider border-0 cursor-pointer">Continuar</button>
         </div>
     </div>
 
+    <!-- NOME NOVO MODAL: GALERIA DE INSPEÇÃO GERAL E PRINT DOS BRINDES -->
     <div id="modal-gallery" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="bg-gray-950 border border-gray-800 rounded-2xl max-w-sm w-full overflow-hidden shadow-2xl flex flex-col">
             <div class="p-4 border-b border-gray-800 flex justify-between items-start">
@@ -165,27 +217,36 @@
                 <div id="gallery-main-container" class="w-full h-80 flex items-center justify-center overflow-hidden rounded-xl bg-gray-900 shadow-inner"></div>
             </div>
 
+            <!-- ÁREA TEXTO DINÂMICA (MUDADA DE ACORDO SE É CARD COMUM OU CARD BRINDE) -->
             <div class="p-4 space-y-3 flex-1 overflow-y-auto">
-                <div>
+                <div id="gallery-product-desc-box">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Descrição do Produto</h4>
                     <p id="gallery-desc" class="text-xs text-gray-300 mt-1 leading-relaxed"></p>
                 </div>
-                <div class="pt-2 border-t border-gray-900 flex items-center justify-between">
+                
+                <!-- Nova mensagem integrada para orientar o print perfeitamente -->
+                <div id="gallery-brinde-desc-box" class="hidden text-center bg-teal-950/40 border border-teal-800/60 p-3 rounded-xl">
+                    <p class="text-xs font-black text-[#00F5D4] uppercase">📸 INSTRUÇÕES DE RESGATE 📸</p>
+                    <p class="text-[11px] text-gray-300 mt-1 font-semibold">Faça o Print do seu MX Brinde Card e envie para o Grupo oficial do WhatsApp para validar seu prêmio!</p>
+                </div>
+
+                <div class="pt-2 border-t border-gray-900 flex items-center justify-between" id="gallery-footer-action">
                     <div>
-                        <span class="text-[10px] text-gray-500 block font-semibold">Preço Especial</span>
+                        <span id="gallery-price-label" class="text-[10px] text-gray-500 block font-semibold">Preço Especial</span>
                         <div class="flex flex-col">
                             <span id="gallery-price-old" class="text-xs text-gray-500 line-through hidden">R$ 0,00</span>
                             <span id="gallery-price" class="text-base font-black text-[#00F5D4]">R$ 0,00</span>
                         </div>
                     </div>
-                    <button id="gallery-buy-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0">
-                        🟢 COMPRE PELO WHATSAPP
+                    <button id="gallery-buy-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0 cursor-pointer">
+                        🟢 ENVIAR NO WHATSAPP
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- SCRIPTS DE LOGICA E DADOS -->
     <script>
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives ou vídeos externos com estabilidade absoluta." },
@@ -218,15 +279,21 @@
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            hasBrindeCard: false,
+            hasBrindeCard: false,     // Brinde Prata
+            hasBrindeCardGold: false, // Brinde Ouro (NOVO!)
             coupons: { edifier: false, qcy: false, tronsmart: false, instantaneo: false },
             wonGrandPrize: false,
-            milestones: { pct25: false, pct50: false, pct75: false }
+            milestones: { pct25: false, pct50: false, pct75: false },
+            lastCheckInDate: null
         };
 
-        const soundCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
+        let soundCtx = null;
+        function initAudio() {
+            if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
         function playSoundPlim() {
+            initAudio();
             try {
                 const osc = soundCtx.createOscillator();
                 const gain = soundCtx.createGain();
@@ -235,14 +302,13 @@
                 osc.frequency.setValueAtTime(880, soundCtx.currentTime + 0.08); 
                 gain.gain.setValueAtTime(0.1, soundCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.0001, soundCtx.currentTime + 0.3);
-                osc.connect(gain);
-                gain.connect(soundCtx.destination);
-                osc.start();
-                osc.stop(soundCtx.currentTime + 0.3);
+                osc.connect(gain); gain.connect(soundCtx.destination);
+                osc.start(); osc.stop(soundCtx.currentTime + 0.3);
             } catch(e){}
         }
 
         function playSoundValeBrinde() {
+            initAudio();
             try {
                 const now = soundCtx.currentTime;
                 const notes = [523.25, 659.25, 783.99, 1046.50]; 
@@ -253,10 +319,8 @@
                     osc.frequency.setValueAtTime(freq, now + (idx * 0.06));
                     gain.gain.setValueAtTime(0.15, now + (idx * 0.06));
                     gain.gain.exponentialRampToValueAtTime(0.0001, now + (idx * 0.06) + 0.4);
-                    osc.connect(gain);
-                    gain.connect(soundCtx.destination);
-                    osc.start(now + (idx * 0.06));
-                    osc.stop(now + (idx * 0.06) + 0.4);
+                    osc.connect(gain); gain.connect(soundCtx.destination);
+                    osc.start(now + (idx * 0.06)); osc.stop(now + (idx * 0.06) + 0.4);
                 });
             } catch(e){}
         }
@@ -266,31 +330,67 @@
                 userState = JSON.parse(localStorage.getItem('mx_user_state'));
             }
             updateUI();
+            setInterval(updateCheckInTimer, 1000);
         };
 
         function saveState() {
             localStorage.setItem('mx_user_state', JSON.stringify(userState));
         }
 
+        function getTodayString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        }
+
+        function claimDailyCheckin() {
+            const hoje = getTodayString();
+            if (userState.lastCheckInDate === hoje) return;
+
+            userState.coins += 2;
+            userState.lastCheckInDate = hoje;
+            saveState(); updateUI(); playSoundPlim();
+
+            document.getElementById('modal-title').innerText = "Check-in Concluído! 📆";
+            document.getElementById('modal-message').innerText = "Você pegou suas 🪙 2 moedas MX diárias de hoje! Volte amanhã para garantir mais.";
+            document.getElementById('modal-icon').innerText = "🪙";
+            document.getElementById('modal-alert').classList.remove('hidden');
+        }
+
+        function updateCheckInTimer() {
+            const btn = document.getElementById('btn-checkin');
+            if (!btn) return;
+            const hoje = getTodayString();
+            if (userState.lastCheckInDate === hoje) {
+                const agora = new Date();
+                const meiaNoite = new Date();
+                meiaNoite.setHours(24, 0, 0, 0);
+                const diff = meiaNoite - agora;
+                const horas = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+                const minutos = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                const segundos = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+                btn.innerText = `Amanhã em ${horas}:${minutos}:${segundos}`;
+                btn.className = "bg-gray-800 text-gray-500 font-bold px-3 py-2 rounded-lg text-[11px] uppercase tracking-normal border-0 cursor-not-allowed";
+            } else {
+                btn.innerText = "🪙 Pegar +2 MX";
+                btn.className = "bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer animate-pulse";
+            }
+        }
+
         function claimVipPack() {
             if (userState.claimedVipFreePack) return;
-            userState.claimedVipFreePack = true;
-            saveState();
-            updateUI();
-            openPack('free-vip');
+            triggerPackOpening('free-vip');
         }
 
         function cheatCoinsAndBrinde() {
             userState.coins += 50;
             userState.hasBrindeCard = true;
+            userState.hasBrindeCardGold = true;
             userState.coupons.instantaneo = true;
-            saveState();
-            updateUI();
-            playSoundValeBrinde();
+            saveState(); updateUI(); playSoundValeBrinde();
         }
 
         function resetGame() {
-            if (confirm("MX, você quer mesmo resetar todo o progresso do teste e voltar para 10 moedas?")) {
+            if (confirm("MX, quer mesmo resetar todo o progresso do teste?")) {
                 localStorage.removeItem('mx_user_state');
                 window.location.reload();
             }
@@ -300,8 +400,7 @@
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabName}`).classList.remove('hidden');
             document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
-                el.classList.remove('bg-amber-400', 'text-black');
-                el.classList.add('text-gray-400');
+                el.classList.remove('bg-amber-400', 'text-black'); el.classList.add('text-gray-400');
             });
             const activeBtn = document.getElementById(`btn-tab-${tabName}`);
             activeBtn.classList.add('bg-amber-400', 'text-black');
@@ -309,8 +408,7 @@
         }
 
         function getProductFinalDetails(p) {
-            let finalPrice = p.price;
-            let discountText = "";
+            let finalPrice = p.price; let discountText = "";
             if (p.brand === "Edifier" && userState.coupons.edifier) { finalPrice = p.price * 0.85; discountText = "15% OFF"; }
             else if (p.brand === "QCY" && userState.coupons.qcy) { discountText = "FRETE GRÁTIS"; }
             else if (p.brand === "Tronsmart" && userState.coupons.tronsmart) { finalPrice = p.price * 0.90; discountText = "10% OFF"; }
@@ -327,64 +425,63 @@
 
             const vipBox = document.getElementById('vip-free-pack-box');
             if (userState.claimedVipFreePack) {
-                vipBox.innerHTML = `
-                    <div class="w-full bg-emerald-950/40 text-emerald-400 font-bold text-xs py-2.5 rounded-lg border border-emerald-800/60 flex items-center justify-center gap-1.5">
-                        ✅ PACOTE VIP DISPONIBILIZADO
-                    </div>
-                `;
+                vipBox.innerHTML = `<div class="w-full bg-emerald-950/40 text-emerald-400 font-bold text-xs py-2.5 rounded-lg border border-emerald-800/60 flex items-center justify-center gap-1.5">✅ PACOTE VIP DISPONIBILIZADO</div>`;
             }
 
             const prizeBox = document.getElementById('main-prize-box');
             if (uniqueOwned >= 24) {
                 document.getElementById('prize-status-collecting').classList.add('hidden');
                 document.getElementById('prize-status-completed').classList.remove('hidden');
-                prizeBox.className = "premio-box-completo rounded-xl p-3 text-center mb-6 text-sm";
+                prizeBox.className = "premio-box-completo rounded-xl p-3 text-center mb-4 text-sm";
             } else {
                 document.getElementById('prize-status-collecting').classList.remove('hidden');
                 document.getElementById('prize-status-completed').classList.add('hidden');
-                prizeBox.className = "premio-box rounded-xl p-3 text-center mb-6 text-sm";
+                prizeBox.className = "premio-box rounded-xl p-3 text-center mb-4 text-sm";
             }
 
-            if (uniqueOwned >= 6 && !userState.milestones.pct25) {
-                userState.milestones.pct25 = true;
-                userState.coupons.qcy = true;
-                document.getElementById('reward-badge').classList.remove('hidden');
-                saveState();
-            }
-            if (uniqueOwned >= 12 && !userState.milestones.pct50) {
-                userState.milestones.pct50 = true;
-                userState.coupons.edifier = true;
-                document.getElementById('reward-badge').classList.remove('hidden');
-                saveState();
-            }
-            if (uniqueOwned >= 18 && !userState.milestones.pct75) {
-                userState.milestones.pct75 = true;
-                userState.coupons.tronsmart = true;
-                document.getElementById('reward-badge').classList.remove('hidden');
-                saveState();
-            }
+            // Metas de Coleção
+            if (uniqueOwned >= 6 && !userState.milestones.pct25) { userState.milestones.pct25 = true; userState.coupons.qcy = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
+            if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
+            if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
 
-            const brindeContainer = document.getElementById('brinde-card-container');
-            brindeContainer.innerHTML = '';
-            const brindeCard = document.createElement('div');
-            
+            updateCheckInTimer();
+
+            // RENDERIZAÇÃO DOS DOIS VALES BRINDES (PRATA E OURO) LADO A LADO
+            const brindesContainer = document.getElementById('brindes-duplos-container');
+            brandesContainer.innerHTML = '';
+
+            // 1. Slot Prata
+            const slotPrata = document.createElement('div');
             if (userState.hasBrindeCard) {
-                brindeCard.className = "relative rounded-xl border-2 border-[#00F5D4] shadow-lg h-44 w-32 overflow-hidden cursor-pointer bg-black block";
-                brindeCard.onclick = () => switchTab('premios');
-                brindeCard.innerHTML = `
-                    <img src="MXBrindecard.jpg" class="w-full h-full object-cover rounded-xl" onerror="showFallbackBrinde()">
-                    <span class="absolute bottom-1 inset-x-1 bg-[#00F5D4] text-black text-[9px] py-0.5 rounded font-black uppercase text-center tracking-wider block">🎁 VER NO BAÚ</span>
+                slotPrata.className = "relative rounded-xl border-2 border-[#00F5D4] shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block";
+                slotPrata.onclick = () => openBrindeInspector('prata');
+                slotPrata.innerHTML = `
+                    <img src="MXBrindecard.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'">
+                    <span class="absolute bottom-1 inset-x-1 bg-[#00F5D4] text-black text-[9px] py-1 rounded font-black uppercase text-center tracking-wider block">🥈 BRINDE PRATA</span>
                 `;
             } else {
-                brindeCard.className = "relative rounded-xl border border-gray-800 bg-gray-950 opacity-40 h-44 w-32 flex flex-col items-center justify-center p-2 text-center block";
-                brindeCard.innerHTML = `
-                    <div class="text-3xl mb-1">🎁</div>
-                    <div class="text-[9px] uppercase tracking-widest font-black text-[#00F5D4]">VALE BRINDE</div>
-                    <div class="text-[8px] text-gray-500 mt-1 leading-tight font-semibold">Tire a sorte nos pacotes!</div>
-                `;
+                slotPrata.className = "relative rounded-xl border border-gray-800 bg-gray-950 opacity-40 h-48 w-full flex flex-col items-center justify-center p-2 text-center block";
+                slotPrata.innerHTML = `<div class="text-2xl mb-1">🥈</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">BRINDE PRATA</div><div class="text-[8px] text-gray-600 mt-1 font-semibold">Bloqueado</div>`;
             }
-            brindeContainer.appendChild(brindeCard);
 
+            // 2. Slot Ouro
+            const slotOuro = document.createElement('div');
+            if (userState.hasBrindeCardGold) {
+                slotOuro.className = "relative rounded-xl border-2 border-amber-400 shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block";
+                slotOuro.onclick = () => openBrindeInspector('ouro');
+                slotOuro.innerHTML = `
+                    <img src="MXBrindcardgold.jpg" class="w-full h-full object-cover rounded-xl" onerror="this.style.display='none'">
+                    <span class="absolute bottom-1 inset-x-1 bg-amber-400 text-black text-[9px] py-1 rounded font-black uppercase text-center tracking-wider block">👑 BRINDE OURO</span>
+                `;
+            } else {
+                slotOuro.className = "relative rounded-xl border border-gray-800 bg-gray-950 opacity-40 h-48 w-full flex flex-col items-center justify-center p-2 text-center block";
+                slotOuro.innerHTML = `<div class="text-2xl mb-1">👑</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">BRINDE OURO</div><div class="text-[8px] text-gray-600 mt-1 font-semibold">Bloqueado</div>`;
+            }
+
+            brindesContainer.appendChild(slotPrata);
+            brindesContainer.appendChild(slotOuro);
+
+            // RENDERIZAÇÃO DO ÁLBUM TOTALMENTE REDESENHADO PARA 2 COLUNAS (MUUTO MAIOR E PROPORCIONAL)
             const grid = document.getElementById('cards-grid');
             grid.innerHTML = '';
             
@@ -393,50 +490,46 @@
                 const isOwned = count > 0;
                 const cardEl = document.createElement('div');
                 
-                cardEl.className = `relative rounded-xl flex flex-col items-center justify-between text-center border h-36 w-full max-w-[112px] mx-auto overflow-hidden transition-all block ${
+                // Redimensionado a altura para h-48 (perfeito para duas colunas mobile)
+                cardEl.className = `relative rounded-xl flex flex-col items-center justify-between text-center border h-48 w-full overflow-hidden transition-all block ${
                     isOwned ? 'border-amber-400 shadow-md cursor-pointer bg-black' : 'bg-gray-950 border-gray-800 opacity-25 p-2'
                 }`;
                 
                 if (isOwned) cardEl.onclick = () => openGallery(p.id);
                 
-                if (isOwned && p.main_image && p.main_image.trim() !== "") {
-                    cardEl.innerHTML = `
+                let innerHTMLStr = '';
+                if (isOwned) {
+                    innerHTMLStr = `
                         <img src="${p.main_image}" class="w-full h-full object-cover rounded-xl">
-                        <span class="text-[9px] font-bold text-white bg-black/60 px-1 rounded absolute top-1 left-1">#${String(p.id).padStart(2, '0')}</span>
-                        ${count > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full z-10">x${count}</span>` : ''}
+                        <span class="text-[10px] font-black text-white bg-black/70 px-1.5 py-0.5 rounded absolute top-1.5 left-1.5">#${String(p.id).padStart(2, '0')}</span>
+                        ${count > 1 ? `<span class="absolute -top-1 -right-1 bg-amber-400 text-black text-[10px] font-black px-2 py-0.5 rounded-full z-10 shadow-md">x${count}</span>` : ''}
                         
                         ${count >= 4 ? `
-                            <div class="absolute bottom-1 inset-x-1 z-10">
-                                <button onclick="event.stopPropagation(); exchangeCards(${p.id})" class="w-full bg-[#00F5D4] text-black text-[7.5px] py-1 rounded font-black uppercase shadow-md border-0 leading-none">🔄 Troca p/ 1 Pacote</button>
+                            <div class="absolute bottom-1.5 inset-x-1.5 z-10">
+                                <button onclick="event.stopPropagation(); exchangeCards(${p.id})" class="w-full bg-[#00F5D4] text-black text-[8px] py-1.5 rounded-lg font-black uppercase shadow-md border-0 leading-none cursor-pointer">🔄 Trocar Repetidas</button>
                             </div>
                         ` : (count > 1 ? `
-                            <div class="absolute bottom-1 inset-x-1 z-10 opacity-40">
-                                <div class="w-full bg-gray-800 text-gray-400 text-[7px] py-0.5 rounded font-bold uppercase border-0">Falta ${4 - count} p/ Troca</div>
+                            <div class="absolute bottom-1.5 inset-x-1.5 z-10 opacity-80">
+                                <div class="w-full bg-gray-900/90 text-amber-400 text-[8px] py-1 rounded-lg font-bold uppercase border border-amber-400/40">Faltam ${4 - count} p/ Troca</div>
                             </div>
                         ` : '')}
                     `;
                 } else {
-                    cardEl.innerHTML = `
-                        <span class="text-[9px] font-bold text-amber-500/60 absolute top-1 left-2">#${String(p.id).padStart(2, '0')}</span>
-                        ${count > 1 ? `<span class="absolute -top-1.5 -right-1.5 bg-amber-400 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full">x${count}</span>` : ''}
+                    innerHTMLStr = `
+                        <span class="text-[10px] font-bold text-amber-500/50 absolute top-1.5 left-2">#${String(p.id).padStart(2, '0')}</span>
                         <div class="w-full flex-1 flex flex-col justify-center items-center mt-2">
-                            <div class="text-xl">${isOwned ? '🎴' : '🔒'}</div>
-                            <div class="text-[9px] uppercase tracking-wider font-extrabold text-amber-400 mt-1">${isOwned ? p.brand : '???'}</div>
+                            <div class="text-3xl">🔒</div>
+                            <div class="text-[10px] uppercase tracking-wider font-black text-amber-400 mt-2">${p.brand}</div>
                         </div>
-                        <div class="text-[10px] font-black leading-tight mb-2 px-1 line-clamp-2 text-gray-200">
-                            ${isOwned ? p.name : 'Card Bloqueado'}
-                        </div>
-                        
-                        ${count >= 4 ? `
-                            <button onclick="event.stopPropagation(); exchangeCards(${p.id})" class="w-full mt-1 bg-[#00F5D4] text-black text-[7.5px] py-1 rounded font-black uppercase border-0 leading-none">🔄 Troca p/ 1 Pacote</button>
-                        ` : (count > 1 ? `
-                            <div class="w-full mt-1 bg-gray-800 text-gray-400 text-[7px] py-0.5 rounded font-bold uppercase opacity-40">Falta ${4 - count}</div>
-                        ` : '')}
+                        <div class="text-[11px] font-bold leading-tight mb-3 px-2 text-gray-500">Card Bloqueado</div>
                     `;
                 }
+                
+                cardEl.innerHTML = innerHTMLStr;
                 grid.appendChild(cardEl);
             });
 
+            // Renderizar Lista de Produtos
             const prodList = document.getElementById('products-list');
             prodList.innerHTML = '';
             PRODUCTS_DATA.forEach(p => {
@@ -447,7 +540,7 @@
                 prodEl.innerHTML = `
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-gray-950 border border-amber-400/20 rounded flex items-center justify-center text-md overflow-hidden">
-                            ${p.main_image && p.main_image.trim() !== "" ? `<img src="${p.main_image}" class="w-full h-full object-cover">` : '🛍️'}
+                            <img src="${p.main_image}" class="w-full h-full object-cover" onerror="this.src=''">
                         </div>
                         <div>
                             <span class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">${p.brand}</span>
@@ -455,63 +548,91 @@
                             <span class="text-xs font-black text-[#00F5D4]">R$ ${finalPrice.toFixed(2)} ${discountText ? `<span class="text-[10px] bg-amber-400 text-black px-1 rounded ml-1 font-extrabold">${discountText}</span>` : ''}</span>
                         </div>
                     </div>
-                    <button class="bg-gray-800 text-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold border-0">Ver</button>
+                    <button class="bg-gray-800 text-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold border-0 cursor-pointer">Ver</button>
                 `;
                 prodList.appendChild(prodEl);
             });
 
+            // Renderizar Baú de Prêmios
             const rewardsList = document.getElementById('rewards-list');
             rewardsList.innerHTML = '';
             let temPremio = false;
 
-            if (userState.hasBrindeCard) {
-                temPremio = true;
-                rewardsList.innerHTML += criarTemplatePremio("🎁 SEU VALE-BRINDE SEGREDO REVELADO!", "Você resgatou este prêmio através do card da sorte instantânea! Clique abaixo e nos mande o Print do Card no Grupo MX Clube VIP.", "FALAR COM MX NO WHATSAPP");
-            }
-            if (userState.coupons.qcy) {
-                temPremio = true;
-                rewardsList.innerHTML += criarTemplatePremio("🚚 CUPOM FRETE GRÁTIS QCY", "Liberado ao completar 25% do álbum! Válido para qualquer produto QCY.", "RESGATAR NO WHATSAPP");
-            }
-            if (userState.coupons.edifier) {
-                temPremio = true;
-                rewardsList.innerHTML += criarTemplatePremio("🎧 15% OFF EM EDIFIER", "Liberado ao completar 50% do álbum! Desconto aplicado automaticamente na aba de produtos.", "RESGATAR NO WHATSAPP");
-            }
-            if (userState.coupons.tronsmart) {
-                temPremio = true;
-                rewardsList.innerHTML += criarTemplatePremio("🔊 10% OFF EM TRONSMART", "Liberado ao completar 75% do álbum! Desconto aplicado automaticamente na aba de produtos.", "RESGATAR NO WHATSAPP");
-            }
+            if (userState.hasBrindeCard) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🎁 VALE 1 PACOTE PRATA EXTRA!", "Você tem um cupom prata ativo! Tire o print do card na aba inicial e envie no grupo.", "VER CARD BRINDE PRATA", "cards"); }
+            if (userState.hasBrindeCardGold) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("👑 VALE 1 SUPER PACOTE OURO!", "Você tem um cupom de brinde ouro! Tire o print do card dourado para resgatar prêmios top.", "VER CARD BRINDE OURO", "cards"); }
+            if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🚚 CUPOM FRETE GRÁTIS QCY", "Liberado ao completar 25% do álbum! Válido para qualquer produto QCY.", "RESGATAR NO WHATSAPP"); }
+            if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🎧 15% OFF EM EDIFIER", "Liberado ao completar 50% do álbum! Desconto aplicado na aba de produtos.", "RESGATAR NO WHATSAPP"); }
+            if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🔊 10% OFF EM TRONSMART", "Liberado ao completar 75% do álbum! Desconto aplicado na aba de produtos.", "RESGATAR NO WHATSAPP"); }
 
             if (!temPremio) {
-                rewardsList.innerHTML = `
-                    <div class="text-center py-8 text-xs text-gray-500">
-                        <p class="text-xl mb-1">🔒</p>
-                        <p>Seu baú está vazio.</p>
-                        <p class="mt-1">Abra pacotes e alcance as metas ou encontre o Card Vale Brinde para desbloquear as recompensas!</p>
-                    </div>
-                `;
+                rewardsList.innerHTML = `<div class="text-center py-8 text-xs text-gray-500"><p class="text-xl mb-1">🔒</p><p>Seu baú está vazio.</p></div>`;
             }
         }
 
-        function criarTemplatePremio(titulo, desc, acao) {
+        function criarTemplatePremio(titulo, desc, acao, redirectTab = null) {
+            const clickAction = redirectTab ? `onclick="switchTab('${redirectTab}')"` : `onclick="window.open('https://wa.me/seu-numero', '_blank')"`;
             return `
                 <div class="bg-gray-900 border border-amber-400/40 rounded-xl p-3 flex flex-col justify-between gap-2">
                     <div>
                         <h4 class="text-xs font-black text-amber-400 tracking-wide">${titulo}</h4>
                         <p class="text-[11px] text-gray-300 mt-0.5 leading-tight">${desc}</p>
                     </div>
-                    <button onclick="window.open('https://wa.me/seu-numero', '_blank')" class="w-full bg-amber-400 text-black text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0">
+                    <button ${clickAction} class="w-full bg-amber-400 text-black text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0 cursor-pointer">
                         ${acao}
                     </button>
                 </div>
             `;
         }
 
-        function showFallbackBrinde() {
-            const card = document.querySelector('#brinde-card-container img');
-            if(card) card.style.display = 'none';
+        // NOVA FUNÇÃO: INSPECIONAR CARD DE BRINDE (FOCADO TOTALMENTE EM SOLICITAR O PRINT)
+        function openBrindeInspector(tipo) {
+            document.getElementById('gallery-product-desc-box').classList.add('hidden');
+            document.getElementById('gallery-brinde-desc-box').classList.remove('hidden');
+            document.getElementById('gallery-price-label').classList.add('hidden');
+            document.getElementById('gallery-price').classList.add('hidden');
+            document.getElementById('gallery-price-old').classList.add('hidden');
+
+            const container = document.getElementById('gallery-main-container');
+            const buyBtn = document.getElementById('gallery-buy-btn');
+
+            if (tipo === 'prata') {
+                document.getElementById('gallery-brand').innerText = "MX EXCLUSIVO";
+                document.getElementById('gallery-title').innerText = "Vale Brinde Prata Instantâneo";
+                container.innerHTML = `<img src="MXBrindecard.jpg" class="w-full h-full object-contain rounded-xl" onerror="showFallbackBrindeGeral('PRATA', '#00F5D4')">`;
+                buyBtn.className = "bg-gradient-to-r from-teal-500 to-emerald-600 text-black px-5 py-2.5 rounded-xl text-xs font-black tracking-wider border-0 cursor-pointer w-full text-center";
+                buyBtn.innerText = "🟢 ENVIAR PRINT NO GRUPO PRATA";
+                buyBtn.onclick = () => window.open("https://wa.me/seu-numero?text=Tirei%20o%20MX%20Brinde%20Card%20Prata!%20Aqui%20esta%20o%20meu%20print.", "_blank");
+            } else {
+                document.getElementById('gallery-brand').innerText = "MX LENDÁRIO";
+                document.getElementById('gallery-title').innerText = "Vale Brinde Ouro Especial";
+                container.innerHTML = `<img src="MXBrindcardgold.jpg" class="w-full h-full object-contain rounded-xl" onerror="showFallbackBrindeGeral('OURO', '#F59E0B')">`;
+                buyBtn.className = "bg-gradient-to-r from-amber-400 to-yellow-600 text-black px-5 py-2.5 rounded-xl text-xs font-black tracking-wider border-0 cursor-pointer w-full text-center";
+                buyBtn.innerText = "👑 ENVIAR PRINT NO GRUPO VIP OURO";
+                buyBtn.onclick = () => window.open("https://wa.me/seu-numero?text=💥%20EU%20ACHEI%20O%20CARD%20GOLD!%20Quero%20validar%20meu%20brinde%20premium.", "_blank");
+            }
+
+            document.getElementById('modal-gallery').classList.remove('hidden');
         }
 
+        function showFallbackBrindeGeral(nome, cor) {
+            const container = document.getElementById('gallery-main-container');
+            container.innerHTML = `
+                <div class="w-4/5 h-64 bg-black border-4 rounded-2xl p-4 flex flex-col justify-between items-center text-center" style="border-color: ${cor}">
+                    <span class="text-[10px] font-black uppercase tracking-widest bg-white text-black px-2 py-0.5 rounded-full">MX VALE BRINDE</span>
+                    <div class="text-6xl my-2">🎁</div>
+                    <h3 class="text-base font-black text-white uppercase leading-none">BRINDE ${nome}</h3>
+                    <p class="text-[9px] text-gray-400 font-semibold tracking-wide">PRINT ANTIFRAUDE SISTEMA MX</p>
+                </div>
+            `;
+        }
+
+        // INSPEÇÃO NORMAL DE PRODUTOS DO ÁLBUM REGULAR
         function openGallery(productId) {
+            document.getElementById('gallery-product-desc-box').classList.remove('hidden');
+            document.getElementById('gallery-brinde-desc-box').classList.add('hidden');
+            document.getElementById('gallery-price-label').classList.remove('hidden');
+            document.getElementById('gallery-price').classList.remove('hidden');
+
             const p = PRODUCTS_DATA.find(prod => prod.id === productId);
             if (!p) return;
 
@@ -529,18 +650,14 @@
             
             document.getElementById('gallery-desc').innerText = p.desc;
             document.getElementById('gallery-price').innerText = `R$ ${finalPrice.toFixed(2)}`;
-            document.getElementById('gallery-buy-btn').onclick = () => window.open(`https://wa.me/seu-numero?text=Quero%20comprar%20o%20${encodeURIComponent(p.name)}%20com%20o%20preco%20especial%20do%20App!`, '_blank');
+            
+            const buyBtn = document.getElementById('gallery-buy-btn');
+            buyBtn.className = "bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0 cursor-pointer";
+            buyBtn.innerText = "🟢 COMPRE PELO WHATSAPP";
+            buyBtn.onclick = () => window.open(`https://wa.me/seu-numero?text=Quero%20comprar%20o%20${encodeURIComponent(p.name)}%20com%20o%20preco%20especial%20do%20App!`, '_blank');
 
             const mainImgContainer = document.getElementById('gallery-main-container');
-
-            if (p.main_image && p.main_image.trim() !== "") {
-                mainImgContainer.innerHTML = `
-                    <img src="${p.main_image}" class="w-full h-full object-contain rounded-xl" 
-                         onerror="showFallbackCard('${p.brand}', '${p.name}', ${p.id})">
-                `;
-            } else {
-                showFallbackCard(p.brand, p.name, p.id);
-            }
+            mainImgContainer.innerHTML = `<img src="${p.main_image}" class="w-full h-full object-contain rounded-xl" onerror="showFallbackCard('${p.brand}', '${p.name}', ${p.id})">`;
 
             document.getElementById('modal-gallery').classList.remove('hidden');
         }
@@ -560,64 +677,69 @@
             `;
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "Escape") {
-                closeGallery();
-                closeModal();
-            }
-        });
-
+        document.addEventListener('keydown', function(e) { if (e.key === "Escape") { closeGallery(); closeModal(); } });
         function closeGallery() { document.getElementById('modal-gallery').classList.add('hidden'); }
+        function closeModal() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
         
-        // NOVA FUNÇÃO: TROCA DE 3 REPETIDOS POR 1 PACOTE COMPLETO IMEDIATO
+        function triggerPackOpening(type) {
+            if (type === 'coins' && userState.coins < 5) return;
+            if (type === 'free-vip' && userState.claimedVipFreePack) return;
+            initAudio();
+            if (type === 'free-vip') { userState.claimedVipFreePack = true; saveState(); }
+
+            const overlay = document.getElementById('pack-animation-overlay');
+            overlay.classList.remove('hidden');
+
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                openPack(type);
+            }, 1800);
+        }
+
         function exchangeCards(id) { 
             if (userState.inventory[id] >= 4) { 
-                userState.inventory[id] -= 3; // Remove 3 repetidos
-                saveState(); 
-                updateUI(); 
-                
-                // Abre o pacote de recompensa imediatamente
-                openPack('exchange-reward');
+                userState.inventory[id] -= 3; 
+                saveState(); updateUI(); triggerPackOpening('exchange-reward');
             } 
         }
-        
-        function closeModal() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
 
         function openPack(type) {
-            if (type === 'coins' && userState.coins < 5) return;
             if (type === 'coins') userState.coins -= 5;
-
             let htmlCards = `<div class="grid grid-cols-3 gap-2 my-4">`;
             let ganhouBrindeNessePacote = false;
             
             for (let i = 0; i < 3; i++) {
-                if (Math.random() < 0.05 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
-                    userState.hasBrindeCard = true;
-                    userState.coupons.instantaneo = true;
+                const rand = Math.random();
+                
+                // 3% de chance de vir Ouro, 6% de vir Prata ao abrir pacotes normais
+                if (rand < 0.03 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
+                    userState.hasBrindeCardGold = true;
                     ganhouBrindeNessePacote = true;
                     document.getElementById('reward-badge').classList.remove('hidden');
-                    
+                    htmlCards += `
+                        <div class="bg-gradient-to-b from-yellow-950 to-black rounded-xl border-2 border-amber-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md">
+                            <div class="text-xl">👑</div>
+                            <span class="text-[6.5px] font-black text-black bg-amber-400 px-1 rounded absolute top-1 uppercase">VALE OURO</span>
+                        </div>
+                    `;
+                } else if (rand < 0.09 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
+                    userState.hasBrindeCard = true;
+                    ganhouBrindeNessePacote = true;
+                    document.getElementById('reward-badge').classList.remove('hidden');
                     htmlCards += `
                         <div class="bg-gradient-to-b from-teal-950 to-black rounded-xl border-2 border-[#00F5D4] flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md">
-                            <div class="text-2xl">🎁</div>
-                            <span class="text-[7px] font-black text-black bg-[#00F5D4] px-1 rounded absolute top-1 font-sans">BRINDE!</span>
+                            <div class="text-xl">🥈</div>
+                            <span class="text-[6.5px] font-black text-black bg-[#00F5D4] px-1 rounded absolute top-1 uppercase">VALE PRATA</span>
                         </div>
                     `;
                 } else {
                     const cardId = Math.floor(Math.random() * 24) + 1;
                     userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
                     const p = PRODUCTS_DATA.find(prod => prod.id === cardId);
-                    
                     htmlCards += `
                         <div class="bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-400/40 flex flex-col items-center justify-between text-center h-28 overflow-hidden relative block">
-                            ${p.main_image && p.main_image.trim() !== "" ? `
-                                <img src="${p.main_image}" class="w-full h-full object-cover">
-                                <span class="text-[8px] text-white bg-black/60 px-1 rounded absolute top-1 left-1">#${String(cardId).padStart(2, '0')}</span>
-                            ` : `
-                                <span class="text-[8px] text-amber-500/60 self-start p-1">#${String(cardId).padStart(2, '0')}</span>
-                                <div class="text-xl">🎴</div>
-                                <span class="text-[9px] font-bold text-gray-200 line-clamp-2 leading-tight p-1">${p.name}</span>
-                            `}
+                            <img src="${p.main_image}" class="w-full h-full object-cover" onerror="this.style.display='none'">
+                            <span class="text-[8px] text-white bg-black/60 px-1 rounded absolute top-1 left-1">#${String(cardId).padStart(2, '0')}</span>
                         </div>
                     `;
                 }
@@ -625,24 +747,13 @@
             htmlCards += `</div>`;
             saveState(); updateUI();
             
-            if (ganhouBrindeNessePacote) {
-                playSoundValeBrinde();
-            } else {
-                playSoundPlim();
-            }
+            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playSoundPlim();
             
-            if (type === 'free-vip') {
-                document.getElementById('modal-title').innerText = "Seu Pacote VIP Chegou! 🎁";
-            } else if (type === 'exchange-reward') {
-                document.getElementById('modal-title').innerText = "Troca Concluída! 🔄";
-            } else {
-                document.getElementById('modal-title').innerText = "Pacote Aberto! 📦";
-            }
+            if (type === 'free-vip') document.getElementById('modal-title').innerText = "Seu Pacote VIP Chegou! 🎁";
+            else if (type === 'exchange-reward') document.getElementById('modal-title').innerText = "Troca Concluída! 🔄";
+            else document.getElementById('modal-title').innerText = "Pacote Aberto! 📦";
             
-            document.getElementById('modal-message').innerHTML = type === 'exchange-reward' 
-                ? `Você trocou seus 3 cards repetidos por um pacote novinho! Aqui estão seus novos itens: ${htmlCards}`
-                : `Você encontrou estes 3 itens: ${htmlCards}`;
-                
+            document.getElementById('modal-message').innerHTML = `Você encontrou estes 3 itens: ${htmlCards}`;
             document.getElementById('modal-icon').innerText = "📦";
             document.getElementById('modal-alert').classList.remove('hidden');
         }
