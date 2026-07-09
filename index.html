@@ -11,10 +11,19 @@
             0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
             50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.9); }
         }
+        @keyframes success-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 245, 212, 0.6); border-color: #00F5D4; }
+            50% { box-shadow: 0 0 25px rgba(0, 245, 212, 0.9); border-color: #00F5D4; }
+        }
         .premio-box {
             animation: pulse-glow 2s infinite;
             background: linear-gradient(135deg, #1e1b4b 0%, #000000 100%);
             border: 2px solid #FFD700;
+        }
+        .premio-box-completo {
+            animation: success-glow 1.5s infinite;
+            background: linear-gradient(135deg, #064e3b 0%, #000000 100%);
+            border: 2px solid #00F5D4;
         }
         .neon-text-teal {
             text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
@@ -33,14 +42,23 @@
         <header class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
             <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
             <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
-                <span>🪙</span> <span id="balance-display">0</span> <span class="text-xs text-gray-400">MX</span>
+                <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-400">MX</span>
             </div>
         </header>
 
-        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
-        <div class="premio-box rounded-xl p-3 text-center mb-6 text-sm">
-            <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
-            <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
+        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL / STATUS DE CONCLUSÃO -->
+        <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-6 text-sm">
+            <div id="prize-status-collecting">
+                <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
+                <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
+            </div>
+            <div id="prize-status-completed" class="hidden">
+                <p class="text-[#00F5D4] font-extrabold tracking-widest text-xs">🎉 PARABÉNS! VOCÊ COMPLETOU E GANHOU! 🎉</p>
+                <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
+                <button onclick="window.open('https://wa.me/seu-numero?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20de%201000%20reais!', '_blank')" class="mt-2.5 w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black py-2 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
+                    🎁 RETIRAR PRÊMIO
+                </button>
+            </div>
             
             <!-- BARRA DE PROGRESSO -->
             <div class="mt-3">
@@ -72,20 +90,32 @@
 
         <!-- ================= TAB: MX CARDS ================= -->
         <div id="tab-cards" class="tab-content space-y-6">
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center">
-                <h3 class="text-sm font-bold text-gray-300 mb-3">Abasteça sua Coleção</h3>
+            
+            <!-- ÁREA DE COMPRA DE PACOTES E RESGATE -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center space-y-3">
+                
+                <!-- NOVO: BOTÃO DO PACOTE GRATUITO EXCLUSIVO DO GRUPO -->
+                <div id="vip-free-pack-box">
+                    <button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black text-xs py-3 rounded-lg border-2 border-white/20 active:scale-95 transition flex items-center justify-center gap-2">
+                        🎉 RESGATAR PACOTE VIP GRÁTIS
+                    </button>
+                </div>
+
+                <div class="h-px bg-gray-800/60 my-2"></div>
+
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="openPack('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full block">
-                        📦 Abrir p/ 🪙50 MX
+                        📦 Abrir p/ 🪙5 MX
                     </button>
                     <button onclick="openPack('pix')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full block">
-                        ⚡ Compre Pacote (PIX)
+                        ⚡ Compre Pacote (R$ 5,00)
                     </button>
                 </div>
                 
                 <!-- ÁREA DOS BOTÕES DE TESTE E RESET -->
-                <div class="flex justify-center gap-4 mt-3 border-t border-gray-800/60 pt-2.5">
-                    <button onclick="cheatCoinsAndBrinde()" class="text-[10px] text-gray-500 hover:text-gray-300 underline bg-transparent border-0 cursor-pointer">🪙 +500 Moedas & Liberar Brinde</button>
+                <div class="flex justify-center gap-4 mt-1 border-t border-gray-800/60 pt-2.5">
+                    <button onclick="cheatCoinsAndBrinde()" class="text-[10px] text-gray-500 hover:text-gray-300 underline bg-transparent border-0 cursor-pointer">🪙 +50 Moedas & Liberar Brinde</button>
                     <button onclick="resetGame()" class="text-[10px] text-red-500 hover:text-red-400 font-bold underline bg-transparent border-0 cursor-pointer">♻️ Resetar Jogo</button>
                 </div>
             </div>
@@ -160,10 +190,13 @@
                 <div class="pt-2 border-t border-gray-900 flex items-center justify-between">
                     <div>
                         <span class="text-[10px] text-gray-500 block font-semibold">Preço Especial</span>
-                        <span id="gallery-price" class="text-base font-black text-[#00F5D4]">R$ 0,00</span>
+                        <div class="flex flex-col">
+                            <span id="gallery-price-old" class="text-xs text-gray-500 line-through hidden">R$ 0,00</span>
+                            <span id="gallery-price" class="text-base font-black text-[#00F5D4]">R$ 0,00</span>
+                        </div>
                     </div>
-                    <button id="gallery-buy-btn" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black px-4 py-2 rounded-xl text-xs font-black tracking-wider">
-                        💬 WHATSAPP
+                    <button id="gallery-buy-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0">
+                        🟢 COMPRE PELO WHATSAPP
                     </button>
                 </div>
             </div>
@@ -172,7 +205,6 @@
 
     <!-- SCRIPTS DE LOGICA E DADOS -->
     <script>
-        // LISTA ATUALIZADA COMPLETA COM ARQUIVOS MXCARD1.jpg ATÉ MXCARD24.jpg
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives ou vídeos externos com estabilidade absoluta." },
             { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "MXCARD2.jpg", desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos." },
@@ -201,7 +233,8 @@
         ];
 
         let userState = {
-            coins: 100,
+            coins: 10, // AJUSTADO PARA 10 MOEDAS INICIAIS
+            claimedVipFreePack: false, // FLAG PARA CONTROLE DO PACOTE GRATUITO
             inventory: {},
             hasBrindeCard: false,
             coupons: { edifier: false, qcy: false, tronsmart: false, instantaneo: false },
@@ -209,9 +242,50 @@
             milestones: { pct25: false, pct50: false, pct75: false }
         };
 
+        // GERADOR DE SONS VIA WEB AUDIO API (SINTETIZADO)
+        const soundCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSoundPlim() {
+            try {
+                const osc = soundCtx.createOscillator();
+                const gain = soundCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, soundCtx.currentTime); 
+                osc.frequency.setValueAtTime(880, soundCtx.currentTime + 0.08); 
+                gain.gain.setValueAtTime(0.1, soundCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, soundCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(soundCtx.destination);
+                osc.start();
+                osc.stop(soundCtx.currentTime + 0.3);
+            } catch(e){}
+        }
+
+        function playSoundValeBrinde() {
+            try {
+                const now = soundCtx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 1046.50]; 
+                notes.forEach((freq, idx) => {
+                    const osc = soundCtx.createOscillator();
+                    const gain = soundCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + (idx * 0.06));
+                    gain.gain.setValueAtTime(0.15, now + (idx * 0.06));
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + (idx * 0.06) + 0.4);
+                    osc.connect(gain);
+                    gain.connect(soundCtx.destination);
+                    osc.start(now + (idx * 0.06));
+                    osc.stop(now + (idx * 0.06) + 0.4);
+                });
+            } catch(e){}
+        }
+
         window.onload = function() {
             if (localStorage.getItem('mx_user_state')) {
-                userState = JSON.parse(localStorage.getItem('mx_user_state'));
+                const saved = JSON.parse(localStorage.getItem('mx_user_state'));
+                // Migração de estado antigo caso exista no teste local
+                if (saved.claimedVipFreePack === undefined) saved.claimedVipFreePack = false;
+                userState = saved;
             }
             updateUI();
         };
@@ -220,16 +294,27 @@
             localStorage.setItem('mx_user_state', JSON.stringify(userState));
         }
 
+        function claimVipPack() {
+            if (userState.claimedVipFreePack) return;
+            userState.claimedVipFreePack = true;
+            saveState();
+            updateUI();
+            
+            // Força a abertura de um pacote sem cobrar moedas
+            openPack('free-vip');
+        }
+
         function cheatCoinsAndBrinde() {
-            userState.coins += 500;
+            userState.coins += 50;
             userState.hasBrindeCard = true;
             userState.coupons.instantaneo = true;
             saveState();
             updateUI();
+            playSoundValeBrinde();
         }
 
         function resetGame() {
-            if (confirm("MX, você quer mesmo resetar todo o progresso do teste e zerar as moedas?")) {
+            if (confirm("MX, você quer mesmo resetar todo o progresso do teste e voltar para 10 moedas?")) {
                 localStorage.removeItem('mx_user_state');
                 window.location.reload();
             }
@@ -264,6 +349,27 @@
             document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${(uniqueOwned / 24) * 100}%`;
 
+            // CONTROLE DO BOTÃO DO PACOTE VIP
+            const vipBox = document.getElementById('vip-free-pack-box');
+            if (userState.claimedVipFreePack) {
+                vipBox.innerHTML = `
+                    <div class="w-full bg-emerald-950/40 text-emerald-400 font-bold text-xs py-2.5 rounded-lg border border-emerald-800/60 flex items-center justify-center gap-1.5">
+                        ✅ PACOTE VIP DISPONIBILIZADO
+                    </div>
+                `;
+            }
+
+            const prizeBox = document.getElementById('main-prize-box');
+            if (uniqueOwned >= 24) {
+                document.getElementById('prize-status-collecting').classList.add('hidden');
+                document.getElementById('prize-status-completed').classList.remove('hidden');
+                prizeBox.className = "premio-box-completo rounded-xl p-3 text-center mb-6 text-sm";
+            } else {
+                document.getElementById('prize-status-collecting').classList.remove('hidden');
+                document.getElementById('prize-status-completed').classList.add('hidden');
+                prizeBox.className = "premio-box rounded-xl p-3 text-center mb-6 text-sm";
+            }
+
             if (uniqueOwned >= 6 && !userState.milestones.pct25) {
                 userState.milestones.pct25 = true;
                 userState.coupons.qcy = true;
@@ -283,7 +389,6 @@
                 saveState();
             }
 
-            // RENDERIZAR CARD VALE BRINDE
             const brindeContainer = document.getElementById('brinde-card-container');
             brindeContainer.innerHTML = '';
             const brindeCard = document.createElement('div');
@@ -305,7 +410,6 @@
             }
             brindeContainer.appendChild(brindeCard);
 
-            // Renderizar Grade de Cards
             const grid = document.getElementById('cards-grid');
             grid.innerHTML = '';
             
@@ -348,7 +452,6 @@
                 grid.appendChild(cardEl);
             });
 
-            // Renderizar Lista de Produtos
             const prodList = document.getElementById('products-list');
             prodList.innerHTML = '';
             PRODUCTS_DATA.forEach(p => {
@@ -372,14 +475,13 @@
                 prodList.appendChild(prodEl);
             });
 
-            // Renderizar Prêmios no Baú
             const rewardsList = document.getElementById('rewards-list');
             rewardsList.innerHTML = '';
             let temPremio = false;
 
             if (userState.hasBrindeCard) {
                 temPremio = true;
-                rewardsList.innerHTML += criarTemplatePremio("🎁 SEU VALE-BRINDE SEGREDO REVELADO!", "Você resgatou este prêmio através do card de sorte instantânea! Clique abaixo e nos mande o print do card.", "FALAR COM MX NO WHATSAPP");
+                rewardsList.innerHTML += criarTemplatePremio("🎁 SEU VALE-BRINDE SEGREDO REVELADO!", "Você resgatou este prêmio através do card da sorte instantânea! Clique abaixo e nos mande o Print do Card no Grupo MX Clube VIP.", "FALAR COM MX NO WHATSAPP");
             }
             if (userState.coupons.qcy) {
                 temPremio = true;
@@ -428,12 +530,21 @@
             const p = PRODUCTS_DATA.find(prod => prod.id === productId);
             if (!p) return;
 
-            const { finalPrice } = getProductFinalDetails(p);
+            const { finalPrice, discountText } = getProductFinalDetails(p);
             document.getElementById('gallery-brand').innerText = p.brand;
-            document.getElementById('gallery-title').innerText = p.name;
+            
+            if (discountText) {
+                document.getElementById('gallery-title').innerHTML = `${p.name} <span class="text-[10px] bg-amber-400 text-black px-1.5 py-0.5 rounded font-black ml-1 inline-block align-middle">${discountText}</span>`;
+                document.getElementById('gallery-price-old').innerText = `De: R$ ${p.price.toFixed(2)}`;
+                document.getElementById('gallery-price-old').classList.remove('hidden');
+            } else {
+                document.getElementById('gallery-title').innerText = p.name;
+                document.getElementById('gallery-price-old').classList.add('hidden');
+            }
+            
             document.getElementById('gallery-desc').innerText = p.desc;
             document.getElementById('gallery-price').innerText = `R$ ${finalPrice.toFixed(2)}`;
-            document.getElementById('gallery-buy-btn').onclick = () => window.open(`https://wa.me/seu-numero?text=Quero%20o%20${encodeURIComponent(p.name)}`, '_blank');
+            document.getElementById('gallery-buy-btn').onclick = () => window.open(`https://wa.me/seu-numero?text=Quero%20comprar%20o%20${encodeURIComponent(p.name)}%20com%20o%20preco%20especial%20do%20App!`, '_blank');
 
             const mainImgContainer = document.getElementById('gallery-main-container');
 
@@ -472,19 +583,21 @@
         });
 
         function closeGallery() { document.getElementById('modal-gallery').classList.add('hidden'); }
-        function recycleCard(id) { if (userState.inventory[id] > 1) { userState.inventory[id]--; userState.coins += 10; saveState(); updateUI(); } }
+        function recycleCard(id) { if (userState.inventory[id] > 1) { userState.inventory[id]--; userState.coins += 2; saveState(); updateUI(); } }
         function closeModal() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
 
         function openPack(type) {
-            if (type === 'coins' && userState.coins < 50) return;
-            if (type === 'coins') userState.coins -= 50;
+            if (type === 'coins' && userState.coins < 5) return;
+            if (type === 'coins') userState.coins -= 5;
 
             let htmlCards = `<div class="grid grid-cols-3 gap-2 my-4">`;
+            let ganhouBrindeNessePacote = false;
             
             for (let i = 0; i < 3; i++) {
-                if (Math.random() < 0.05 && type === 'coins') {
+                if (Math.random() < 0.05 && (type === 'coins' || type === 'free-vip')) {
                     userState.hasBrindeCard = true;
                     userState.coupons.instantaneo = true;
+                    ganhouBrindeNessePacote = true;
                     document.getElementById('reward-badge').classList.remove('hidden');
                     
                     htmlCards += `
@@ -515,7 +628,13 @@
             htmlCards += `</div>`;
             saveState(); updateUI();
             
-            document.getElementById('modal-title').innerText = "Pacote Aberto! 📦";
+            if (ganhouBrindeNessePacote) {
+                playSoundValeBrinde();
+            } else {
+                playSoundPlim();
+            }
+            
+            document.getElementById('modal-title').innerText = type === 'free-vip' ? "Seu Pacote VIP Chegou! 🎁" : "Pacote Aberto! 📦";
             document.getElementById('modal-message').innerHTML = `Você encontrou estes 3 itens: ${htmlCards}`;
             document.getElementById('modal-icon').innerText = "📦";
             document.getElementById('modal-alert').classList.remove('hidden');
