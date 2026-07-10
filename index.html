@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MX Completou Ganhou</title>
-    <!-- Tailwind CSS Versão Estável para Funcionamento Local (file://) -->
+    <!-- Tailwind CSS Versão Estável para Funcionamento Local -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes pulse-glow {
@@ -15,15 +15,25 @@
             0%, 100% { box-shadow: 0 0 15px rgba(0, 245, 212, 0.6); border-color: #00F5D4; }
             50% { box-shadow: 0 0 25px rgba(0, 245, 212, 0.9); border-color: #00F5D4; }
         }
+        /* NOVA ANIMAÇÃO: O Pacote Tremendo (Suspense) */
         @keyframes pack-shake {
-            0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
-            15% { transform: scale(1.08) rotate(-5deg); }
-            30% { transform: scale(1.08) rotate(5deg); filter: drop-shadow(0 0 30px rgba(255,215,0,0.9)); }
-            45% { transform: scale(1.08) rotate(-4deg); }
-            60% { transform: scale(1.08) rotate(4deg); }
-            75% { transform: scale(1.15) rotate(-2deg); filter: drop-shadow(0 0 45px rgba(0,245,212,1)); }
-            90% { transform: scale(1.15) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255,215,0,0.6)); }
+            0% { transform: scale(1) rotate(0deg); }
+            10% { transform: scale(1.04) rotate(-3deg); }
+            20% { transform: scale(1.04) rotate(3deg); }
+            30% { transform: scale(1.04) rotate(-2deg); }
+            40% { transform: scale(1.04) rotate(2deg); }
+            50% { transform: scale(1.06) rotate(-3deg); filter: drop-shadow(0 0 25px rgba(255,215,0,0.8)); }
+            60% { transform: scale(1.06) rotate(3deg); }
+            70% { transform: scale(1.06) rotate(-2deg); }
+            80% { transform: scale(1.08) rotate(2deg); filter: drop-shadow(0 0 35px rgba(0,245,212,0.9)); }
+            90% { transform: scale(1.08) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        /* NOVA ANIMAÇÃO: O Pacote Abrindo/Estourando */
+        @keyframes pack-open {
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            50% { transform: scale(1.15); opacity: 0.9; filter: brightness(2); }
+            100% { transform: scale(0.4); opacity: 0; filter: brightness(4); }
         }
         .premio-box {
             animation: pulse-glow 2s infinite;
@@ -39,7 +49,10 @@
             text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
         }
         .animate-pack-shake {
-            animation: pack-shake 0.5s ease-in-out infinite;
+            animation: pack-shake 0.5s ease-in-out 2; /* Roda duas vezes (1 segundo de suspense) */
+        }
+        .animate-pack-open {
+            animation: pack-open 0.6s ease-in-out forwards;
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
@@ -131,7 +144,6 @@
                     <button onclick="triggerPackOpening('coins')" class="bg-gradient-to-r from-amber-500 to-amber-600 text-black font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full">
                         📦 Abrir p/ 🪙5 MX
                     </button>
-                    <!-- INTEGRADO: LINK DO WHATSAPP DE COMPRA DE PACOTE -->
                     <button onclick="window.open('https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20Pacotes%20de%20MX%20Cards.%20Como%20fa%C3%A7o%20para%20realizar%20o%20pagamento%20e%20liberar%20meu%20acesso%3F', '_blank')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-extrabold text-xs py-3 px-2 rounded-lg transition active:scale-95 flex items-center justify-center gap-1.5 w-full cursor-pointer">
                         ⚡ Compre Pacote (R$ 5,00)
                     </button>
@@ -142,13 +154,13 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO VALE BRINDE INSTANTÂNEO -->
+            <!-- SEÇÃO VALE BRINDE INSTANTÂNEO (TÍTULO CORRIGIDO) -->
             <div>
                 <h2 class="text-xs font-bold text-[#00F5D4] tracking-wider uppercase mb-3 neon-text-teal">
-                    🎁 VALES BRINDE INSTANTÂNEOS
+                    VALE BRINDES INSTANTÂNEOS
                 </h2>
                 <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container">
-                    <!-- Gerados dinamicamente via JS (Slot Prata e Slot Ouro) -->
+                    <!-- Gerados dinamicamente via JS -->
                 </div>
             </div>
 
@@ -179,17 +191,13 @@
 
     </div>
 
-    <!-- TELA REVELAÇÃO EXCLUSIVA: ANIMAÇÃO DO PACOTE (SUSPENSE) -->
+    <!-- TELA REVELAÇÃO COM SUA NOVA ARTEMXPACK.JPG (EFEITO SUSPENSE) -->
     <div id="pack-animation-overlay" class="fixed inset-0 bg-[#050505]/95 backdrop-blur-xl z-[100] hidden flex flex-col items-center justify-center p-6 transition-all duration-300">
-        <div class="w-52 h-72 bg-gradient-to-b from-amber-400 via-amber-500 to-amber-700 rounded-2xl border-4 border-amber-300 shadow-[0_0_50px_rgba(255,215,0,0.4)] p-4 flex flex-col justify-between items-center text-center animate-pack-shake">
-            <span class="text-[10px] font-black tracking-widest text-black bg-white px-3 py-1 rounded-full uppercase shadow">MX VIP CLUB</span>
-            <div class="text-7xl my-auto filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">📦</div>
-            <div class="w-full">
-                <h3 class="text-lg font-black text-black leading-none uppercase tracking-wide">ABRINDO...</h3>
-                <p class="text-[9px] font-bold text-gray-950 tracking-wider mt-1 uppercase opacity-80">Sintonizando Sorte</p>
-            </div>
+        <div class="w-64 max-w-xs flex flex-col items-center justify-center text-center">
+            <!-- SUA IMAGEM OFICIAL APLICADA AQUI -->
+            <img id="mx-booster-pack" src="mxpack.jpg" alt="Pacote Premium MX" class="w-full max-w-[260px] rounded-2xl shadow-[0_0_50px_rgba(255,215,0,0.4)]">
+            <p id="pack-opening-text" class="text-sm font-black text-amber-400 tracking-widest uppercase mt-8 animate-pulse text-center">Segure o coração...</p>
         </div>
-        <p class="text-sm font-black text-amber-400 tracking-widest uppercase mt-8 animate-pulse text-center">Aguarde os cards...</p>
     </div>
 
     <!-- POP-UP NOTIFICAÇÃO MODAL GERAL -->
@@ -255,29 +263,29 @@
     <!-- SCRIPTS DE LOGICA E DADOS -->
     <script>
         const PRODUCTS_DATA = [
-            { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives ou vídeos externos com estabilidade absoluta." },
+            { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives." },
             { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "MXCARD2.jpg", desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos." },
-            { id: 3, name: "Mic Lapela Ulanzi A200", brand: "Ulanzi", price: 299.90, main_image: "MXCARD3.jpg", desc: "Microfone de lapela sem fio com excelente cancelamento de ruído. Captação limpa e nítida para vlogs ou tutoriais direto no celular." },
-            { id: 4, name: "Microfone FIFINE AM8", brand: "Fifine", price: 439.90, main_image: "MXCARD4.jpg", desc: "Microfone dinâmico profissional com conexões XLR e USB, além de iluminação RGB personalizável. Excelência em áudio." },
-            { id: 5, name: "Suporte Fifine BM88", brand: "Fifine", price: 329.90, main_image: "MXCARD5.jpg", desc: "Braço articulado de perfil baixo (low-profile). Deixa seu setup limpo, escondendo-se abaixo do monitor com movimentação suave." },
+            { id: 3, name: "Mic Lapela Ulanzi A200", brand: "Ulanzi", price: 299.90, main_image: "MXCARD3.jpg", desc: "Microfone de lapela sem fio com excelente cancelamento de ruído. Captação limpa e nítida para vlogs." },
+            { id: 4, name: "Microfone FIFINE AM8", brand: "Fifine", price: 439.90, main_image: "MXCARD4.jpg", desc: "Microfone dinâmico profissional com conexões XLR e USB, além de iluminação RGB personalizável." },
+            { id: 5, name: "Suporte Fifine BM88", brand: "Fifine", price: 329.90, main_image: "MXCARD5.jpg", desc: "Braço articulado de perfil baixo (low-profile). Deixa seu setup limpo, escondendo-se abaixo do monitor." },
             { id: 6, name: "Microfone FIFINE AM8T", brand: "Fifine", price: 499.90, main_image: "MXCARD6.jpg", desc: "Kit completo do consagrado microfone dinâmico AM8 acompanhado de um braço articulado robusto de fábrica." },
             { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "MXCARD7.jpg", desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Som de alta fidelidade." },
-            { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração, carregamento rápido e áudio balanceado." },
+            { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração e carregamento rápido." },
             { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "MXCARD9.jpg", desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal perfeita." },
-            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Activo (ANC) avançado e drivers refinados para áudio de alta resolução." },
+            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Ativo (ANC) avançado e drivers refinados para áudio de alta resolução." },
             { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "MXCARD11.jpg", desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição." },
             { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "MXCARD12.jpg", desc: "Fone de ouvido no estilo Headphone com Cancelamento Ativo de Ruído de até 43dB. Almofadas macias."} ,
             { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "MXCARD13.jpg", desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria." },
             { id: 14, name: "Tronsmart Mirtune S100", brand: "Tronsmart", price: 459.90, main_image: "MXCARD14.jpg", desc: "Caixa de som portátil premium com alça integrada. Som expansivo de alta potência ideal para qualquer ambiente." },
             { id: 15, name: "Tronsmart Bang 2", brand: "Tronsmart", price: 699.90, main_image: "MXCARD15.jpg", desc: "Potência sonora animal! Luzes de LED rítmicas integradas e tecnologia patenteada SoundPulse." },
-            { id: 16, name: "Edifier M206BT", brand: "Edifier", price: 399.90, main_image: "MXCARD16.jpg", desc: "Sistema de caixas 2.1 com Subwoofer dedicado em madeira. Gerais que fazem o ambiente tremer." },
+            { id: 16, name: "Edifier M206BT", brand: "Edifier", price: 399.90, main_image: "MXCARD16.jpg", desc: "Sistema de caixas 2.1 com Subwoofer dedicado em madeira. Graves que fazem o ambiente tremer." },
             { id: 17, name: "Mi TV STICK 4K 2ª Gen", brand: "Xiaomi", price: 329.90, main_image: "MXCARD17.jpg", desc: "Transforme qualquer TV em uma Smart TV veloz com resolução 4K Ultra HD e suporte a comandos de voz." },
             { id: 18, name: "Climatizador Ventisol 16L", brand: "Ventisol", price: 489.90, main_image: "MXCARD18.jpg", desc: "Climatizador potente com grande reservatório de 16 litros. Ar fresco, umidificado e filtrado."} ,
             { id: 19, name: "Gamesir G8 Galileo Plus", brand: "Gamesir", price: 479.90, main_image: "MXCARD19.jpg", desc: "O controle definitivo para jogos de celular. Analógicos com efeito Hall e encaixe ergonômico firme." },
             { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 999.90, main_image: "MXCARD20.jpg", desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Usado pelos maiores profissionais." },
             { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal." },
             { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio ativos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio." },
-            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos e produtores." },
+            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos." },
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso." }
         ];
 
@@ -362,7 +370,7 @@
             saveState(); updateUI(); playSoundPlim();
 
             document.getElementById('modal-title').innerText = "Check-in Concluído! 📆";
-            document.getElementById('modal-message').innerText = "Você pegou suas 🪙 2 moedas MX diárias de hoje! Volte amanhã para garantir mais.";
+            document.getElementById('modal-message').innerText = "Você pegou suas 🪙 2 moedas MX diárias de hoje!";
             document.getElementById('modal-icon').innerText = "🪙";
             
             window.history.pushState({modal: 'alert'}, "");
@@ -570,17 +578,17 @@
                 });
             }
 
-            // Renderizar Baú de Prêmios (INTEGRADO: LINKS OFICIAIS NO BAÚ)
+            // Renderizar Baú de Prêmios
             const rewardsList = document.getElementById('rewards-list');
             if (rewardsList) {
                 rewardsList.innerHTML = '';
                 let temPremio = false;
 
                 if (userState.hasBrindeCard) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🎁 VALE 1 PACOTE PRATA EXTRA!", "Você tem um cupom prata ativo! Tire o print do card na aba inicial e envie no grupo.", "VER CARD BRINDE PRATA", "cards"); }
-                if (userState.hasBrindeCardGold) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("👑 VALE 1 SUPER PACOTE OURO!", "Você tem um cupom de brinde ouro! Tire o print do card dourado para resgatar prêmios top.", "VER CARD BRINDE OURO", "cards"); }
-                if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🚚 CUPOM FRETE GRÁTIS QCY", "Liberado ao completar 25% do álbum! Válido para qualquer produto QCY.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
-                if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🎧 15% OFF EM EDIFIER", "Liberado ao completar 50% do álbum! Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
-                if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🔊 10% OFF EM TRONSMART", "Liberado ao completar 75% do álbum! Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
+                if (userState.hasBrindeCardGold) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("👑 VALE 1 SUPER PACOTE OURO!", "Você tem um cupom de brinde ouro! Tire o print do card dourado para resgatar prêmios.", "VER CARD BRINDE OURO", "cards"); }
+                if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🚚 CUPOM FRETE GRÁTIS QCY", "Válido para qualquer produto QCY.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
+                if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🎧 15% OFF EM EDIFIER", "Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
+                if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🔊 10% OFF EM TRONSMART", "Desconto aplicado na aba de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20um%20produto%20da%20MX%20Digital%20Shop.%20Como%20concluir%20meu%20pedido%20por%20aqui%3F"); }
 
                 if (!temPremio) {
                     rewardsList.innerHTML = `<div class="text-center py-8 text-xs text-gray-500"><p class="text-xl mb-1">🔒</p><p>Seu baú está vazio.</p></div>`;
@@ -597,7 +605,7 @@
                         <p class="text-[11px] text-gray-300 mt-0.5 leading-tight">${desc}</p>
                     </div>
                     <button ${clickAction} class="w-full bg-amber-400 text-black text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0 cursor-pointer">
-                        ${acao}
+                        ${acno}
                     </button>
                 </div>
             `;
@@ -617,7 +625,7 @@
             `;
         }
 
-        // INTEGRADO: LINKS DE ENVIO DE PRINT DOS BRINDES
+        // LINKS DE ENVIO DE PRINT DOS BRINDES INTEGRADOS
         function openBrindeInspector(tipo) {
             document.getElementById('gallery-product-desc-box').classList.add('hidden');
             document.getElementById('gallery-brinde-desc-box').classList.remove('hidden');
@@ -660,7 +668,6 @@
             `;
         }
 
-        // INTEGRADO: LINK DE COMPRA DO PRODUTO ESPECÍFICO
         function openGallery(productId) {
             document.getElementById('gallery-product-desc-box').classList.remove('hidden');
             document.getElementById('gallery-brinde-desc-box').classList.add('hidden');
@@ -707,7 +714,6 @@
                         <span class="text-[10px] uppercase tracking-widest font-black text-amber-400 block mb-1">${brand}</span>
                         <h3 class="text-sm font-black text-white px-2 leading-tight uppercase tracking-wide">${name}</h3>
                     </div>
-                    <div class="text-[9px] text-amber-400/40 font-bold tracking-widest uppercase border border-amber-400/20 px-3 py-0.5 rounded-full">PRODUTO PREMIUM</div>
                 </div>
             `;
         }
@@ -720,6 +726,7 @@
         function closeGalleryDirect() { document.getElementById('modal-gallery').classList.add('hidden'); }
         function closeModalDirect() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
         
+        // NOVA FUNÇÃO REVISADA: GERENCIA A TREMIDA E ABERTURA DA SUA ARTE
         function triggerPackOpening(type) {
             if (type === 'coins' && userState.coins < 5) return;
             if (type === 'free-vip' && userState.claimedVipFreePack) return;
@@ -727,12 +734,33 @@
             if (type === 'free-vip') { userState.claimedVipFreePack = true; saveState(); }
 
             const overlay = document.getElementById('pack-animation-overlay');
+            const packImg = document.getElementById('mx-booster-pack');
+            const statusText = document.getElementById('pack-opening-text');
+
+            // Reseta classes antigas antes de rodar
+            packImg.classList.remove('animate-pack-shake', 'animate-pack-open');
+            statusText.innerText = "Preparando pacote...";
             overlay.classList.remove('hidden');
 
+            // 1) Inicia a Tremida de Suspense (Duração total de 1s)
+            setTimeout(() => {
+                packImg.classList.add('animate-pack-shake');
+                statusText.innerText = "Sintonizando sorte... ⚡";
+            }, 50);
+
+            // 2) Entra com a animação de Estourar/Abrir o Booster (Duração de 0.6s)
+            setTimeout(() => {
+                packImg.classList.remove('animate-pack-shake');
+                packImg.classList.add('animate-pack-open');
+                statusText.innerText = "Abrindo! 🔥";
+            }, 1050);
+
+            // 3) Finaliza, fecha o overlay e entrega os cards no pop-up
             setTimeout(() => {
                 overlay.classList.add('hidden');
+                packImg.classList.remove('animate-pack-open'); // Deixa limpo para a próxima abertura
                 openPack(type);
-            }, 1800);
+            }, 1650);
         }
 
         function exchangeCards(id) { 
