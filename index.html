@@ -133,11 +133,9 @@
             
             <!-- ÁREA DE COMPRA DE PACOTES -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center space-y-3">
-                <div id="vip-free-pack-box">
-                    <button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black text-xs py-3 rounded-lg border-2 border-white/20 active:scale-95 transition flex items-center justify-center gap-2">
-                        🎉 RESGATAR PACOTE VIP GRÁTIS
-                    </button>
-                </div>
+                <!-- Div gerenciada pelo JavaScript para sumir o botão VIP após resgate -->
+                <div id="vip-free-pack-box"></div>
+                
                 <div class="h-px bg-gray-800/60 my-2"></div>
                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 <div class="grid grid-cols-2 gap-2">
@@ -284,8 +282,8 @@
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            hasBrindePack: false,       // Slot Prata: Vale 1 Pacote Grátis
-            hasBrindeCoinsReward: false, // Slot Ouro: VALE 15 MX COINS (ATUALIZADO!)
+            hasBrindePack: false,       
+            hasBrindeCoinsReward: false, 
             coupons: { edifier: false, qcy: false, tronsmart: false },
             wonGrandPrize: false,
             milestones: { pct25: false, pct50: false, pct75: false },
@@ -324,8 +322,6 @@
             if (localStorage.getItem('mx_user_state')) {
                 userState = JSON.parse(localStorage.getItem('mx_user_state'));
             }
-            // Transição de chaves legadas se houver
-            if (userState.hasBrindeGoldMega) { userState.hasBrindeCoinsReward = true; delete userState.hasBrindeGoldMega; }
             updateUI();
             setInterval(updateCheckInTimer, 1000);
         };
@@ -369,7 +365,13 @@
             }
         }
 
-        function claimVipPack() { if (!userState.claimedVipFreePack) triggerPackOpening('free-vip'); }
+        function claimVipPack() { 
+            if (!userState.claimedVipFreePack) {
+                userState.claimedVipFreePack = true; // Seta o estado como resgatado IMEDIATAMENTE antes da animação terminar
+                saveState();
+                triggerPackOpening('free-vip'); 
+            } 
+        }
         
         function cheatCoinsAndBrinde() {
             userState.coins += 50; userState.hasBrindePack = true; userState.hasBrindeCoinsReward = true;
@@ -400,7 +402,6 @@
             return { finalPrice, discountText };
         }
 
-        // FUNÇÃO DE COLETA AUTOMÁTICA DO SEU NOVO BRINDE DE 15 MOEDAS
         function claimCoinsBrindeAutomatic() {
             userState.hasBrindeCoinsReward = false;
             userState.coins += 15;
@@ -424,9 +425,14 @@
             document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${(uniqueOwned / 24) * 100}%`;
 
+            // CORREÇÃO AQUI: Renderiza o layout do bloco VIP baseado fielmente no estado atual do localStorage
             const vipBox = document.getElementById('vip-free-pack-box');
-            if (userState.claimedVipFreePack) {
-                vipBox.innerHTML = `<div class="w-full bg-emerald-950/40 text-emerald-400 font-bold text-xs py-2.5 rounded-lg border border-emerald-800/60 flex items-center justify-center gap-1.5">✅ PACOTE VIP DISPONIBILIZADO</div>`;
+            if (vipBox) {
+                if (userState.claimedVipFreePack) {
+                    vipBox.innerHTML = `<div class="w-full bg-emerald-950/40 text-emerald-400 font-bold text-xs py-2.5 rounded-lg border border-emerald-800/60 flex items-center justify-center gap-1.5">✅ PACOTE VIP RESGATADO</div>`;
+                } else {
+                    vipBox.innerHTML = `<button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black text-xs py-3 rounded-lg border-2 border-white/20 active:scale-95 transition flex items-center justify-center gap-2">🎉 RESGATAR PACOTE VIP GRÁTIS</button>`;
+                }
             }
 
             const prizeBox = document.getElementById('main-prize-box');
@@ -466,7 +472,7 @@
                     slotPrata.innerHTML = `<div class="text-2xl mb-1">📦</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">VALE 1 PACOTE</div><div class="text-[8px] text-gray-600 mt-1 font-semibold">Vazio</div>`;
                 }
 
-                // 2. Botão do Vale 15 MX Coins (Ouro - COM SUA NOVA ARTE!)
+                // 2. Botão do Vale 15 MX Coins (Ouro)
                 const slotOuro = document.createElement('div');
                 if (userState.hasBrindeCoinsReward) {
                     slotOuro.className = "relative rounded-xl border-2 border-amber-400 shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
@@ -517,7 +523,7 @@
                             <span class="text-[10px] font-bold text-amber-500/50 absolute top-1.5 left-2">#${String(p.id).padStart(2, '0')}</span>
                             <div class="w-full flex-1 flex flex-col justify-center items-center mt-2">
                                 <div class="text-3xl">🔒</div>
-                                <div class="text-[10px] uppercase tracking-wider font-black text-amber-400 mt-2">${p.brand}</div>
+                                <div class="text-[10px] uppercase tracking-widest font-black text-amber-400 mt-2">${p.brand}</div>
                             </div>
                             <div class="text-[11px] font-bold leading-tight mb-3 px-2 text-gray-500">Card Bloqueado</div>
                         `;
@@ -606,7 +612,6 @@
         function closeGalleryDirect() { document.getElementById('modal-gallery').classList.add('hidden'); }
         function closeModalDirect() { document.getElementById('modal-alert').classList.add('hidden'); updateUI(); }
 
-        // SISTEMA DE ANIMAÇÃO DE ABERTURA PREMIUM
         function triggerPackOpening(type) {
             if (type === 'coins' && userState.coins < 5) return;
             initAudio();
@@ -648,7 +653,6 @@
             for (let i = 0; i < 3; i++) {
                 const rand = Math.random();
                 
-                // Chances de sortear novos prêmios dentro do ecossistema do jogo
                 if (rand < 0.03 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
                     userState.hasBrindeCoinsReward = true; ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-yellow-950 to-black rounded-xl border-2 border-amber-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">🪙</div><span class="text-[6.5px] font-black text-black bg-amber-400 px-1 rounded absolute top-1 uppercase">+15 COINS</span></div>`;
