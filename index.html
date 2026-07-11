@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MX Completou Ganhou</title>
-    <!-- Tailwind CSS Versão Estável para Funcionamento Local -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes pulse-glow {
@@ -15,7 +14,6 @@
             0%, 100% { box-shadow: 0 0 15px rgba(0, 245, 212, 0.6); border-color: #00F5D4; }
             50% { box-shadow: 0 0 25px rgba(0, 245, 212, 0.9); border-color: #00F5D4; }
         }
-        /* ANIMAÇÃO: O Pacote Tremendo (Suspense) */
         @keyframes pack-shake {
             0% { transform: scale(1) rotate(0deg); }
             10% { transform: scale(1.04) rotate(-3deg); }
@@ -29,7 +27,6 @@
             90% { transform: scale(1.08) rotate(-1deg); }
             100% { transform: scale(1) rotate(0deg); }
         }
-        /* ANIMAÇÃO: O Pacote Abrindo/Estourando */
         @keyframes pack-open {
             0% { transform: scale(1); opacity: 1; filter: brightness(1); }
             50% { transform: scale(1.15); opacity: 0.9; filter: brightness(2); }
@@ -48,12 +45,8 @@
         .neon-text-teal {
             text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
         }
-        .animate-pack-shake {
-            animation: pack-shake 0.5s ease-in-out 2;
-        }
-        .animate-pack-open {
-            animation: pack-open 0.6s ease-in-out forwards;
-        }
+        .animate-pack-shake { animation: pack-shake 0.5s ease-in-out 2; }
+        .animate-pack-open { animation: pack-open 0.6s ease-in-out forwards; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
@@ -61,7 +54,6 @@
 </head>
 <body class="bg-[#0A0A0A] text-gray-100 font-sans antialiased min-h-screen pb-24">
 
-    <!-- APP CONTAINER (Mobile-First) -->
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
         
         <!-- HEADER COMPACTO -->
@@ -71,6 +63,14 @@
                 <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-400">MX</span>
             </div>
         </header>
+
+        <!-- BANNER DE ATRAÇÃO EXTRA (SÓ APARECE COM 23 CARDS) -->
+        <div id="fomo-banner" class="hidden bg-gradient-to-r from-red-600 to-amber-600 rounded-xl p-3 mb-4 text-center border border-amber-400 shadow-lg animate-bounce">
+            <p class="text-white font-black text-xs uppercase tracking-wider">🔥 ADRENALINA PURA 🔥</p>
+            <p class="text-white font-extrabold text-sm mt-1 leading-tight">
+                Falta só mais um MX Card para o SUPER PIX de 1000,00 ser seu !! Corra agora e faça acontecer!!!
+            </p>
+        </div>
 
         <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
         <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-4 text-sm">
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <!-- SEÇÃO: CHECK-IN DIÁRIO -->
+        <!-- CHECK-IN DIÁRIO -->
         <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 mb-4 flex items-center justify-between text-xs">
             <div class="flex items-center gap-2">
                 <span class="text-lg">📆</span>
@@ -130,12 +130,8 @@
 
         <!-- ================= TAB: MX CARDS ================= -->
         <div id="tab-cards" class="tab-content space-y-6">
-            
-            <!-- ÁREA DE COMPRA DE PACOTES -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-4 text-center space-y-3">
-                <!-- Div gerenciada pelo JavaScript para sumir o botão VIP após resgate -->
                 <div id="vip-free-pack-box"></div>
-                
                 <div class="h-px bg-gray-800/60 my-2"></div>
                 <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 <div class="grid grid-cols-2 gap-2">
@@ -152,14 +148,10 @@
                 </div>
             </div>
 
-            <!-- SEÇÃO VALE BRINDES INSTANTÂNEOS -->
+            <!-- VALE BRINDES INSTANTÂNEOS -->
             <div>
-                <h2 class="text-xs font-bold text-[#00F5D4] tracking-wider uppercase mb-3 neon-text-teal">
-                    VALE BRINDES INSTANTÂNEOS
-                </h2>
-                <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container">
-                    <!-- Gerados dinamicamente via JS -->
-                </div>
+                <h2 class="text-xs font-bold text-[#00F5D4] tracking-wider uppercase mb-3 neon-text-teal">VALE BRINDES INSTANTÂNEOS</h2>
+                <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container"></div>
             </div>
 
             <!-- ÁLBUM REGULAR -->
@@ -217,17 +209,14 @@
                 </div>
                 <button onclick="closeGallery()" class="text-gray-400 hover:text-white text-lg font-bold bg-gray-900 p-1.5 rounded-lg border border-gray-800">&times;</button>
             </div>
-            
             <div class="p-4 flex flex-col items-center justify-center bg-black/40 border-b border-gray-900">
                 <div id="gallery-main-container" class="w-full h-80 flex items-center justify-center overflow-hidden rounded-xl bg-gray-900 shadow-inner"></div>
             </div>
-
             <div class="p-4 space-y-3 flex-1 overflow-y-auto">
                 <div id="gallery-product-desc-box">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wide">Descrição do Produto</h4>
                     <p id="gallery-desc" class="text-xs text-gray-300 mt-1 leading-relaxed"></p>
                 </div>
-
                 <div class="pt-2 border-t border-gray-900 flex flex-col gap-2">
                     <div class="flex items-center justify-between" id="gallery-footer-action">
                         <div>
@@ -237,20 +226,19 @@
                                 <span id="gallery-price" class="text-base font-black text-[#00F5D4]">R$ 0,00</span>
                             </div>
                         </div>
-                        <button id="gallery-buy-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0 cursor-pointer">
-                            🟢 ENVIAR NO WHATSAPP
-                        </button>
+                        <button id="gallery-buy-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl text-xs font-black tracking-wider flex items-center gap-1 border-0 cursor-pointer">🟢 ENVIAR NO WHATSAPP</button>
                     </div>
-                    
-                    <button onclick="closeGallery()" class="w-full bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white font-bold py-2 rounded-xl text-[11px] uppercase tracking-wider border border-gray-800 mt-1 transition">
-                        ⬅️ Voltar ao Álbum
-                    </button>
+                    <button onclick="closeGallery()" class="w-full bg-gray-900 hover:bg-gray-800 text-gray-400 hover:text-white font-bold py-2 rounded-xl text-[11px] uppercase tracking-wider border border-gray-800 mt-1 transition">⬅️ Voltar ao Álbum</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ================= CONTROLE CHAVE MASTER DO PROPRIETÁRIO =================
+        const CARD_24_LIBERADO = false; 
+        // =========================================================================
+
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives." },
             { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "MXCARD2.jpg", desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos." },
@@ -275,7 +263,7 @@
             { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal." },
             { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio ativos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio." },
             { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos." },
-            { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso." }
+            { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]" }
         ];
 
         let userState = {
@@ -367,7 +355,7 @@
 
         function claimVipPack() { 
             if (!userState.claimedVipFreePack) {
-                userState.claimedVipFreePack = true; // Seta o estado como resgatado IMEDIATAMENTE antes da animação terminar
+                userState.claimedVipFreePack = true;
                 saveState();
                 triggerPackOpening('free-vip'); 
             } 
@@ -405,12 +393,10 @@
         function claimCoinsBrindeAutomatic() {
             userState.hasBrindeCoinsReward = false;
             userState.coins += 15;
-            saveState();
-            updateUI();
-            playSoundValeBrinde();
+            saveState(); updateUI(); playSoundValeBrinde();
 
             document.getElementById('modal-title').innerText = "Moedas Creditadas! 🪙";
-            document.getElementById('modal-message').innerHTML = `Você acabou de resgatar o seu <strong>Brinde Ouro</strong> e ganhou <strong>🪙 15 MX Coins</strong> de forma 100% automática! Aproveite para abrir novos pacotes ou acumular!`;
+            document.getElementById('modal-message').innerHTML = `Você acabou de resgatar o seu <strong>Brinde Ouro</strong> e ganhou <strong>🪙 15 MX Coins</strong>!`;
             document.getElementById('modal-icon').innerText = "💰";
             document.getElementById('modal-btn').onclick = () => closeModalDirect();
 
@@ -425,7 +411,14 @@
             document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${(uniqueOwned / 24) * 100}%`;
 
-            // CORREÇÃO AQUI: Renderiza o layout do bloco VIP baseado fielmente no estado atual do localStorage
+            // LÓGICA DO BANNER ATRAÇÃO - ATIVADO EXATAMENTE COM 23 CARDS
+            const fomoBanner = document.getElementById('fomo-banner');
+            if (uniqueOwned === 23) {
+                fomoBanner.classList.remove('hidden');
+            } else {
+                fomoBanner.classList.add('hidden');
+            }
+
             const vipBox = document.getElementById('vip-free-pack-box');
             if (vipBox) {
                 if (userState.claimedVipFreePack) {
@@ -450,12 +443,9 @@
             if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
             if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
 
-            // RENDERING DOS BOTÕES DE VALE BRINDES NA TELA INICIAL
             const brindesContainer = document.getElementById('brindes-duplos-container');
             if (brindesContainer) {
                 brindesContainer.innerHTML = '';
-
-                // 1. Botão do Vale 1 Pacote Grátis (Prata)
                 const slotPrata = document.createElement('div');
                 if (userState.hasBrindePack) {
                     slotPrata.className = "relative rounded-xl border-2 border-[#00F5D4] shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
@@ -472,7 +462,6 @@
                     slotPrata.innerHTML = `<div class="text-2xl mb-1">📦</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">VALE 1 PACOTE</div><div class="text-[8px] text-gray-600 mt-1 font-semibold">Vazio</div>`;
                 }
 
-                // 2. Botão do Vale 15 MX Coins (Ouro)
                 const slotOuro = document.createElement('div');
                 if (userState.hasBrindeCoinsReward) {
                     slotOuro.className = "relative rounded-xl border-2 border-amber-400 shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
@@ -487,11 +476,9 @@
                     slotOuro.className = "relative rounded-xl border border-gray-800 bg-gray-950 opacity-30 h-48 w-full flex flex-col items-center justify-center p-2 text-center block";
                     slotOuro.innerHTML = `<div class="text-2xl mb-1">🪙</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">VALE 15 COINS</div><div class="text-[8px] text-gray-600 mt-1 font-semibold">Vazio</div>`;
                 }
-
                 brindesContainer.appendChild(slotPrata); brindesContainer.appendChild(slotOuro);
             }
 
-            // RENDERING DO ÁLBUM REGULAR
             const grid = document.getElementById('cards-grid');
             if (grid) {
                 grid.innerHTML = '';
@@ -532,7 +519,6 @@
                 });
             }
 
-            // RENDERING ABA DE PRODUTOS
             const prodList = document.getElementById('products-list');
             if (prodList) {
                 prodList.innerHTML = '';
@@ -558,7 +544,6 @@
                 });
             }
 
-            // RENDERING ABA BAÚ DE PRÊMIOS
             const rewardsList = document.getElementById('rewards-list');
             if (rewardsList) {
                 rewardsList.innerHTML = ''; let temPremio = false;
@@ -660,7 +645,13 @@
                     userState.hasBrindePack = true; ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-teal-950 to-black rounded-xl border-2 border-[#00F5D4] flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">📦</div><span class="text-[6.5px] font-black text-black bg-[#00F5D4] px-1 rounded absolute top-1 uppercase">PACK BÔNUS</span></div>`;
                 } else {
-                    const cardId = Math.floor(Math.random() * 24) + 1;
+                    let cardId;
+                    if (CARD_24_LIBERADO) {
+                        cardId = Math.floor(Math.random() * 24) + 1;
+                    } else {
+                        cardId = Math.floor(Math.random() * 23) + 1;
+                    }
+                    
                     userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
                     const p = PRODUCTS_DATA.find(prod => prod.id === cardId);
                     htmlCards += `<div class="bg-gradient-to-b from-gray-900 to-black rounded-xl border border-amber-400/40 flex flex-col items-center justify-between text-center h-28 overflow-hidden relative block"><img src="${p.main_image}" class="w-full h-full object-cover"><span class="text-[8px] text-white bg-black/60 px-1 rounded absolute top-1 left-1">#${String(cardId).padStart(2, '0')}</span></div>`;
@@ -669,7 +660,7 @@
             htmlCards += `</div>`;
             saveState(); updateUI();
             
-            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playSoundPlim();
+            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playshadow = playSoundPlim();
             
             document.getElementById('modal-title').innerText = type === 'free-vip' ? "Pacote VIP Disponibilizado! 🎁" : (type === 'exchange-reward' ? "Troca Concluída! 🔄" : "Pacote Aberto! 📦");
             document.getElementById('modal-message').innerHTML = `Seus itens sorteados: ${htmlCards}`;
