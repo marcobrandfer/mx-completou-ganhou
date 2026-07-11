@@ -51,7 +51,6 @@
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
 
-        /* ESTILIZAÇÃO DO VITRINE ESTILO SHOPEE DE DUAS COLUNAS */
         .shopee-grid {
             display: block;
             width: 100%;
@@ -61,8 +60,8 @@
             float: left;
             width: calc(50% - 6px);
             margin-bottom: 12px;
-            background-color: #111827; /* bg-gray-900 */
-            border: 1px solid #1f2937; /* border-gray-800 */
+            background-color: #111827;
+            border: 1px solid #1f2937;
             border-radius: 8px;
             overflow: hidden;
             position: relative;
@@ -74,6 +73,53 @@
             content: "";
             display: table;
             clear: both;
+        }
+
+        /* ESTILOS DA ROLETA DO GIRO DA SORTE */
+        .roulette-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+        }
+        .roulette-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid #FFD700;
+            background: conic-gradient(
+                #1f2937 0deg 60deg, 
+                #111827 60deg 120deg, 
+                #374151 120deg 180deg, 
+                #111827 180deg 240deg, 
+                #1f2937 240deg 300deg, 
+                #111827 300deg 360deg
+            );
+            transition: transform 3.5s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+        .roulette-marker {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 15px solid #FF3B30;
+            z-index: 20;
+        }
+        .roulette-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            z-index: 10;
         }
     </style>
 </head>
@@ -123,18 +169,39 @@
             </div>
         </div>
 
-        <!-- CHECK-IN DIÁRIO -->
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 mb-4 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2">
-                <span class="text-lg">📆</span>
-                <div>
-                    <h4 class="font-bold text-gray-200">Recompensa Diária</h4>
-                    <p class="text-[10px] text-gray-400">Garanta moedas MX grátis todo dia</p>
+        <!-- RECOMPENSAS INTERATIVAS (CHECK-IN & ROLETINHA) -->
+        <div class="grid grid-cols-1 gap-3 mb-4">
+            <!-- CHECK-IN DIÁRIO -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">📆</span>
+                    <div>
+                        <h4 class="font-bold text-gray-200">Recompensa Diária</h4>
+                        <p class="text-[10px] text-gray-400">Garanta moedas MX grátis todo dia</p>
+                    </div>
+                </div>
+                <button id="btn-checkin" onclick="claimDailyCheckin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer">
+                    🪙 Pegar +5 MX
+                </button>
+            </div>
+
+            <!-- MX GIRO DA SORTE -->
+            <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center gap-3 text-xs">
+                <div class="roulette-container flex-shrink-0">
+                    <div class="roulette-marker"></div>
+                    <div class="roulette-center"></div>
+                    <div id="wheel" class="roulette-wheel flex items-center justify-center text-lg">🎯</div>
+                </div>
+                <div class="flex-1 flex flex-col justify-between h-full py-1">
+                    <div>
+                        <h4 class="font-black text-amber-400 uppercase tracking-wider text-xs">🎰 MX GIRO DA SORTE</h4>
+                        <p class="text-[10px] text-gray-400 mt-0.5 leading-tight">Ganhe Packs bônus, Cupons Edifier, QCY ou super moedas extras!</p>
+                    </div>
+                    <button id="btn-spin" onclick="spinRoulette()" class="mt-3 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer w-full text-center">
+                        🎲 GIRAR POR 🪙3 MX
+                    </button>
                 </div>
             </div>
-            <button id="btn-checkin" onclick="claimDailyCheckin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer">
-                🪙 Pegar +5 MX
-            </button>
         </div>
 
         <!-- ABAS DE NAVEGAÇÃO -->
@@ -189,14 +256,12 @@
             </div>
         </div>
 
-        <!-- ================= TAB: MX PRODUTOS (ESTILO SHOPEE VITRINE RICH) ================= -->
+        <!-- ================= TAB: MX PRODUTOS ================= -->
         <div id="tab-produtos" class="tab-content hidden space-y-4">
             <div class="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800 text-[11px] text-gray-400 flex items-center gap-2">
                 <span>🔥</span>
                 <p>Toque em qualquer card vertical para expandir detalhes e comprar via WhatsApp!</p>
             </div>
-            
-            <!-- CONTAINER RETANGULAR DE DUAS COLUNAS VERTICAIS -->
             <div class="shopee-grid" id="products-list"></div>
         </div>
 
@@ -262,9 +327,7 @@
     </div>
 
     <script>
-        // ================= CONTROLE CHAVE MASTER DO PROPRIETÁRIO =================
         const CARD_24_LIBERADO = false; 
-        // =========================================================================
 
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives." },
@@ -293,11 +356,12 @@
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]" }
         ];
 
+        // Estado inicial do Usuário atualizado com contador numérico de pacotes
         let userState = {
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            hasBrindePack: false,       
+            bonusPackCount: 0,          // MUDANÇA AQUI: Agora conta numericamente quantos packs o usuário acumulou
             hasBrindeCoinsReward: false, 
             coupons: { edifier: false, qcy: false, tronsmart: false },
             wonGrandPrize: false,
@@ -306,6 +370,9 @@
         };
 
         let soundCtx = null;
+        let isSpinning = false;
+        let currentRotation = 0;
+
         function initAudio() { if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
         function playSoundPlim() {
@@ -335,7 +402,14 @@
 
         window.onload = function() {
             if (localStorage.getItem('mx_user_state')) {
-                userState = JSON.parse(localStorage.getItem('mx_user_state'));
+                let saved = JSON.parse(localStorage.getItem('mx_user_state'));
+                
+                // Migração de segurança: se o usuário antigo tinha a flag antiga true, vira 1 pacote.
+                if (saved.hasOwnProperty('hasBrindePack')) {
+                    saved.bonusPackCount = saved.hasBrindePack ? 1 : 0;
+                    delete saved.hasBrindePack;
+                }
+                userState = saved;
             }
             updateUI();
             setInterval(updateCheckInTimer, 1000);
@@ -380,6 +454,87 @@
             }
         }
 
+        function spinRoulette() {
+            if (isSpinning) return;
+            if (userState.coins < 3) {
+                alert("Moedas insuficientes! Faça o check-in ou adquira mais pacotes.");
+                return;
+            }
+
+            isSpinning = true;
+            userState.coins -= 3;
+            saveState();
+            document.getElementById('balance-display').innerText = userState.coins;
+
+            initAudio();
+            
+            const prizes = [
+                { name: "🪙 5 MX Coins", type: "coins", value: 5, icon: "🪙", angle: 30 },
+                { name: "📦 1 Pack Bônus", type: "pack", value: 1, icon: "📦", angle: 90 },
+                { name: "🎧 Cupom Edifier 15%", type: "coupon", value: "edifier", icon: "🎁", angle: 150 },
+                { name: "❌ Tente Novamente", type: "miss", value: 0, icon: "🎯", angle: 210 },
+                { name: "⚡ Cupom QCY Frete Grátis", type: "coupon", value: "qcy", icon: "🚚", angle: 270 },
+                { name: "🪙 15 MX Coins", type: "coins", value: 15, icon: "💰", angle: 330 }
+            ];
+
+            let rand = Math.random();
+            let selectedPrize;
+            if (rand < 0.35) selectedPrize = prizes[3];      // 35% Tente Novamente
+            else if (rand < 0.65) selectedPrize = prizes[0]; // 30% Ganhar 5 moedas
+            else if (rand < 0.80) selectedPrize = prizes[1]; // 15% Pack Bônus (+1 ao contador acumulativo)
+            else if (rand < 0.90) selectedPrize = prizes[4]; // 10% Cupom QCY
+            else if (rand < 0.97) selectedPrize = prizes[2]; // 7% Cupom Edifier
+            else selectedPrize = prizes[5];                  // 3% Super Jackpot 15 Moedas
+
+            const extraVoltas = 5 * 360;
+            currentRotation += extraVoltas + (360 - selectedPrize.angle);
+            
+            const wheel = document.getElementById('wheel');
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            let bips = 0;
+            const bipInterval = setInterval(() => {
+                if (bips < 20) {
+                    try {
+                        const osc = soundCtx.createOscillator(); const gain = soundCtx.createGain();
+                        osc.frequency.setValueAtTime(400, soundCtx.currentTime); gain.gain.setValueAtTime(0.03, soundCtx.currentTime);
+                        osc.connect(gain); gain.connect(soundCtx.destination); osc.start(); osc.stop(soundCtx.currentTime + 0.03);
+                    } catch(e){}
+                    bips++;
+                } else { clearInterval(bipInterval); }
+            }, 150);
+
+            setTimeout(() => {
+                isSpinning = false;
+                
+                if (selectedPrize.type === "coins") {
+                    userState.coins += selectedPrize.value;
+                    playSoundPlim();
+                } else if (selectedPrize.type === "pack") {
+                    userState.bonusPackCount += 1; // SOMA ACUMULATIVA PERFEITA
+                    document.getElementById('reward-badge').classList.remove('hidden');
+                    playSoundValeBrinde();
+                } else if (selectedPrize.type === "coupon") {
+                    userState.coupons[selectedPrize.value] = true;
+                    document.getElementById('reward-badge').classList.remove('hidden');
+                    playSoundValeBrinde();
+                }
+
+                saveState();
+                updateUI();
+
+                document.getElementById('modal-title').innerText = selectedPrize.type === "miss" ? "Quase lá! 🎯" : "Resultado do Giro! 🎉";
+                document.getElementById('modal-message').innerHTML = selectedPrize.type === "miss" 
+                    ? "Não foi dessa vez, mas não desista! O próximo giro pode conter aquele item que falta!" 
+                    : `Sensacional! Você acabou de faturar: <br><strong class="text-amber-400 text-base">${selectedPrize.name}</strong>.<br>Confira seu saldo ou seu Baú de Prêmios!`;
+                document.getElementById('modal-icon').innerText = selectedPrize.icon;
+                
+                window.history.pushState({modal: 'alert'}, "");
+                document.getElementById('modal-alert').classList.remove('hidden');
+
+            }, 3500);
+        }
+
         function claimVipPack() { 
             if (!userState.claimedVipFreePack) {
                 userState.claimedVipFreePack = true;
@@ -389,7 +544,9 @@
         }
         
         function cheatCoinsAndBrinde() {
-            userState.coins += 50; userState.hasBrindePack = true; userState.hasBrindeCoinsReward = true;
+            userState.coins += 50; 
+            userState.bonusPackCount += 2; // Adiciona dois direto para testar o acúmulo perfeitamente
+            userState.hasBrindeCoinsReward = true;
             saveState(); updateUI(); playSoundValeBrinde();
         }
 
@@ -481,19 +638,26 @@
             if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
             if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
 
+            // VALE BRINDES - RENDERIZAÇÃO ATUALIZADA COM SEGURANÇA E ACÚMULO
             const brindesContainer = document.getElementById('brindes-duplos-container');
             if (brindesContainer) {
                 brindesContainer.innerHTML = '';
                 const slotPrata = document.createElement('div');
-                if (userState.hasBrindePack) {
+                
+                if (userState.bonusPackCount > 0) {
                     slotPrata.className = "relative rounded-xl border-2 border-[#00F5D4] shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
-                    slotPrata.onclick = () => { userState.hasBrindePack = false; saveState(); triggerPackOpening('automatic-brinde'); };
+                    slotPrata.onclick = () => { 
+                        userState.bonusPackCount -= 1; // DESCONTA SÓ UM POR VEZ!
+                        saveState(); 
+                        triggerPackOpening('automatic-brinde'); 
+                    };
                     slotPrata.innerHTML = `
                         <img src="mxpack.jpg" class="w-full h-full object-cover rounded-xl opacity-90">
                         <div class="absolute inset-0 bg-black/30 flex flex-col items-center justify-center p-2 text-center">
                             <span class="bg-[#00F5D4] text-black text-[9px] px-2 py-1 rounded font-black uppercase tracking-wider shadow-md">⚡ PACK BÔNUS</span>
                             <span class="text-white text-[10px] font-black mt-1 drop-shadow-md">TOQUE PARA ABRIR!</span>
                         </div>
+                        <span class="absolute top-1.5 right-1.5 bg-[#00F5D4] text-black text-[10px] font-black px-2 py-0.5 rounded-full z-10 shadow-md">x${userState.bonusPackCount}</span>
                     `;
                 } else {
                     slotPrata.className = "relative rounded-xl border border-gray-800 bg-gray-950 opacity-30 h-48 w-full flex flex-col items-center justify-center p-2 text-center block";
@@ -505,7 +669,7 @@
                     slotOuro.className = "relative rounded-xl border-2 border-amber-400 shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
                     slotOuro.onclick = () => claimCoinsBrindeAutomatic();
                     slotOuro.innerHTML = `
-                        <img src="MXBrindecardcoins.jpg" class="w-full h-full object-cover rounded-xl opacity-95">
+                        <img src="MXGoldcoins.jpg" class="w-full h-full object-cover rounded-xl opacity-95">
                         <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-2 text-center">
                             <span class="bg-amber-400 text-black text-[9px] px-2 py-0.5 rounded font-black uppercase tracking-wider shadow-md">🪙 COLETAR AGORA</span>
                         </div>
@@ -557,7 +721,6 @@
                 });
             }
 
-            // VITRINE ATUALIZADA - RICA, COM LAYOUT EM 2 COLUNAS VERTICAIS ESTILO SHOPEE
             const prodList = document.getElementById('products-list');
             if (prodList) {
                 prodList.innerHTML = '';
@@ -567,34 +730,23 @@
                     prodEl.className = "shopee-card cursor-pointer active:scale-98 transition-transform";
                     prodEl.onclick = () => openGallery(p.id);
                     
-                    // Número fictício de vendas baseado no ID para simular a Shopee
                     const fakeSales = Math.floor((p.id * 7) + 12);
 
                     prodEl.innerHTML = `
-                        <!-- IMAGEM QUADRADA SUPERIOR COM BADGE FLUTUANTE DE DESCONTO -->
                         <div class="w-full h-40 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-800 relative">
                             <img src="${p.main_image}" class="w-full h-full object-cover">
-                            
-                            <!-- BADGE DE DESCONTO NO TOPO DIREITO -->
                             <div class="absolute top-0 right-0 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-bl shadow">
                                 ${tagLaranja}
                             </div>
                         </div>
-
-                        <!-- CONTEÚDO DOS DETALHES DO PRODUTO (TEXTOS E PREÇOS) -->
                         <div class="p-2 flex flex-col justify-between h-28">
                             <div>
-                                <!-- BADGE DE INDICAÇÃO VERMELHO (ESTILO SHOPEE) -->
                                 <div class="flex items-center gap-1 mb-0.5">
                                     <span class="bg-red-600 text-white font-extrabold text-[8px] px-1 rounded scale-90 origin-left uppercase">Indicado</span>
                                     <span class="text-[9px] font-bold text-amber-400/80 tracking-wide uppercase">${p.brand}</span>
                                 </div>
-                                
-                                <!-- TÍTULO DO PRODUTO -->
                                 <h4 class="text-xs font-bold text-gray-100 line-clamp-2 leading-tight min-h-[32px]">${p.name}</h4>
                             </div>
-
-                            <!-- ÁREA DE PRECIFICAÇÃO E PROVA SOCIAL -->
                             <div class="mt-1">
                                 <div class="flex items-baseline gap-1">
                                     ${discountText ? `<span class="text-[9px] text-gray-500 line-through">R$ ${p.price.toFixed(2)}</span>` : ''}
@@ -602,8 +754,6 @@
                                 <div class="text-sm font-black text-[#00F5D4] leading-none">
                                     R$ ${finalPrice.toFixed(2)}
                                 </div>
-                                
-                                <!-- PROVA SOCIAL SIMULADA DA SHOPEE -->
                                 <div class="flex items-center justify-between mt-1 pt-1 border-t border-gray-800/50 text-[9px] text-gray-400">
                                     <span>⭐ 4.9</span>
                                     <span>${fakeSales} vendidos</span>
@@ -618,7 +768,7 @@
             const rewardsList = document.getElementById('rewards-list');
             if (rewardsList) {
                 rewardsList.innerHTML = ''; let temPremio = false;
-                if (userState.hasBrindePack) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("📦 1 PACOTE EXTRA AGUARDANDO!", "Você ganhou um cupom de pacote bônus instantâneo! Toque para acionar direto na aba principal.", "IR PARA A ABA INICIAL", "cards"); }
+                if (userState.bonusPackCount > 0) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio(`📦 ${userState.bonusPackCount} PACOTE(S) EXTRA AGUARDANDO!`, "Você ganhou pacotes bônus instantâneos! Toque para acionar direto na aba principal.", "IR PARA A ABA INICIAL", "cards"); }
                 if (userState.hasBrindeCoinsReward) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🪙 15 MOEDAS MX COINS DISPONÍVEIS!", "Seu prêmio em moedas está aguardando resgate na aba principal.", "IR COLETAR MEU SALDO", "cards"); }
                 if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🚚 CUPOM FRETE GRÁTIS QCY", "Válido em compras de fones QCY.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20resgatar%20meu%20Frete%20Gr%C3%A1tis%20QCY%20do%20Albun%25"); }
                 if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🎧 15% OFF EM EDIFIER", "Já aplicado e visível na vitrine de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20usar%20meu%20desconto%20de%2015%25%20Edifier%20do%20Album%21"); }
@@ -713,7 +863,8 @@
                     userState.hasBrindeCoinsReward = true; ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-yellow-950 to-black rounded-xl border-2 border-amber-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">🪙</div><span class="text-[6.5px] font-black text-black bg-amber-400 px-1 rounded absolute top-1 uppercase">+15 COINS</span></div>`;
                 } else if (rand < 0.09 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
-                    userState.hasBrindePack = true; ganhouBrindeNessePacote = true;
+                    userState.bonusPackCount += 1; // SOMA ACUMULATIVA NO PACOTE TAMBÉM
+                    ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-teal-950 to-black rounded-xl border-2 border-[#00F5D4] flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">📦</div><span class="text-[6.5px] font-black text-black bg-[#00F5D4] px-1 rounded absolute top-1 uppercase">PACK BÔNUS</span></div>`;
                 } else {
                     let cardId;
