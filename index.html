@@ -50,6 +50,31 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0A0A0A; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
+
+        /* ESTILIZAÇÃO DO VITRINE ESTILO SHOPEE DE DUAS COLUNAS */
+        .shopee-grid {
+            display: block;
+            width: 100%;
+        }
+        .shopee-card {
+            display: block;
+            float: left;
+            width: calc(50% - 6px);
+            margin-bottom: 12px;
+            background-color: #111827; /* bg-gray-900 */
+            border: 1px solid #1f2937; /* border-gray-800 */
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .shopee-card:nth-child(even) {
+            float: right;
+        }
+        .shopee-grid::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
     </style>
 </head>
 <body class="bg-[#0A0A0A] text-gray-100 font-sans antialiased min-h-screen pb-24">
@@ -64,7 +89,7 @@
             </div>
         </header>
 
-        <!-- BANNER DE ATRAÇÃO EXTRA (SÓ APARECE COM 23 CARDS) -->
+        <!-- BANNER DE ATRAÇÃO EXTRA -->
         <div id="fomo-banner" class="hidden bg-gradient-to-r from-red-600 to-amber-600 rounded-xl p-3 mb-4 text-center border border-amber-400 shadow-lg animate-bounce">
             <p class="text-white font-black text-xs uppercase tracking-wider">🔥 ADRENALINA PURA 🔥</p>
             <p class="text-white font-extrabold text-sm mt-1 leading-tight">
@@ -164,13 +189,15 @@
             </div>
         </div>
 
-        <!-- ================= TAB: MX PRODUTOS ================= -->
+        <!-- ================= TAB: MX PRODUTOS (ESTILO SHOPEE VITRINE RICH) ================= -->
         <div id="tab-produtos" class="tab-content hidden space-y-4">
-            <div class="bg-gray-900/60 p-3 rounded-lg border border-gray-800 text-xs text-gray-400 flex items-center gap-2">
+            <div class="bg-gray-900/60 p-2.5 rounded-lg border border-gray-800 text-[11px] text-gray-400 flex items-center gap-2">
                 <span>🔥</span>
-                <p>Clique no produto para ver detalhes e o design do card ampliado!</p>
+                <p>Toque em qualquer card vertical para expandir detalhes e comprar via WhatsApp!</p>
             </div>
-            <div class="space-y-3" id="products-list"></div>
+            
+            <!-- CONTAINER RETANGULAR DE DUAS COLUNAS VERTICAIS -->
+            <div class="shopee-grid" id="products-list"></div>
         </div>
 
         <!-- ================= TAB: MEUS PRÊMIOS ================= -->
@@ -249,7 +276,7 @@
             { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "MXCARD7.jpg", desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Som de alta fidelidade." },
             { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração e carregamento rápido." },
             { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "MXCARD9.jpg", desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal perfeita." },
-            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Ativo (ANC) avançado e drivers refinados para áudio de alta resolução." },
+            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Activo (ANC) avançado e drivers refinados para áudio de alta resolução." },
             { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "MXCARD11.jpg", desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição." },
             { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "MXCARD12.jpg", desc: "Fone de ouvido no estilo Headphone com Cancelamento Ativo de Ruído de até 43dB. Almofadas macias."} ,
             { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "MXCARD13.jpg", desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria." },
@@ -383,11 +410,23 @@
         }
 
         function getProductFinalDetails(p) {
-            let finalPrice = p.price; let discountText = "";
-            if (p.brand === "Edifier" && userState.coupons.edifier) { finalPrice = p.price * 0.85; discountText = "15% OFF"; }
-            else if (p.brand === "QCY" && userState.coupons.qcy) { discountText = "FRETE GRÁTIS"; }
-            else if (p.brand === "Tronsmart" && userState.coupons.tronsmart) { finalPrice = p.price * 0.90; discountText = "10% OFF"; }
-            return { finalPrice, discountText };
+            let finalPrice = p.price; let discountText = ""; let tagLaranja = "";
+            
+            if (p.brand === "Edifier") {
+                if (userState.coupons.edifier) { finalPrice = p.price * 0.85; discountText = "15% OFF"; tagLaranja = "-15%"; }
+                else { tagLaranja = "PROMO"; }
+            }
+            else if (p.brand === "QCY") {
+                if (userState.coupons.qcy) { discountText = "FRETE GRÁTIS"; tagLaranja = "GRÁTIS"; }
+                else { tagLaranja = "TOP VENDAS"; }
+            }
+            else if (p.brand === "Tronsmart") {
+                if (userState.coupons.tronsmart) { finalPrice = p.price * 0.90; discountText = "10% OFF"; tagLaranja = "-10%"; }
+                else { tagLaranja = "SOM HD"; }
+            } else {
+                tagLaranja = "OFERTA";
+            }
+            return { finalPrice, discountText, tagLaranja };
         }
 
         function claimCoinsBrindeAutomatic() {
@@ -411,7 +450,6 @@
             document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${(uniqueOwned / 24) * 100}%`;
 
-            // LÓGICA DO BANNER ATRAÇÃO - ATIVADO EXATAMENTE COM 23 CARDS
             const fomoBanner = document.getElementById('fomo-banner');
             if (uniqueOwned === 23) {
                 fomoBanner.classList.remove('hidden');
@@ -519,26 +557,59 @@
                 });
             }
 
+            // VITRINE ATUALIZADA - RICA, COM LAYOUT EM 2 COLUNAS VERTICAIS ESTILO SHOPEE
             const prodList = document.getElementById('products-list');
             if (prodList) {
                 prodList.innerHTML = '';
                 PRODUCTS_DATA.forEach(p => {
-                    const { finalPrice, discountText } = getProductFinalDetails(p);
+                    const { finalPrice, discountText, tagLaranja } = getProductFinalDetails(p);
                     const prodEl = document.createElement('div');
-                    prodEl.className = "bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center justify-between cursor-pointer";
+                    prodEl.className = "shopee-card cursor-pointer active:scale-98 transition-transform";
                     prodEl.onclick = () => openGallery(p.id);
+                    
+                    // Número fictício de vendas baseado no ID para simular a Shopee
+                    const fakeSales = Math.floor((p.id * 7) + 12);
+
                     prodEl.innerHTML = `
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-gray-950 border border-amber-400/20 rounded flex items-center justify-center overflow-hidden">
-                                <img src="${p.main_image}" class="w-full h-full object-cover">
-                            </div>
-                            <div>
-                                <span class="text-[9px] uppercase font-bold text-amber-400 tracking-wider">${p.brand}</span>
-                                <h4 class="text-xs font-bold text-white line-clamp-1">${p.name}</h4>
-                                <span class="text-xs font-black text-[#00F5D4]">R$ ${finalPrice.toFixed(2)} ${discountText ? `<span class="text-[10px] bg-amber-400 text-black px-1 rounded ml-1 font-extrabold">${discountText}</span>` : ''}</span>
+                        <!-- IMAGEM QUADRADA SUPERIOR COM BADGE FLUTUANTE DE DESCONTO -->
+                        <div class="w-full h-40 bg-gray-950 flex items-center justify-center overflow-hidden border-b border-gray-800 relative">
+                            <img src="${p.main_image}" class="w-full h-full object-cover">
+                            
+                            <!-- BADGE DE DESCONTO NO TOPO DIREITO -->
+                            <div class="absolute top-0 right-0 bg-amber-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-bl shadow">
+                                ${tagLaranja}
                             </div>
                         </div>
-                        <button class="bg-gray-800 text-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold border-0 cursor-pointer">Ver</button>
+
+                        <!-- CONTEÚDO DOS DETALHES DO PRODUTO (TEXTOS E PREÇOS) -->
+                        <div class="p-2 flex flex-col justify-between h-28">
+                            <div>
+                                <!-- BADGE DE INDICAÇÃO VERMELHO (ESTILO SHOPEE) -->
+                                <div class="flex items-center gap-1 mb-0.5">
+                                    <span class="bg-red-600 text-white font-extrabold text-[8px] px-1 rounded scale-90 origin-left uppercase">Indicado</span>
+                                    <span class="text-[9px] font-bold text-amber-400/80 tracking-wide uppercase">${p.brand}</span>
+                                </div>
+                                
+                                <!-- TÍTULO DO PRODUTO -->
+                                <h4 class="text-xs font-bold text-gray-100 line-clamp-2 leading-tight min-h-[32px]">${p.name}</h4>
+                            </div>
+
+                            <!-- ÁREA DE PRECIFICAÇÃO E PROVA SOCIAL -->
+                            <div class="mt-1">
+                                <div class="flex items-baseline gap-1">
+                                    ${discountText ? `<span class="text-[9px] text-gray-500 line-through">R$ ${p.price.toFixed(2)}</span>` : ''}
+                                </div>
+                                <div class="text-sm font-black text-[#00F5D4] leading-none">
+                                    R$ ${finalPrice.toFixed(2)}
+                                </div>
+                                
+                                <!-- PROVA SOCIAL SIMULADA DA SHOPEE -->
+                                <div class="flex items-center justify-between mt-1 pt-1 border-t border-gray-800/50 text-[9px] text-gray-400">
+                                    <span>⭐ 4.9</span>
+                                    <span>${fakeSales} vendidos</span>
+                                </div>
+                            </div>
+                        </div>
                     `;
                     prodList.appendChild(prodEl);
                 });
@@ -660,7 +731,7 @@
             htmlCards += `</div>`;
             saveState(); updateUI();
             
-            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playshadow = playSoundPlim();
+            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playSoundPlim();
             
             document.getElementById('modal-title').innerText = type === 'free-vip' ? "Pacote VIP Disponibilizado! 🎁" : (type === 'exchange-reward' ? "Troca Concluída! 🔄" : "Pacote Aberto! 📦");
             document.getElementById('modal-message').innerHTML = `Seus itens sorteados: ${htmlCards}`;
