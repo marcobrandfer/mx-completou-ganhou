@@ -75,7 +75,6 @@
             clear: both;
         }
 
-        /* AJUSTE INTERATIVO DA NOVA ROLETA MX DIGITAL SHOP */
         .roulette-container {
             position: relative;
             width: 140px;
@@ -112,95 +111,106 @@
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
         
         <!-- HEADER COMPACTO -->
-        <header class="flex items-center justify-between mb-4 border-b border-gray-800 pb-2">
-            <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
-            <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
-                <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-400">MX</span>
+        <header class="flex flex-col mb-4 border-b border-gray-800 pb-3">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-black tracking-wider text-[#00F5D4] neon-text-teal">MX COMPLETOU GANHOU</h1>
+                <div class="bg-gray-900 border border-amber-400 px-3 py-1 rounded-full text-sm font-bold text-amber-400 flex items-center gap-1">
+                    <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-400">MX</span>
+                </div>
+            </div>
+            <!-- LINK DO REGULAMENTO INTERATIVO -->
+            <div class="mt-2 flex justify-start">
+                <button onclick="switchTab('regulamento')" class="text-[11px] font-bold text-gray-400 hover:text-amber-400 flex items-center gap-1 bg-gray-900/60 border border-gray-800 px-2.5 py-1 rounded-md transition">
+                    📜 Regulamento do Jogo
+                </button>
             </div>
         </header>
 
-        <!-- BANNER DE ATRAÇÃO EXTRA -->
-        <div id="fomo-banner" class="hidden bg-gradient-to-r from-red-600 to-amber-600 rounded-xl p-3 mb-4 text-center border border-amber-400 shadow-lg animate-bounce">
-            <p class="text-white font-black text-xs uppercase tracking-wider">🔥 ADRENALINA PURA 🔥</p>
-            <p class="text-white font-extrabold text-sm mt-1 leading-tight">
-                Falta só mais um MX Card para o SUPER PIX de 1000,00 ser seu !! Corra agora e faça acontecer!!!
-            </p>
-        </div>
-
-        <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
-        <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-4 text-sm">
-            <div id="prize-status-collecting">
-                <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
-                <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
-            </div>
-            <div id="prize-status-completed" class="hidden">
-                <p class="text-[#00F5D4] font-extrabold tracking-widest text-xs">🎉 PARABÉNS! VOCÊ COMPLETOU E GANHOU! 🎉</p>
-                <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
-                <button onclick="window.open('https://wa.me/5541997257227?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20de%201000%20reais!', '_blank')" class="mt-2.5 w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black py-2 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
-                    🎁 RETIRAR PRÊMIO
-                </button>
-            </div>
-            
-            <!-- BARRA DE PROGRESSO -->
-            <div class="mt-3">
-                <div class="flex justify-between text-xs text-gray-400 mb-1 font-semibold">
-                    <span>Progresso do Álbum</span>
-                    <span id="progress-text">0 / 24 Cards</span>
-                </div>
-                <div class="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden border border-gray-700">
-                    <div id="progress-bar" class="bg-gradient-to-r from-amber-400 to-[#00F5D4] h-full transition-all duration-500" style="width: 0%"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- RECOMPENSAS INTERATIVAS (CHECK-IN & ROLETINHA) -->
-        <div class="grid grid-cols-1 gap-3 mb-4">
-            <!-- CHECK-IN DIÁRIO -->
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 flex items-center justify-between text-xs">
-                <div class="flex items-center gap-2">
-                    <span class="text-lg">📆</span>
-                    <div>
-                        <h4 class="font-bold text-gray-200">Recompensa Diária</h4>
-                        <p class="text-[10px] text-gray-400">Garanta moedas MX grátis todo dia</p>
-                    </div>
-                </div>
-                <button id="btn-checkin" onclick="claimDailyCheckin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer">
-                    🪙 Pegar +5 MX
-                </button>
+        <!-- CONTAINER DA ESTRUTURA PRINCIPAL DO APP (PARA ESCONDER NA ABA DO REGULAMENTO) -->
+        <div id="main-app-flow">
+            <!-- BANNER DE ATRAÇÃO EXTRA -->
+            <div id="fomo-banner" class="hidden bg-gradient-to-r from-red-600 to-amber-600 rounded-xl p-3 mb-4 text-center border border-amber-400 shadow-lg animate-bounce">
+                <p class="text-white font-black text-xs uppercase tracking-wider">🔥 ADRENALINA PURA 🔥</p>
+                <p class="text-white font-extrabold text-sm mt-1 leading-tight">
+                    Falta só mais um MX Card para o SUPER PIX de 1000,00 ser seu !! Corra agora e faça acontecer!!!
+                </p>
             </div>
 
-            <!-- MX GIRO DA SORTE ATUALIZADA -->
-            <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center gap-3 text-xs">
-                <div class="roulette-container flex-shrink-0">
-                    <div class="roulette-marker"></div>
-                    <div id="wheel" class="roulette-wheel"></div>
+            <!-- RETÂNGULO DO PRÊMIO PRINCIPAL -->
+            <div id="main-prize-box" class="premio-box rounded-xl p-3 text-center mb-4 text-sm">
+                <div id="prize-status-collecting">
+                    <p class="text-amber-400 font-extrabold tracking-widest text-xs">💰 PRÊMIO PRINCIPAL 💰</p>
+                    <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
                 </div>
-                <div class="flex-1 flex flex-col justify-between h-full py-1">
-                    <div>
-                        <h4 class="font-black text-amber-400 uppercase tracking-wider text-xs">🎰 MX GIRO DA SORTE</h4>
-                        <p class="text-[10px] text-gray-400 mt-0.5 leading-tight">Ganhe Packs bônus, Cupons Edifier, QCY ou super moedas extras!</p>
-                    </div>
-                    <button id="btn-spin" onclick="spinRoulette()" class="mt-3 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer w-full text-center">
-                        🎲 GIRAR POR 🪙3 MX
+                <div id="prize-status-completed" class="hidden">
+                    <p class="text-[#00F5D4] font-extrabold tracking-widest text-xs">🎉 PARABÉNS! VOCÊ COMPLETOU E GANHOU! 🎉</p>
+                    <p class="text-white font-black text-lg tracking-wide mt-0.5">MX SUPER PIX R$ 1.000,00</p>
+                    <button onclick="window.open('https://wa.me/5541997257227?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20de%201000%20reais!', '_blank')" class="mt-2.5 w-full bg-gradient-to-r from-[#00F5D4] to-teal-500 text-black font-black py-2 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
+                        🎁 RETIRAR PRÊMIO
                     </button>
                 </div>
+                
+                <!-- BARRA DE PROGRESSO -->
+                <div class="mt-3">
+                    <div class="flex justify-between text-xs text-gray-400 mb-1 font-semibold">
+                        <span>Progresso do Álbum</span>
+                        <span id="progress-text">0 / 24 Cards</span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-2.5 rounded-full overflow-hidden border border-gray-700">
+                        <div id="progress-bar" class="bg-gradient-to-r from-amber-400 to-[#00F5D4] h-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- ABAS DE NAVEGAÇÃO -->
-        <div class="grid grid-cols-3 gap-1 bg-gray-900 p-1 rounded-xl mb-6 border border-gray-800">
-            <button onclick="switchTab('cards')" id="btn-tab-cards" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-amber-400 text-black flex flex-col items-center justify-center gap-0.5">
-                <span class="text-base">🎴</span>
-                <span>MX CARDS</span>
-            </button>
-            <button onclick="switchTab('produtos')" id="btn-tab-produtos" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5">
-                <span class="text-base">🛍️</span>
-                <span>MX PRODUTOS</span>
-            </button>
-            <button onclick="switchTab('premios')" id="btn-tab-premios" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5 relative">
-                <span class="text-base">🎁</span>
-                <span class="flex items-center gap-1">BAÚ <span id="reward-badge" class="hidden w-2 h-2 bg-red-500 rounded-full"></span></span>
-            </button>
+            <!-- RECOMPENSAS INTERATIVAS (CHECK-IN & ROLETINHA) -->
+            <div class="grid grid-cols-1 gap-3 mb-4">
+                <!-- CHECK-IN DIÁRIO -->
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">📆</span>
+                        <div>
+                            <h4 class="font-bold text-gray-200">Recompensa Diária</h4>
+                            <p class="text-[10px] text-gray-400">Garanta moedas MX grátis todo dia</p>
+                        </div>
+                    </div>
+                    <button id="btn-checkin" onclick="claimDailyCheckin()" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer">
+                        🪙 Pegar +5 MX
+                    </button>
+                </div>
+
+                <!-- MX GIRO DA SORTE -->
+                <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center gap-3 text-xs">
+                    <div class="roulette-container flex-shrink-0">
+                        <div class="roulette-marker"></div>
+                        <div id="wheel" class="roulette-wheel"></div>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between h-full py-1">
+                        <div>
+                            <h4 class="font-black text-amber-400 uppercase tracking-wider text-xs">🎰 MX GIRO DA SORTE</h4>
+                            <p class="text-[10px] text-gray-400 mt-0.5 leading-tight">Ganhe Packs bônus, Cupons Edifier, QCY ou super moedas extras!</p>
+                        </div>
+                        <button id="btn-spin" onclick="spinRoulette()" class="mt-3 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer w-full text-center">
+                            🎲 GIRAR POR 🪙3 MX
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABAS DE NAVEGAÇÃO -->
+            <div class="grid grid-cols-3 gap-1 bg-gray-900 p-1 rounded-xl mb-6 border border-gray-800">
+                <button onclick="switchTab('cards')" id="btn-tab-cards" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-amber-400 text-black flex flex-col items-center justify-center gap-0.5">
+                    <span class="text-base">🎴</span>
+                    <span>MX CARDS</span>
+                </button>
+                <button onclick="switchTab('produtos')" id="btn-tab-produtos" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5">
+                    <span class="text-base">🛍️</span>
+                    <span>MX PRODUTOS</span>
+                </button>
+                <button onclick="switchTab('premios')" id="btn-tab-premios" class="py-2.5 text-xs font-bold rounded-lg transition-all text-gray-400 hover:text-white flex flex-col items-center justify-center gap-0.5 relative">
+                    <span class="text-base">🎁</span>
+                    <span class="flex items-center gap-1">BAÚ <span id="reward-badge" class="hidden w-2 h-2 bg-red-500 rounded-full"></span></span>
+                </button>
+            </div>
         </div>
 
         <!-- ================= TAB: MX CARDS ================= -->
@@ -252,6 +262,45 @@
         <div id="tab-premios" class="tab-content hidden space-y-4">
             <h2 class="text-sm font-bold text-amber-400 tracking-wider mb-3">Seus Cupons e Vales-Brinde</h2>
             <div class="space-y-3" id="rewards-list"></div>
+        </div>
+
+        <!-- ================= TAB: REGULAMENTO (NOVA) ================= -->
+        <div id="tab-regulamento" class="tab-content hidden space-y-5 bg-gray-900 border border-gray-800 rounded-2xl p-5">
+            <div class="flex items-center gap-2 border-b border-gray-800 pb-3">
+                <span class="text-2xl">📜</span>
+                <h2 class="text-base font-black text-amber-400 uppercase tracking-wide">Regulamento do Jogo</h2>
+            </div>
+            
+            <div class="space-y-4 text-xs text-gray-300 leading-relaxed">
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">🎯 1. Objetivo</h4>
+                    <p>Colecione todos os **24 MX Cards** exclusivos dentro do aplicativo para completar o seu álbum digital de equipamentos de áudio e estúdio.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">💰 2. O Grande Prêmio</h4>
+                    <p>O primeiro participante que completar a coleção completa (todos os 24 cards válidos desbloqueados) receberá um **MX SUPER PIX de R$ 1.000,00**. A retirada é feita clicando no botão de resgate que aparecerá no app, direcionando ao suporte oficial.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">🪙 3. Moedas do Jogo (MX Coins)</h4>
+                    <p>As moedas virtuais servem exclusivamente para abrir novos pacotes ou jogar na roleta. Você pode obtê-las via **Check-in Diário** (+5 moedas grátis a cada 24 horas), em giros premiados da roleta, ou adquirindo pacotes promocionais diretamente pelo WhatsApp.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">🎰 4. MX Giro da Sorte</h4>
+                    <p>Cada giro na roleta custa **3 MX Coins**. Você pode ganhar prêmios instantâneos como pacotes bônus, saldos extras de moedas (5 ou 15 MX Coins) e cupons exclusivos. O resultado "Tente Novamente" não gera premiação.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">🔄 5. Sistema de Troca de Repetidas</h4>
+                    <p>Para evitar travar na coleção, ao acumular **4 ou mais cópias do mesmo card**, o participante libera a opção de reciclar essas repetidas. O sistema recolhe 3 cards repetidos e entrega um pacote lacrado novinho com 3 chances extras de sorteio.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-white text-sm mb-1">🎁 6. Cupons e Vantagens Especiais</h4>
+                    <p>As vantagens acumuladas ao longo do progresso (Cupons Edifier 15%, Descontos Tronsmart, Frete Grátis QCY) ficam armazenadas permanentemente na sua aba **BAÚ**. Eles podem ser utilizados para compras reais com descontos exclusivos na MX Digital Shop.</p>
+                </div>
+            </div>
+
+            <button onclick="switchTab('cards')" class="w-full mt-2 bg-gradient-to-r from-amber-400 to-orange-500 text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider shadow border-0 transition active:scale-95 cursor-pointer text-center">
+                ⬅️ VOLTAR AO JOGO
+            </button>
         </div>
 
     </div>
@@ -448,7 +497,6 @@
 
             initAudio();
             
-            // CONFIGURAÇÃO DOS ÂNGULOS CALIBRADOS PARA A SUA IMAGEM (Sentido horário a partir do topo)
             const prizes = [
                 { name: "📦 1 Pack Bônus", type: "pack", value: 1, icon: "📦", angle: 30 },
                 { name: "🎧 Cupom Edifier 15% OFF", type: "coupon", value: "edifier", icon: "🎁", angle: 90 },
@@ -460,14 +508,13 @@
 
             let rand = Math.random();
             let selectedPrize;
-            if (rand < 0.35) selectedPrize = prizes[2];      // 35% Tente Novamente
-            else if (rand < 0.65) selectedPrize = prizes[5]; // 30% Ganhar 5 moedas
-            else if (rand < 0.80) selectedPrize = prizes[1]; // 15% Pack Bônus
-            else if (rand < 0.90) selectedPrize = prizes[3]; // 10% Cupom QCY
-            else if (rand < 0.97) selectedPrize = prizes[1]; // 7% Cupom Edifier
-            else selectedPrize = prizes[4];                  // 3% Super Jackpot 15 Moedas
+            if (rand < 0.35) selectedPrize = prizes[2];      
+            else if (rand < 0.65) selectedPrize = prizes[5]; 
+            else if (rand < 0.80) selectedPrize = prizes[0]; 
+            else if (rand < 0.90) selectedPrize = prizes[3]; 
+            else if (rand < 0.97) selectedPrize = prizes[1]; 
+            else selectedPrize = prizes[4];                  
 
-            // Cálculo preciso para desacelerar perfeitamente no centro da fatia correspondente
             const extraVoltas = 6 * 360; 
             const baseTarget = 360 - selectedPrize.angle;
             
@@ -542,12 +589,23 @@
 
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-            document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
-                el.classList.remove('bg-amber-400', 'text-black'); el.classList.add('text-gray-400');
-            });
-            document.getElementById(`btn-tab-${tabName}`).classList.add('bg-amber-400', 'text-black');
-            if(tabName === 'premios') document.getElementById('reward-badge').classList.add('hidden');
+            const mainFlow = document.getElementById('main-app-flow');
+
+            if (tabName === 'regulamento') {
+                mainFlow.classList.add('hidden');
+                document.getElementById('tab-regulamento').classList.remove('hidden');
+                document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
+                    el.classList.remove('bg-amber-400', 'text-black'); el.classList.add('text-gray-400');
+                });
+            } else {
+                mainFlow.classList.remove('hidden');
+                document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+                document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
+                    el.classList.remove('bg-amber-400', 'text-black'); el.classList.add('text-gray-400');
+                });
+                document.getElementById(`btn-tab-${tabName}`).classList.add('bg-amber-400', 'text-black');
+                if(tabName === 'premios') document.getElementById('reward-badge').classList.add('hidden');
+            }
         }
 
         function getProductFinalDetails(p) {
