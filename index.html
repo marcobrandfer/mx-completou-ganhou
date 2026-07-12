@@ -75,7 +75,7 @@
             clear: both;
         }
 
-        /* ESTILOS DA ROLETA DO GIRO DA SORTE */
+        /* AJUSTE INTERATIVO DA NOVA ROLETA MX DIGITAL SHOP */
         .roulette-container {
             position: relative;
             width: 140px;
@@ -86,40 +86,24 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            border: 4px solid #FFD700;
-            background: conic-gradient(
-                #1f2937 0deg 60deg, 
-                #111827 60deg 120deg, 
-                #374151 120deg 180deg, 
-                #111827 180deg 240deg, 
-                #1f2937 240deg 300deg, 
-                #111827 300deg 360deg
-            );
-            transition: transform 3.5s cubic-bezier(0.1, 0.8, 0.1, 1);
+            background-image: url('roleta.png');
+            background-size: cover;
+            background-position: center;
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
         .roulette-marker {
             position: absolute;
-            top: -8px;
+            top: -6px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 15px solid #FF3B30;
-            z-index: 20;
-        }
-        .roulette-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 24px;
-            height: 24px;
-            background: #FFD700;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            z-index: 10;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 14px solid #FF3B30;
+            z-index: 30;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
         }
     </style>
 </head>
@@ -185,12 +169,11 @@
                 </button>
             </div>
 
-            <!-- MX GIRO DA SORTE -->
+            <!-- MX GIRO DA SORTE ATUALIZADA -->
             <div class="bg-gray-900 border border-gray-800 rounded-xl p-3 flex items-center gap-3 text-xs">
                 <div class="roulette-container flex-shrink-0">
                     <div class="roulette-marker"></div>
-                    <div class="roulette-center"></div>
-                    <div id="wheel" class="roulette-wheel flex items-center justify-center text-lg">🎯</div>
+                    <div id="wheel" class="roulette-wheel"></div>
                 </div>
                 <div class="flex-1 flex flex-col justify-between h-full py-1">
                     <div>
@@ -351,17 +334,16 @@
             { id: 19, name: "Gamesir G8 Galileo Plus", brand: "Gamesir", price: 479.90, main_image: "MXCARD19.jpg", desc: "O controle definitivo para jogos de celular. Analógicos com efeito Hall e encaixe ergonômico firme." },
             { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 999.90, main_image: "MXCARD20.jpg", desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Usado pelos maiores profissionais." },
             { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal." },
-            { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio ativos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio." },
+            { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio activos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio." },
             { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos." },
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]" }
         ];
 
-        // Estado inicial do Usuário atualizado com contador numérico de pacotes
         let userState = {
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            bonusPackCount: 0,          // MUDANÇA AQUI: Agora conta numericamente quantos packs o usuário acumulou
+            bonusPackCount: 0,          
             hasBrindeCoinsReward: false, 
             coupons: { edifier: false, qcy: false, tronsmart: false },
             wonGrandPrize: false,
@@ -403,8 +385,6 @@
         window.onload = function() {
             if (localStorage.getItem('mx_user_state')) {
                 let saved = JSON.parse(localStorage.getItem('mx_user_state'));
-                
-                // Migração de segurança: se o usuário antigo tinha a flag antiga true, vira 1 pacote.
                 if (saved.hasOwnProperty('hasBrindePack')) {
                     saved.bonusPackCount = saved.hasBrindePack ? 1 : 0;
                     delete saved.hasBrindePack;
@@ -468,41 +448,45 @@
 
             initAudio();
             
+            // CONFIGURAÇÃO DOS ÂNGULOS CALIBRADOS PARA A SUA IMAGEM (Sentido horário a partir do topo)
             const prizes = [
-                { name: "🪙 5 MX Coins", type: "coins", value: 5, icon: "🪙", angle: 30 },
-                { name: "📦 1 Pack Bônus", type: "pack", value: 1, icon: "📦", angle: 90 },
-                { name: "🎧 Cupom Edifier 15%", type: "coupon", value: "edifier", icon: "🎁", angle: 150 },
-                { name: "❌ Tente Novamente", type: "miss", value: 0, icon: "🎯", angle: 210 },
-                { name: "⚡ Cupom QCY Frete Grátis", type: "coupon", value: "qcy", icon: "🚚", angle: 270 },
-                { name: "🪙 15 MX Coins", type: "coins", value: 15, icon: "💰", angle: 330 }
+                { name: "📦 1 Pack Bônus", type: "pack", value: 1, icon: "📦", angle: 30 },
+                { name: "🎧 Cupom Edifier 15% OFF", type: "coupon", value: "edifier", icon: "🎁", angle: 90 },
+                { name: "❌ Tente Novamente", type: "miss", value: 0, icon: "🎯", angle: 150 },
+                { name: "⚡ Cupom QCY Frete Grátis", type: "coupon", value: "qcy", icon: "🚚", angle: 210 },
+                { name: "🪙 15 MX Coins", type: "coins", value: 15, icon: "💰", angle: 270 },
+                { name: "🪙 5 MX Coins", type: "coins", value: 5, icon: "🪙", angle: 330 }
             ];
 
             let rand = Math.random();
             let selectedPrize;
-            if (rand < 0.35) selectedPrize = prizes[3];      // 35% Tente Novamente
-            else if (rand < 0.65) selectedPrize = prizes[0]; // 30% Ganhar 5 moedas
-            else if (rand < 0.80) selectedPrize = prizes[1]; // 15% Pack Bônus (+1 ao contador acumulativo)
-            else if (rand < 0.90) selectedPrize = prizes[4]; // 10% Cupom QCY
-            else if (rand < 0.97) selectedPrize = prizes[2]; // 7% Cupom Edifier
-            else selectedPrize = prizes[5];                  // 3% Super Jackpot 15 Moedas
+            if (rand < 0.35) selectedPrize = prizes[2];      // 35% Tente Novamente
+            else if (rand < 0.65) selectedPrize = prizes[5]; // 30% Ganhar 5 moedas
+            else if (rand < 0.80) selectedPrize = prizes[1]; // 15% Pack Bônus
+            else if (rand < 0.90) selectedPrize = prizes[3]; // 10% Cupom QCY
+            else if (rand < 0.97) selectedPrize = prizes[1]; // 7% Cupom Edifier
+            else selectedPrize = prizes[4];                  // 3% Super Jackpot 15 Moedas
 
-            const extraVoltas = 5 * 360;
-            currentRotation += extraVoltas + (360 - selectedPrize.angle);
+            // Cálculo preciso para desacelerar perfeitamente no centro da fatia correspondente
+            const extraVoltas = 6 * 360; 
+            const baseTarget = 360 - selectedPrize.angle;
+            
+            currentRotation += extraVoltas + (baseTarget - (currentRotation % 360));
             
             const wheel = document.getElementById('wheel');
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
             let bips = 0;
             const bipInterval = setInterval(() => {
-                if (bips < 20) {
+                if (bips < 24) {
                     try {
                         const osc = soundCtx.createOscillator(); const gain = soundCtx.createGain();
-                        osc.frequency.setValueAtTime(400, soundCtx.currentTime); gain.gain.setValueAtTime(0.03, soundCtx.currentTime);
+                        osc.frequency.setValueAtTime(450, soundCtx.currentTime); gain.gain.setValueAtTime(0.03, soundCtx.currentTime);
                         osc.connect(gain); gain.connect(soundCtx.destination); osc.start(); osc.stop(soundCtx.currentTime + 0.03);
                     } catch(e){}
                     bips++;
                 } else { clearInterval(bipInterval); }
-            }, 150);
+            }, 140);
 
             setTimeout(() => {
                 isSpinning = false;
@@ -511,7 +495,7 @@
                     userState.coins += selectedPrize.value;
                     playSoundPlim();
                 } else if (selectedPrize.type === "pack") {
-                    userState.bonusPackCount += 1; // SOMA ACUMULATIVA PERFEITA
+                    userState.bonusPackCount += 1; 
                     document.getElementById('reward-badge').classList.remove('hidden');
                     playSoundValeBrinde();
                 } else if (selectedPrize.type === "coupon") {
@@ -525,14 +509,14 @@
 
                 document.getElementById('modal-title').innerText = selectedPrize.type === "miss" ? "Quase lá! 🎯" : "Resultado do Giro! 🎉";
                 document.getElementById('modal-message').innerHTML = selectedPrize.type === "miss" 
-                    ? "Não foi dessa vez, mas não desista! O próximo giro pode conter aquele item que falta!" 
+                    ? "Não foi dessa vez, mas não desista! O próximo giro pode conter aquele prêmio que você procura!" 
                     : `Sensacional! Você acabou de faturar: <br><strong class="text-amber-400 text-base">${selectedPrize.name}</strong>.<br>Confira seu saldo ou seu Baú de Prêmios!`;
                 document.getElementById('modal-icon').innerText = selectedPrize.icon;
                 
                 window.history.pushState({modal: 'alert'}, "");
                 document.getElementById('modal-alert').classList.remove('hidden');
 
-            }, 3500);
+            }, 4100);
         }
 
         function claimVipPack() { 
@@ -545,7 +529,7 @@
         
         function cheatCoinsAndBrinde() {
             userState.coins += 50; 
-            userState.bonusPackCount += 2; // Adiciona dois direto para testar o acúmulo perfeitamente
+            userState.bonusPackCount += 2; 
             userState.hasBrindeCoinsReward = true;
             saveState(); updateUI(); playSoundValeBrinde();
         }
@@ -638,7 +622,6 @@
             if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
             if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
 
-            // VALE BRINDES - RENDERIZAÇÃO ATUALIZADA COM SEGURANÇA E ACÚMULO
             const brindesContainer = document.getElementById('brindes-duplos-container');
             if (brindesContainer) {
                 brindesContainer.innerHTML = '';
@@ -647,7 +630,7 @@
                 if (userState.bonusPackCount > 0) {
                     slotPrata.className = "relative rounded-xl border-2 border-[#00F5D4] shadow-lg h-48 w-full overflow-hidden cursor-pointer bg-black block transition active:scale-95";
                     slotPrata.onclick = () => { 
-                        userState.bonusPackCount -= 1; // DESCONTA SÓ UM POR VEZ!
+                        userState.bonusPackCount -= 1; 
                         saveState(); 
                         triggerPackOpening('automatic-brinde'); 
                     };
@@ -863,7 +846,7 @@
                     userState.hasBrindeCoinsReward = true; ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-yellow-950 to-black rounded-xl border-2 border-amber-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">🪙</div><span class="text-[6.5px] font-black text-black bg-amber-400 px-1 rounded absolute top-1 uppercase">+15 COINS</span></div>`;
                 } else if (rand < 0.09 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
-                    userState.bonusPackCount += 1; // SOMA ACUMULATIVA NO PACOTE TAMBÉM
+                    userState.bonusPackCount += 1; 
                     ganhouBrindeNessePacote = true;
                     htmlCards += `<div class="bg-gradient-to-b from-teal-950 to-black rounded-xl border-2 border-[#00F5D4] flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">📦</div><span class="text-[6.5px] font-black text-black bg-[#00F5D4] px-1 rounded absolute top-1 uppercase">PACK BÔNUS</span></div>`;
                 } else {
