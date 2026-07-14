@@ -106,15 +106,45 @@
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
-        /* Timer Flutuante */
+        /* Timer Flutuante e Efeitos */
         #floating-timer-container {
             position: fixed;
             right: 16px;
-            bottom: 96px; /* Fica acima da barra de navegação/botões */
+            bottom: 96px; /* Fica acima da barra de navegação */
             z-index: 40;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        @keyframes pulse-timer {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(34, 197, 94, 0.5); }
+            50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(34, 197, 94, 0.9); }
+        }
+        .timer-ready {
+            animation: pulse-timer 1s infinite ease-in-out;
+            border-color: #22c55e !important;
+            cursor: pointer;
+        }
+
+        /* Moedinhas que voam na tela */
+        .coin-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            font-size: 16px;
+            animation: float-coin 0.8s ease-out forwards;
+        }
+
+        @keyframes float-coin {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tw-x, 50px), var(--tw-y, -100px)) scale(0.4) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
@@ -122,10 +152,10 @@
 
     <!-- TIMER FLUTUANTE DE 15 SEGUNDOS -->
     <div id="floating-timer-container">
-        <div class="bg-white/95 border-2 border-orange-400 rounded-full w-14 h-14 flex flex-col items-center justify-center shadow-lg transition-transform active:scale-95">
-            <span class="text-[9px] text-orange-500 font-bold leading-none">+2 🪙</span>
+        <button id="btn-floating-timer" onclick="collectTimerCoins(event)" class="bg-white/95 border-2 border-orange-400 rounded-full w-16 h-16 flex flex-col items-center justify-center shadow-lg transition-transform active:scale-95 cursor-default outline-none" disabled>
+            <span id="timer-icon" class="text-[10px] text-orange-500 font-bold leading-none">Aguarde</span>
             <span id="countdown-timer" class="text-base font-black text-gray-800 mt-0.5">15s</span>
-        </div>
+        </button>
     </div>
 
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
@@ -240,7 +270,7 @@
                 <div class="h-px bg-gray-200 my-2"></div>
                 <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 
-                <!-- BOTOES DE ABASTECER: SOMENTE UM BOTAO INTERATIVO E CHAMATIVO -->
+                <!-- BOTOES DE ABASTECER: SOMENTE UM BOTAO INTERATIVO -->
                 <div class="grid grid-cols-1">
                     <button onclick="triggerPackOpening('coins')" class="bg-gradient-to-r from-orange-400 to-orange-600 text-white font-black text-sm py-3 px-4 rounded-xl transition active:scale-95 flex items-center justify-center gap-2 w-full shadow-md hover:brightness-105">
                         📦✨ ABRIR PACOTE por 🪙 5 MX
@@ -256,7 +286,6 @@
             <!-- VALE BRINDES INSTANTÂNEOS -->
             <div>
                 <h2 class="text-xs font-bold text-orange-500 tracking-wider uppercase mb-3">VALE BRINDES INSTANTÂNEOS</h2>
-                <!-- Container em Grid Flexível para evitar desalinhamento -->
                 <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container"></div>
             </div>
 
@@ -295,15 +324,15 @@
             <div class="space-y-4 text-xs text-gray-600 leading-relaxed">
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">🎯 1. Objetivo</h4>
-                    <p>Colecione todos os **24 MX Cards** exclusivos dentro do aplicativo para completar o seu álbum digital de equipamentos de áudio e estúdio.</p>
+                    <p>Colecione todos os **24 MX Cards** exclusivos dentro do aplicativo para completar o seu álbum digital de equipamentos de áudio e estúdio[cite: 1].</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">💰 2. O Grande Prêmio</h4>
-                    <p>O primeiro participante que completar a coleção completa receberá um **MX SUPER PIX de R$ 1.000,00**. A retirada é feita clicando no botão oficial de resgate.</p>
+                    <p>O primeiro participante que completar a coleção completa receberá um **MX SUPER PIX de R$ 1.000,00**[cite: 1]. A retirada é feita clicando no botão oficial de resgate[cite: 1].</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">⏱️ 3. Timer de Recompensas</h4>
-                    <p>Fique de olho no timer flutuante de 15 segundos! A cada vez que ele chega a zero, você recebe automaticamente +2 MX Coins para continuar jogando, sem limites!</p>
+                    <p>Fique de olho no timer flutuante de 15 segundos! Quando a contagem zerar, o botão ficará pronto e verde. Toque nele para coletar +2 MX Coins na hora!</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">⚠️ 4. Expiração Diária de Cupons</h4>
@@ -336,7 +365,7 @@
         </div>
     </div>
 
-    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA (OFERTA EXCLUSIVA DO 3º PACOTE) -->
+    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA -->
     <div id="modal-oferta-especial" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] hidden flex items-center justify-center p-6">
         <div class="bg-white border-4 border-red-500 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl relative">
             <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider animate-bounce shadow">OFERTA HOJE!</div>
@@ -435,8 +464,8 @@
             wonGrandPrize: false,
             milestones: { pct25: false, pct50: false, pct75: false },
             lastCheckInDate: null,
-            packsOpenedToday: 0, // Controla o gatilho da oferta no 3º pacote
-            lastDateOpened: null, // Controla a expiração diária
+            packsOpenedToday: 0,
+            lastDateOpened: null,
         };
 
         let soundCtx = null;
@@ -445,588 +474,563 @@
         let timerSeconds = 15;
         let timerInterval = null;
 
-        function initAudio() { if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        function initAudio() { 
+            if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); 
+        }
 
         function playSoundPlim() {
             initAudio();
             try {
-                const osc = soundCtx.createOscillator(); const gain = soundCtx.createGain(); osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, soundCtx.currentTime); osc.frequency.setValueAtTime(880, soundCtx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.1, soundCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.0001, soundCtx.currentTime + 0.3);
-                osc.connect(gain); gain.connect(soundCtx.destination); osc.start(); osc.stop(soundCtx.currentTime + 0.3);
-            } catch(e){}
+                const osc = soundCtx.createOscillator(); 
+                const gain = soundCtx.createGain(); 
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, soundCtx.currentTime); 
+                osc.frequency.setValueAtTime(880, soundCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.15, soundCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(soundCtx.destination);
+                osc.start();
+                osc.stop(soundCtx.currentTime + 0.25);
+            } catch (e) { console.warn("Audio Context error", e); }
         }
 
-        function playSoundValeBrinde() {
-            initAudio();
-            try {
-                const now = soundCtx.currentTime; const notes = [523.25, 659.25, 783.99, 1046.50];
-                notes.forEach((freq, idx) => {
-                    const osc = soundCtx.createOscillator(); const gain = soundCtx.createGain(); osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(freq, now + (idx * 0.06)); gain.gain.setValueAtTime(0.15, now + (idx * 0.06));
-                    gain.gain.exponentialRampToValueAtTime(0.0001, now + (idx * 0.06) + 0.4); osc.connect(gain); gain.connect(soundCtx.destination);
-                    osc.start(now + (idx * 0.06)); osc.stop(now + (idx * 0.06) + 0.4);
-                });
-            } catch(e){}
+        // --- SISTEMA DE PERSISTÊNCIA ---
+        function saveState() {
+            localStorage.setItem('mx_state', JSON.stringify(userState));
         }
 
-        window.addEventListener('popstate', function(event) { closeModalDirect(); closeGalleryDirect(); closeOfertaEspecialDirect(); });
-
-        window.onload = function() {
-            if (localStorage.getItem('mx_user_state')) {
-                userState = JSON.parse(localStorage.getItem('mx_user_state'));
+        function loadState() {
+            const saved = localStorage.getItem('mx_state');
+            if (saved) {
+                try {
+                    userState = JSON.parse(saved);
+                    // Sanitização para garantir novas chaves de expiração diária
+                    if (!userState.packsOpenedToday) userState.packsOpenedToday = 0;
+                } catch(e) { console.error("Erro ao carregar progresso", e); }
             }
-            
-            // Verifica se mudou de dia para expirar prêmios
             checkDailyExpiration();
-
             updateUI();
-            startFloatingTimer();
-            setInterval(updateCheckInTimer, 1000);
-        };
-
-        function saveState() { localStorage.setItem('mx_user_state', JSON.stringify(userState)); }
-
-        function getTodayString() {
-            const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
         }
 
-        // Sistema que zera os bônus e ofertas caso mude de dia (Escassez Máxima)
         function checkDailyExpiration() {
-            const hoje = getTodayString();
-            if (userState.lastDateOpened !== hoje) {
-                // Reseta cupons e contagem diária
-                userState.coupons = { edifier: false, qcy: false, tronsmart: false };
+            const todayStr = new Date().toDateString();
+            if (userState.lastDateOpened !== todayStr) {
+                userState.lastDateOpened = todayStr;
                 userState.packsOpenedToday = 0;
-                userState.lastDateOpened = hoje;
+                // De acordo com o regulamento, cupons expiram diariamente à meia-noite
+                userState.coupons = { edifier: false, qcy: false, tronsmart: false };
+                userState.hasBrindeCoinsReward = false;
                 saveState();
             }
         }
 
-        // Sistema de retenção: Timer de 15 segundos (+2 MX Coins)
-        function startFloatingTimer() {
-            const display = document.getElementById('countdown-timer');
-            timerInterval = setInterval(() => {
-                timerSeconds--;
-                if (timerSeconds < 0) {
-                    timerSeconds = 15;
-                    userState.coins += 2;
-                    saveState();
-                    updateUI();
-                    playSoundPlim();
-                    // Feedback visual rápido de ganho
-                    display.innerText = "GANHOU!";
-                    setTimeout(() => { display.innerText = "15s"; }, 1000);
-                } else {
-                    display.innerText = `${timerSeconds}s`;
-                }
-            }, 1000);
-        }
-
-        function claimDailyCheckin() {
-            const hoje = getTodayString();
-            if (userState.lastCheckInDate === hoje) return;
-
-            userState.coins += 5;
-            userState.lastCheckInDate = hoje;
-            saveState(); updateUI(); playSoundPlim();
-
-            document.getElementById('modal-title').innerText = "Recompensa Resgatada! 📆";
-            document.getElementById('modal-message').innerText = "Você ganhou 🪙 5 moedas MX! Já pode abrir pacotes para completar o álbum.";
-            document.getElementById('modal-icon').innerText = "🪙";
-            
-            window.history.pushState({modal: 'alert'}, "");
-            document.getElementById('modal-alert').classList.remove('hidden');
-        }
-
-        function updateCheckInTimer() {
-            const btn = document.getElementById('btn-checkin'); if (!btn) return;
-            const hoje = getTodayString();
-            if (userState.lastCheckInDate === hoje) {
-                const agora = new Date(); const meiaNoite = new Date(); meiaNoite.setHours(24, 0, 0, 0);
-                const diff = meiaNoite - agora;
-                const horas = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-                const minutos = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                const segundos = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-                btn.innerText = `Amanhã em ${horas}:${minutos}:${segundos}`;
-                btn.className = "bg-gray-200 text-gray-400 font-bold px-3 py-2 rounded-lg text-[11px] uppercase border-0 cursor-not-allowed";
-            } else {
-                btn.innerText = "🪙 Pegar +5 MX";
-                btn.className = "bg-gradient-to-r from-green-400 to-emerald-500 text-white font-black px-4 py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer animate-pulse";
-            }
-        }
-
-        function spinRoulette() {
-            if (isSpinning) return;
-            if (userState.coins < 3) {
-                alert("Moedas insuficientes! Faça o check-in ou espere o timer flutuante.");
-                return;
-            }
-
-            isSpinning = true;
-            userState.coins -= 3;
-            saveState();
-            document.getElementById('balance-display').innerText = userState.coins;
-
-            initAudio();
-            
-            const prizes = [
-                { name: "📦 1 Pack Bônus", type: "pack", value: 1, icon: "📦", angle: 30 },
-                { name: "🎧 Cupom Edifier 15% OFF", type: "coupon", value: "edifier", icon: "🎁", angle: 90 },
-                { name: "❌ Tente Novamente", type: "miss", value: 0, icon: "🎯", angle: 150 },
-                { name: "⚡ Cupom QCY Frete Grátis", type: "coupon", value: "qcy", icon: "🚚", angle: 210 },
-                { name: "🪙 15 MX Coins", type: "coins", value: 15, icon: "💰", angle: 270 },
-                { name: "🪙 5 MX Coins", type: "coins", value: 5, icon: "🪙", angle: 330 }
-            ];
-
-            let rand = Math.random();
-            let selectedPrize;
-            if (rand < 0.35) selectedPrize = prizes[2];      
-            else if (rand < 0.65) selectedPrize = prizes[5]; 
-            else if (rand < 0.80) selectedPrize = prizes[0]; 
-            else if (rand < 0.90) selectedPrize = prizes[3]; 
-            else if (rand < 0.97) selectedPrize = prizes[1]; 
-            else selectedPrize = prizes[4];                  
-
-            const extraVoltas = 6 * 360; 
-            const baseTarget = 360 - selectedPrize.angle;
-            
-            currentRotation += extraVoltas + (baseTarget - (currentRotation % 360));
-            
-            const wheel = document.getElementById('wheel');
-            wheel.style.transform = `rotate(${currentRotation}deg)`;
-
-            let bips = 0;
-            const bipInterval = setInterval(() => {
-                if (bips < 24) {
-                    try {
-                        const osc = soundCtx.createOscillator(); const gain = soundCtx.createGain();
-                        osc.frequency.setValueAtTime(450, soundCtx.currentTime); gain.gain.setValueAtTime(0.03, soundCtx.currentTime);
-                        osc.connect(gain); gain.connect(soundCtx.destination); osc.start(); osc.stop(soundCtx.currentTime + 0.03);
-                    } catch(e){}
-                    bips++;
-                } else { clearInterval(bipInterval); }
-            }, 140);
-
-            setTimeout(() => {
-                isSpinning = false;
-                
-                if (selectedPrize.type === "coins") {
-                    userState.coins += selectedPrize.value;
-                    playSoundPlim();
-                } else if (selectedPrize.type === "pack") {
-                    userState.bonusPackCount += 1; 
-                    document.getElementById('reward-badge').classList.remove('hidden');
-                    playSoundValeBrinde();
-                } else if (selectedPrize.type === "coupon") {
-                    userState.coupons[selectedPrize.value] = true;
-                    document.getElementById('reward-badge').classList.remove('hidden');
-                    playSoundValeBrinde();
-                }
-
-                saveState();
-                updateUI();
-
-                document.getElementById('modal-title').innerText = selectedPrize.type === "miss" ? "Quase lá! 🎯" : "Resultado do Giro! 🎉";
-                document.getElementById('modal-message').innerHTML = selectedPrize.type === "miss" 
-                    ? "Não foi dessa vez, mas não desista! O próximo giro pode conter aquele prêmio que você procura!" 
-                    : `Sensacional! Você acabou de faturar: <br><strong class="text-orange-500 text-base">${selectedPrize.name}</strong>.<br>Confira seu saldo ou seu Baú de Prêmios!`;
-                document.getElementById('modal-icon').innerText = selectedPrize.icon;
-                
-                window.history.pushState({modal: 'alert'}, "");
-                document.getElementById('modal-alert').classList.remove('hidden');
-
-            }, 4100);
-        }
-
-        function claimVipPack() { 
-            if (!userState.claimedVipFreePack) {
-                userState.claimedVipFreePack = true;
-                saveState();
-                triggerPackOpening('free-vip'); 
-            } 
-        }
-        
-        function cheatCoinsAndBrinde() {
-            userState.coins += 50; 
-            userState.bonusPackCount += 2; 
-            userState.hasBrindeCoinsReward = true;
-            saveState(); updateUI(); playSoundValeBrinde();
-        }
-
-        function resetGame() {
-            if (confirm("MX, quer mesmo zerar o jogo e recomeçar os testes do zero?")) {
-                localStorage.removeItem('mx_user_state'); window.location.reload();
-            }
-        }
-
-        function switchTab(tabName) {
+        // --- CONTROLE DE ABAS ---
+        function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const mainFlow = document.getElementById('main-app-flow');
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
 
-            if (tabName === 'regulamento') {
-                mainFlow.classList.add('hidden');
-                document.getElementById('tab-regulamento').classList.remove('hidden');
-                document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
-                    el.classList.remove('bg-orange-400', 'text-white'); el.classList.add('text-gray-500');
+            const btnCards = document.getElementById('btn-tab-cards');
+            const btnProds = document.getElementById('btn-tab-produtos');
+            const btnPrems = document.getElementById('btn-tab-premios');
+
+            if (btnCards && btnProds && btnPrems) {
+                [btnCards, btnProds, btnPrems].forEach(btn => {
+                    btn.className = "py-2.5 text-xs font-bold rounded-lg transition-all text-gray-500 hover:text-orange-500 flex flex-col items-center justify-center gap-0.5 relative";
                 });
-            } else {
-                mainFlow.classList.remove('hidden');
-                document.getElementById(`tab-${tabName}`).classList.remove('hidden');
-                document.querySelectorAll('[id^="btn-tab-"]').forEach(el => {
-                    el.classList.remove('bg-orange-400', 'text-white'); el.classList.add('text-gray-500');
-                });
-                document.getElementById(`btn-tab-${tabName}`).classList.add('bg-orange-400', 'text-white');
-                if(tabName === 'premios') document.getElementById('reward-badge').classList.add('hidden');
+
+                const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+                if (activeBtn) {
+                    activeBtn.className = "py-2.5 text-xs font-bold rounded-lg transition-all bg-orange-400 text-white flex flex-col items-center justify-center gap-0.5 relative";
+                }
             }
         }
 
-        function getProductFinalDetails(p) {
-            let finalPrice = p.price; let discountText = ""; let tagLaranja = "";
-            
-            if (p.brand === "Edifier") {
-                if (userState.coupons.edifier) { finalPrice = p.price * 0.85; discountText = "15% OFF"; tagLaranja = "-15%"; }
-                else { tagLaranja = "PROMO"; }
-            }
-            else if (p.brand === "QCY") {
-                if (userState.coupons.qcy) { discountText = "FRETE GRÁTIS"; tagLaranja = "GRÁTIS"; }
-                else { tagLaranja = "TOP VENDAS"; }
-            }
-            else if (p.brand === "Tronsmart") {
-                if (userState.coupons.tronsmart) { finalPrice = p.price * 0.90; discountText = "10% OFF"; tagLaranja = "-10%"; }
-                else { tagLaranja = "SOM HD"; }
-            } else {
-                tagLaranja = "OFERTA";
-            }
-            return { finalPrice, discountText, tagLaranja };
-        }
-
-        function claimCoinsBrindeAutomatic() {
-            userState.hasBrindeCoinsReward = false;
-            userState.coins += 15;
-            saveState(); updateUI(); playSoundValeBrinde();
-
-            document.getElementById('modal-title').innerText = "Moedas Creditadas! 🪙";
-            document.getElementById('modal-message').innerHTML = `Você acabou de resgatar o seu <strong>Brinde Ouro</strong> e ganhou <strong>🪙 15 MX Coins</strong>!`;
-            document.getElementById('modal-icon').innerText = "💰";
-            document.getElementById('modal-btn').onclick = () => closeModalDirect();
-
-            window.history.pushState({modal: 'alert'}, "");
-            document.getElementById('modal-alert').classList.remove('hidden');
-        }
-
+        // --- UPDATE UI ---
         function updateUI() {
-            document.getElementById('balance-display').innerText = userState.coins;
-            let uniqueOwned = 0; PRODUCTS_DATA.forEach(p => { if (userState.inventory[p.id] > 0) uniqueOwned++; });
-            
-            document.getElementById('progress-text').innerText = `${uniqueOwned} / 24 Cards`;
-            document.getElementById('progress-bar').style.width = `${(uniqueOwned / 24) * 100}%`;
+            document.getElementById('balance-display').textContent = userState.coins;
 
+            // Progresso
+            const ownedCount = Object.keys(userState.inventory).length;
+            const progressPct = Math.round((ownedCount / 24) * 100);
+            document.getElementById('progress-text').textContent = `${ownedCount} / 24 Cards`;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+            // Verificação de Milestones e Banner FOMO
             const fomoBanner = document.getElementById('fomo-banner');
-            if (uniqueOwned === 23) {
+            if (ownedCount === 23) {
                 fomoBanner.classList.remove('hidden');
             } else {
                 fomoBanner.classList.add('hidden');
             }
 
-            const vipBox = document.getElementById('vip-free-pack-box');
-            if (vipBox) {
-                if (userState.claimedVipFreePack) {
-                    vipBox.innerHTML = `<div class="w-full bg-green-50 text-green-600 font-bold text-xs py-2.5 rounded-lg border border-green-200 flex items-center justify-center gap-1.5">✅ PACOTE VIP RESGATADO</div>`;
-                } else {
-                    vipBox.innerHTML = `<button onclick="claimVipPack()" id="btn-vip-pack" class="w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white font-black text-xs py-3 rounded-xl border-2 border-white active:scale-95 transition flex items-center justify-center gap-2 shadow-xs">🎉 RESGATAR PACOTE VIP GRÁTIS</button>`;
-                }
-            }
-
-            const prizeBox = document.getElementById('main-prize-box');
-            if (uniqueOwned >= 24) {
+            // Grande Prêmio Completo
+            const mainPrizeBox = document.getElementById('main-prize-box');
+            if (ownedCount === 24) {
+                mainPrizeBox.className = "premio-box-completo rounded-2xl p-3 text-center mb-4 text-sm shadow-xs";
                 document.getElementById('prize-status-collecting').classList.add('hidden');
                 document.getElementById('prize-status-completed').classList.remove('hidden');
-                prizeBox.className = "premio-box-completo rounded-xl p-3 text-center mb-4 text-sm";
             } else {
+                mainPrizeBox.className = "premio-box rounded-2xl p-3 text-center mb-4 text-sm shadow-xs";
                 document.getElementById('prize-status-collecting').classList.remove('hidden');
                 document.getElementById('prize-status-completed').classList.add('hidden');
-                prizeBox.className = "premio-box rounded-xl p-3 text-center mb-4 text-sm";
             }
 
-            if (uniqueOwned >= 6 && !userState.milestones.pct25) { userState.milestones.pct25 = true; userState.coupons.qcy = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
-            if (uniqueOwned >= 12 && !userState.milestones.pct50) { userState.milestones.pct50 = true; userState.coupons.edifier = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
-            if (uniqueOwned >= 18 && !userState.milestones.pct75) { userState.milestones.pct75 = true; userState.coupons.tronsmart = true; document.getElementById('reward-badge').classList.remove('hidden'); saveState(); }
-
-            const brindesContainer = document.getElementById('brindes-duplos-container');
-            if (brindesContainer) {
-                brindesContainer.innerHTML = '';
-                const slotPrata = document.createElement('div');
-                
-                if (userState.bonusPackCount > 0) {
-                    slotPrata.className = "relative rounded-xl border-2 border-orange-400 shadow-md h-40 w-full overflow-hidden cursor-pointer bg-white block transition active:scale-95";
-                    slotPrata.onclick = () => { 
-                        userState.bonusPackCount -= 1; 
-                        saveState(); 
-                        triggerPackOpening('automatic-brinde'); 
-                    };
-                    slotPrata.innerHTML = `
-                        <img src="mxpack.jpg" class="w-full h-full object-cover rounded-xl opacity-90">
-                        <div class="absolute inset-0 bg-black/25 flex flex-col items-center justify-center p-2 text-center">
-                            <span class="bg-orange-500 text-white text-[9px] px-2 py-1 rounded font-black uppercase tracking-wider shadow-md">⚡ PACK BÔNUS</span>
-                            <span class="text-white text-[10px] font-black mt-1 drop-shadow-md">TOQUE PARA ABRIR!</span>
-                        </div>
-                        <span class="absolute top-1.5 right-1.5 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full z-10 shadow-md">x${userState.bonusPackCount}</span>
-                    `;
-                } else {
-                    slotPrata.className = "relative rounded-xl border border-gray-200 bg-white opacity-40 h-40 w-full flex flex-col items-center justify-center p-2 text-center block shadow-xs";
-                    slotPrata.innerHTML = `<div class="text-2xl mb-1">📦</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">VALE 1 PACOTE</div><div class="text-[8px] text-gray-500 mt-1 font-semibold">Vazio</div>`;
-                }
-
-                const slotOuro = document.createElement('div');
-                if (userState.hasBrindeCoinsReward) {
-                    slotOuro.className = "relative rounded-xl border-2 border-orange-400 shadow-md h-40 w-full overflow-hidden cursor-pointer bg-white block transition active:scale-95";
-                    slotOuro.onclick = () => claimCoinsBrindeAutomatic();
-                    slotOuro.innerHTML = `
-                        <img src="MXGoldcoins.jpg" class="w-full h-full object-cover rounded-xl opacity-95">
-                        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-2 text-center">
-                            <span class="bg-orange-500 text-white text-[9px] px-2 py-0.5 rounded font-black uppercase tracking-wider shadow-md">🪙 COLETAR AGORA</span>
-                        </div>
-                    `;
-                } else {
-                    slotOuro.className = "relative rounded-xl border border-gray-200 bg-white opacity-40 h-40 w-full flex flex-col items-center justify-center p-2 text-center block shadow-xs";
-                    slotOuro.innerHTML = `<div class="text-2xl mb-1">🪙</div><div class="text-[9px] uppercase tracking-widest font-black text-gray-400">VALE 15 COINS</div><div class="text-[8px] text-gray-500 mt-1 font-semibold">Vazio</div>`;
-                }
-                brindesContainer.appendChild(slotPrata); brindesContainer.appendChild(slotOuro);
-            }
-
-            const grid = document.getElementById('cards-grid');
-            if (grid) {
-                grid.innerHTML = '';
-                PRODUCTS_DATA.forEach(p => {
-                    const count = userState.inventory[p.id] || 0; const isOwned = count > 0;
-                    const cardEl = document.createElement('div');
-                    cardEl.className = `relative rounded-xl flex flex-col items-center justify-between text-center border h-48 w-full overflow-hidden transition-all block ${
-                        isOwned ? 'border-orange-300 shadow-md cursor-pointer bg-white' : 'bg-white border-gray-200 opacity-40 p-2'
-                    }`;
-                    if (isOwned) cardEl.onclick = () => openGallery(p.id);
-                    
-                    if (isOwned) {
-                        cardEl.innerHTML = `
-                            <img src="${p.main_image}" class="w-full h-full object-cover rounded-xl">
-                            <span class="text-[10px] font-black text-gray-800 bg-white/80 px-1.5 py-0.5 rounded absolute top-1.5 left-1.5 shadow-sm">#${String(p.id).padStart(2, '0')}</span>
-                            ${count > 1 ? `<span class="absolute -top-1 -right-1 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full z-10 shadow-md">x${count}</span>` : ''}
-                            ${count >= 4 ? `
-                                <div class="absolute bottom-1.5 inset-x-1.5 z-10">
-                                    <button onclick="event.stopPropagation(); exchangeCards(${p.id})" class="w-full bg-orange-500 text-white text-[8px] py-1.5 rounded-lg font-black uppercase shadow-md border-0 leading-none cursor-pointer">🔄 Trocar Repetidas</button>
-                                </div>
-                            ` : (count > 1 ? `
-                                <div class="absolute bottom-1.5 inset-x-1.5 z-10 opacity-85">
-                                    <div class="w-full bg-white/90 text-orange-600 text-[8px] py-1 rounded-lg font-bold uppercase border border-orange-300">Faltam ${4 - count} p/ Troca</div>
-                                </div>
-                            ` : '')}
-                        `;
-                    } else {
-                        cardEl.innerHTML = `
-                            <span class="text-[10px] font-bold text-orange-400/60 absolute top-1.5 left-2">#${String(p.id).padStart(2, '0')}</span>
-                            <div class="w-full flex-1 flex flex-col justify-center items-center mt-2">
-                                <div class="text-3xl">🔒</div>
-                                <div class="text-[10px] uppercase tracking-widest font-black text-orange-500 mt-2">${p.brand}</div>
-                            </div>
-                            <div class="text-[11px] font-bold leading-tight mb-3 px-2 text-gray-400">Card Bloqueado</div>
-                        `;
-                    }
-                    grid.appendChild(cardEl);
-                });
-            }
-
-            const prodList = document.getElementById('products-list');
-            if (prodList) {
-                prodList.innerHTML = '';
-                PRODUCTS_DATA.forEach(p => {
-                    const { finalPrice, discountText, tagLaranja } = getProductFinalDetails(p);
-                    const prodEl = document.createElement('div');
-                    prodEl.className = "shopee-card cursor-pointer active:scale-98 transition-transform shadow-xs";
-                    prodEl.onclick = () => openGallery(p.id);
-                    
-                    const fakeSales = Math.floor((p.id * 7) + 12);
-
-                    prodEl.innerHTML = `
-                        <div class="w-full h-40 bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100 relative">
-                            <img src="${p.main_image}" class="w-full h-full object-cover">
-                            <div class="absolute top-0 right-0 bg-orange-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-bl shadow">
-                                ${tagLaranja}
-                            </div>
-                        </div>
-                        <div class="p-2 flex flex-col justify-between h-28">
-                            <div>
-                                <div class="flex items-center gap-1 mb-0.5">
-                                    <span class="bg-red-500 text-white font-extrabold text-[8px] px-1 rounded scale-90 origin-left uppercase">Indicado</span>
-                                    <span class="text-[9px] font-bold text-orange-500 tracking-wide uppercase">${p.brand}</span>
-                                </div>
-                                <h4 class="text-xs font-bold text-gray-800 line-clamp-2 leading-tight min-h-[32px]">${p.name}</h4>
-                            </div>
-                            <div class="mt-1">
-                                <div class="flex items-baseline gap-1">
-                                    ${discountText ? `<span class="text-[9px] text-gray-400 line-through">R$ ${p.price.toFixed(2)}</span>` : ''}
-                                </div>
-                                <div class="text-sm font-black text-orange-500 leading-none">
-                                    R$ ${finalPrice.toFixed(2)}
-                                </div>
-                                <div class="flex items-center justify-between mt-1 pt-1 border-t border-gray-100 text-[9px] text-gray-500">
-                                    <span>⭐ 4.9</span>
-                                    <span>${fakeSales} vendidos</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    prodList.appendChild(prodEl);
-                });
-            }
-
-            const rewardsList = document.getElementById('rewards-list');
-            if (rewardsList) {
-                rewardsList.innerHTML = ''; let temPremio = false;
-                if (userState.bonusPackCount > 0) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio(`📦 ${userState.bonusPackCount} PACOTE(S) EXTRA AGUARDANDO!`, "Você ganhou pacotes bônus instantâneos! Toque para acionar direto na aba principal.", "IR PARA A ABA INICIAL", "cards"); }
-                if (userState.hasBrindeCoinsReward) { temPremio = true; rewardsList.innerHTML += criarTemplatePremio("🪙 15 MOEDAS MX COINS DISPONÍVEIS!", "Seu prêmio em moedas está aguardando resgate na aba principal.", "IR COLETAR MEU SALDO", "cards"); }
-                if (userState.coupons.qcy) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🚚 CUPOM FRETE GRÁTIS QCY", "Válido em compras de fones QCY.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20resgatar%20meu%20Frete%20Gr%C3%A1tis%20QCY%20do%20Albun%25"); }
-                if (userState.coupons.edifier) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🎧 15% OFF EM EDIFIER", "Já aplicado e visível na vitrine de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20usar%20meu%20desconto%20de%2015%25%20Edifier%20do%20Album%21"); }
-                if (userState.coupons.tronsmart) { temPremio = true; rewardsList.innerHTML += criarTemplatePremioManual("🔊 10% OFF EM TRONSMART", "Já aplicado e visível na vitrine de produtos.", "https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20usar%20meu%20desconto%20de%2010%25%20Tronsmart%20do%20Album%21"); }
-                if (!temPremio) { rewardsList.innerHTML = `<div class="text-center py-8 text-xs text-gray-400"><p class="text-xl mb-1">🔒</p><p>Seu baú de vantagens está vazio.</p></div>`; }
-            }
-        }
-
-        function criarTemplatePremio(titulo, desc, acao, redirectTab = null) {
-            const clickAction = redirectTab ? `onclick="switchTab('${redirectTab}')"` : ``;
-            return `<div class="bg-white border border-orange-200 rounded-xl p-3 flex flex-col justify-between gap-2 shadow-xs"><div><h4 class="text-xs font-black text-orange-500 tracking-wide">${titulo}</h4><p class="text-[11px] text-gray-600 mt-0.5 leading-tight">${desc}</p></div><button ${clickAction} class="w-full bg-orange-400 text-white text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0 cursor-pointer shadow">${acao}</button></div>`;
-        }
-
-        function criarTemplatePremioManual(titulo, desc, linkManual) {
-            return `<div class="bg-white border border-orange-200 rounded-xl p-3 flex flex-col justify-between gap-2 shadow-xs"><div><h4 class="text-xs font-black text-orange-500 tracking-wide">${titulo}</h4><p class="text-[11px] text-gray-600 mt-0.5 leading-tight">${desc}</p></div><button onclick="window.open('${linkManual}', '_blank')" class="w-full bg-orange-400 text-white text-[10px] font-black py-1.5 rounded-lg uppercase tracking-wider text-center border-0 cursor-pointer shadow">CONTATAR ATENDIMENTO</button></div>`;
-        }
-
-        function openGallery(productId) {
-            const p = PRODUCTS_DATA.find(prod => prod.id === productId); if (!p) return;
-            const { finalPrice, discountText } = getProductFinalDetails(p);
-            document.getElementById('gallery-brand').innerText = p.brand;
-            
-            if (discountText) {
-                document.getElementById('gallery-title').innerHTML = `${p.name} <span class="text-[10px] bg-orange-500 text-white px-1.5 py-0.5 rounded font-black ml-1 inline-block align-middle">${discountText}</span>`;
-                document.getElementById('gallery-price-old').innerText = `De: R$ ${p.price.toFixed(2)}`; document.getElementById('gallery-price-old').classList.remove('hidden');
+            // VIP Free Pack
+            const vipBox = document.getElementById('vip-free-pack-box');
+            if (!userState.claimedVipFreePack) {
+                vipBox.innerHTML = `
+                    <div class="bg-orange-50 border border-orange-200 rounded-xl p-3 text-center">
+                        <h4 class="font-bold text-orange-600 text-xs uppercase">🎁 Booster VIP Boas-vindas</h4>
+                        <p class="text-[10px] text-gray-500 mb-2">Pegue seu primeiro pacote 100% grátis agora!</p>
+                        <button onclick="triggerPackOpening('free')" class="bg-orange-500 text-white font-black text-xs py-2 px-4 rounded-lg shadow uppercase">Resgatar Grátis</button>
+                    </div>
+                `;
             } else {
-                document.getElementById('gallery-title').innerText = p.name; document.getElementById('gallery-price-old').classList.add('hidden');
+                vipBox.innerHTML = `
+                    <p class="text-xs text-gray-400 font-medium">Pacote VIP de Boas-vindas já resgatado!</p>
+                `;
             }
+
+            // Badge de Notificação no Baú de Prêmios
+            const hasCoupon = Object.values(userState.coupons).some(v => v === true) || userState.hasBrindeCoinsReward;
+            document.getElementById('reward-badge').classList.toggle('hidden', !hasCoupon);
+
+            renderBrindes();
+            renderAlbum();
+            renderProducts();
+            renderRewards();
+        }
+
+        // --- RENDERIZADORES ---
+        function renderBrindes() {
+            const container = document.getElementById('brindes-duplos-container');
+            container.innerHTML = '';
             
-            document.getElementById('gallery-desc').innerText = p.desc; document.getElementById('gallery-price').innerText = `R$ ${finalPrice.toFixed(2)}`;
+            // Definição dos 2 Brindes Instantâneos Especiais do Álbum
+            const brindes = [
+                { title: "Sorteio de 50 Moedas", icon: "🪙", req: "Cupom Tronsmart Ativo", active: userState.coupons.tronsmart, type: "coins" },
+                { title: "Cupom R$ 200 Edifier", icon: "🎟️", req: "Cupom Edifier Ativo", active: userState.coupons.edifier, type: "cupom" }
+            ];
+
+            brindes.forEach(b => {
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border flex flex-col items-center text-center justify-between ${b.active ? 'bg-green-50 border-green-300' : 'bg-white border-gray-200 opacity-60'}`;
+                card.innerHTML = `
+                    <span class="text-2xl mb-1">${b.icon}</span>
+                    <h4 class="font-extrabold text-xs text-gray-800 leading-tight">${b.title}</h4>
+                    <span class="text-[9px] text-gray-400 font-semibold mt-1">${b.req}</span>
+                    ${b.active ? `
+                        <button onclick="claimInstantBrinde('${b.type}')" class="mt-2 w-full bg-green-500 text-white font-black py-1.5 rounded-lg text-[10px] uppercase shadow">Resgatar</button>
+                    ` : `
+                        <button class="mt-2 w-full bg-gray-100 text-gray-400 font-bold py-1.5 rounded-lg text-[10px] uppercase" disabled>Bloqueado</button>
+                    `}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderAlbum() {
+            const container = document.getElementById('cards-grid');
+            container.innerHTML = '';
+
+            PRODUCTS_DATA.forEach(p => {
+                const owned = userState.inventory[p.id] ? true : false;
+                const card = document.createElement('div');
+                card.className = `border rounded-xl p-2 bg-white flex flex-col items-center justify-between cursor-pointer active:scale-98 transition relative ${owned ? 'border-orange-300' : 'border-gray-200 opacity-50'}`;
+                card.onclick = () => inspectProduct(p.id, owned);
+
+                card.innerHTML = `
+                    <div class="relative w-full aspect-square bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
+                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full ${owned ? '' : 'filter grayscale blur-[1px]'}" onerror="this.src='roleta.png'">
+                        ${p.id === 24 ? '<span class="absolute top-1 left-1 bg-red-600 text-[8px] text-white font-black px-1 rounded uppercase tracking-wider">Raro</span>' : ''}
+                        ${owned ? `<span class="absolute bottom-1 right-1 bg-orange-500 text-white font-black rounded-full text-[10px] w-5 h-5 flex items-center justify-center">x${userState.inventory[p.id]}</span>` : ''}
+                    </div>
+                    <p class="text-[10px] font-black text-gray-800 mt-2 truncate w-full text-center leading-tight">${p.name}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('products-list');
+            container.innerHTML = '';
+
+            PRODUCTS_DATA.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "shopee-card cursor-pointer";
+                card.onclick = () => inspectProduct(p.id, true);
+
+                card.innerHTML = `
+                    <div class="w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full" onerror="this.src='roleta.png'">
+                    </div>
+                    <div class="p-2.5 space-y-1">
+                        <span class="text-[8px] font-black uppercase text-orange-500 tracking-wider bg-orange-50 px-1.5 py-0.5 rounded">${p.brand}</span>
+                        <h4 class="text-xs font-bold text-gray-800 truncate mt-1 leading-tight">${p.name}</h4>
+                        <div class="flex items-baseline justify-between mt-2">
+                            <span class="text-xs font-black text-orange-500">R$ ${p.price.toFixed(2)}</span>
+                            <span class="text-[9px] text-green-600 font-bold">WhatsApp 🟢</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderRewards() {
+            const container = document.getElementById('rewards-list');
+            container.innerHTML = '';
+
+            let hasRewards = false;
+
+            if (userState.coupons.edifier) {
+                hasRewards = true;
+                container.appendChild(createRewardRow("🎟️ Cupom Edifier - R$ 200,00", "Válido para compras de fones de ouvido Edifier acima de R$ 500.", "edifier"));
+            }
+            if (userState.coupons.qcy) {
+                hasRewards = true;
+                container.appendChild(createRewardRow("🎟️ Cupom QCY - 15% OFF", "Válido em toda a linha de fones de ouvido e smartwatches QCY.", "qcy"));
+            }
+            if (userState.coupons.tronsmart) {
+                hasRewards = true;
+                container.appendChild(createRewardRow("🎟️ Cupom Tronsmart - R$ 100,00", "Ganhe desconto extra em qualquer caixa de som Tronsmart.", "tronsmart"));
+            }
+
+            if (!hasRewards) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-400">
+                        <span class="text-3xl">📭</span>
+                        <p class="text-xs mt-2 font-medium">Seu baú de prêmios está vazio!</p>
+                        <p class="text-[10px] mt-0.5">Abra pacotes ou gire a roleta para conseguir prêmios.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function createRewardRow(title, desc, key) {
+            const row = document.createElement('div');
+            row.className = "bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between gap-2 shadow-xs";
+            row.innerHTML = `
+                <div class="space-y-0.5">
+                    <h4 class="text-xs font-black text-gray-800">${title}</h4>
+                    <p class="text-[10px] text-gray-500 leading-tight">${desc}</p>
+                </div>
+                <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20resgatar%20meu%20${encodeURIComponent(title)}%20do%20App!', '_blank')" class="bg-green-500 hover:bg-green-600 text-white font-black text-[10px] px-3 py-2 rounded-lg uppercase shadow">
+                    Resgatar
+                </button>
+            `;
+            return row;
+        }
+
+        // --- SISTEMA DE INSPEÇÃO ---
+        function inspectProduct(id, unlocked) {
+            const product = PRODUCTS_DATA.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('gallery-brand').textContent = product.brand;
+            document.getElementById('gallery-title').textContent = product.name;
+            document.getElementById('gallery-desc').textContent = product.desc;
+
+            const container = document.getElementById('gallery-main-container');
+            container.innerHTML = `<img src="${product.main_image}" class="object-contain max-h-64 rounded-lg" onerror="this.src='roleta.png'">`;
+
+            const priceOld = document.getElementById('gallery-price-old');
+            const priceVal = document.getElementById('gallery-price');
             const buyBtn = document.getElementById('gallery-buy-btn');
-            buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Ol%C3%A1%21%20Quero%20comprar%20o%20produto%20${encodeURIComponent(p.name)}%20pelo%20app%20MX%20Cards%21`, '_blank');
 
-            const mainImgContainer = document.getElementById('gallery-main-container');
-            mainImgContainer.innerHTML = `<img src="${p.main_image}" class="w-full h-full object-contain rounded-xl" onerror="showFallbackCard('${p.brand}', '${p.name}', ${p.id})">`;
+            if (unlocked) {
+                priceOld.classList.remove('hidden');
+                priceOld.textContent = `De: R$ ${(product.price * 1.2).toFixed(2)}`;
+                priceVal.textContent = `Por: R$ ${product.price.toFixed(2)}`;
+                buyBtn.classList.remove('hidden');
+                buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Gostaria%20de%20saber%20mais%20sobre%20o%20${encodeURIComponent(product.name)}`, '_blank');
+            } else {
+                priceOld.classList.add('hidden');
+                priceVal.textContent = "Bloqueado";
+                buyBtn.classList.add('hidden');
+            }
 
-            window.history.pushState({modal: 'gallery'}, "");
             document.getElementById('modal-gallery').classList.remove('hidden');
         }
 
-        function showFallbackCard(brand, name, id) {
-            const container = document.getElementById('gallery-main-container');
-            container.innerHTML = `<div class="w-4/5 h-64 bg-gradient-to-b from-gray-50 to-white border-2 border-orange-300 rounded-2xl shadow-md p-4 flex flex-col justify-between items-center text-center"><span class="text-xs font-black text-orange-400/60 self-start">MX CARD #${String(id).padStart(2, '0')}</span><div class="text-5xl my-2">🎴</div><div class="w-full"><span class="text-[10px] uppercase tracking-widest font-black text-orange-500 block mb-1">${brand}</span><h3 class="text-sm font-black text-gray-800 px-2 leading-tight uppercase tracking-wide">${name}</h3></div></div>`;
+        function closeGallery() {
+            document.getElementById('modal-gallery').classList.add('hidden');
         }
 
-        function closeGallery() { window.history.back(); }
-        function closeGalleryDirect() { document.getElementById('modal-gallery').classList.add('hidden'); }
-        
-        function closeModalDirect() { 
-            document.getElementById('modal-alert').classList.add('hidden'); 
-            updateUI(); 
-            // Gatilho do 3º pacote ao clicar em Continuar
-            checkThirdPackOffer();
-        }
-
-        function closeOfertaEspecial() { window.history.back(); }
-        function closeOfertaEspecialDirect() { document.getElementById('modal-oferta-especial').classList.add('hidden'); }
-
-        // Verifica se é a 3ª abertura para exibir a Oferta Especial Diária
-        function checkThirdPackOffer() {
-            if (userState.packsOpenedToday === 3) {
-                // Abre o modal de Oferta Especial Diária
-                window.history.pushState({modal: 'oferta-especial'}, "");
-                document.getElementById('modal-oferta-especial').classList.remove('hidden');
-                playSoundValeBrinde();
-            }
-        }
-
-        function triggerPackOpening(type) {
-            if (type === 'coins' && userState.coins < 5) return;
-            initAudio();
-
-            const overlay = document.getElementById('pack-animation-overlay');
-            const packImg = document.getElementById('mx-booster-pack');
-            const statusText = document.getElementById('pack-opening-text');
-
-            packImg.classList.remove('animate-pack-shake', 'animate-pack-open');
-            statusText.innerText = "Preparando pacote...";
-            overlay.classList.remove('hidden');
-
-            setTimeout(() => {
-                packImg.classList.add('animate-pack-shake');
-                if (type === 'automatic-brinde') statusText.innerText = "Abrindo seu Pacote Bônus! ⚡";
-                else statusText.innerText = "Sintonizando sorte... ⚡";
-            }, 50);
-
-            setTimeout(() => {
-                packImg.classList.remove('animate-pack-shake'); packImg.classList.add('animate-pack-open');
-                statusText.innerText = "Abrindo! 🔥";
-            }, 1050);
-
-            setTimeout(() => {
-                overlay.classList.add('hidden'); packImg.classList.remove('animate-pack-open');
-                openPack(type);
-            }, 1650);
-        }
-
-        function exchangeCards(id) { 
-            if (userState.inventory[id] >= 4) { userState.inventory[id] -= 3; saveState(); updateUI(); triggerPackOpening('exchange-reward'); } 
-        }
-
-        function openPack(type) {
-            if (type === 'coins') {
-                userState.coins -= 5;
-                userState.packsOpenedToday += 1; // Incrementa contagem do dia
-            }
-            let htmlCards = `<div class="grid grid-cols-3 gap-2 my-4">`;
-            let ganhouBrindeNessePacote = false;
-            
-            for (let i = 0; i < 3; i++) {
-                const rand = Math.random();
-                
-                if (rand < 0.03 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
-                    userState.hasBrindeCoinsReward = true; ganhouBrindeNessePacote = true;
-                    htmlCards += `<div class="bg-orange-50 rounded-xl border-2 border-orange-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">🪙</div><span class="text-[6.5px] font-black text-white bg-orange-500 px-1 rounded absolute top-1 uppercase">+15 COINS</span></div>`;
-                } else if (rand < 0.09 && (type === 'coins' || type === 'free-vip' || type === 'exchange-reward')) {
-                    userState.bonusPackCount += 1; 
-                    ganhouBrindeNessePacote = true;
-                    htmlCards += `<div class="bg-orange-50 rounded-xl border-2 border-orange-400 flex flex-col items-center justify-center text-center h-28 overflow-hidden relative shadow-md"><div class="text-xl">📦</div><span class="text-[6.5px] font-black text-white bg-orange-500 px-1 rounded absolute top-1 uppercase">PACK BÔNUS</span></div>`;
-                } else {
-                    let cardId;
-                    if (CARD_24_LIBERADO) {
-                        cardId = Math.floor(Math.random() * 24) + 1;
-                    } else {
-                        cardId = Math.floor(Math.random() * 23) + 1;
-                    }
-                    
-                    userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
-                    const p = PRODUCTS_DATA.find(prod => prod.id === cardId);
-                    htmlCards += `<div class="bg-white rounded-xl border border-gray-200 flex flex-col items-center justify-between text-center h-28 overflow-hidden relative block"><img src="${p.main_image}" class="w-full h-full object-cover"><span class="text-[8px] text-gray-800 bg-white/90 px-1 rounded absolute top-1 left-1 shadow-xs">#${String(cardId).padStart(2, '0')}</span></div>`;
-                }
-            }
-            htmlCards += `</div>`;
-            saveState(); updateUI();
-            
-            if (ganhouBrindeNessePacote) playSoundValeBrinde(); else playSoundPlim();
-            
-            document.getElementById('modal-title').innerText = type === 'free-vip' ? "Pacote VIP Disponibilizado! 🎁" : (type === 'exchange-reward' ? "Troca Concluída! 🔄" : "Pacote Aberto! 📦");
-            document.getElementById('modal-message').innerHTML = `Seus itens sorteados: ${htmlCards}`;
-            document.getElementById('modal-btn').onclick = () => closeModalDirect();
-            
-            window.history.pushState({modal: 'alert'}, "");
+        // --- CONTROLE DE ALERTA MODAL ---
+        function showAlert(icon, title, message) {
+            document.getElementById('modal-icon').textContent = icon;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').innerHTML = message;
             document.getElementById('modal-alert').classList.remove('hidden');
         }
+
+        function closeModalDirect() {
+            document.getElementById('modal-alert').classList.add('hidden');
+        }
+
+        // --- SISTEMA DE TIMER FLUTUANTE ---
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                const timerBtn = document.getElementById('btn-floating-timer');
+                const timerText = document.getElementById('countdown-timer');
+                const timerIcon = document.getElementById('timer-icon');
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerBtn.disabled = false;
+                    timerBtn.classList.add('timer-ready');
+                    timerIcon.textContent = "COLETAR";
+                    timerText.textContent = "🎁";
+                    playSoundPlim();
+                } else {
+                    timerText.textContent = `${timerSeconds}s`;
+                }
+            }, 1000);
+        }
+
+        function collectTimerCoins(event) {
+            const btn = document.getElementById('btn-floating-timer');
+            if (btn.disabled) return;
+
+            // Criar partículas de moedinhas voando na tela
+            for (let i = 0; i < 5; i++) {
+                createCoinParticle(event.clientX, event.clientY);
+            }
+
+            userState.coins += 2;
+            saveState();
+            updateUI();
+
+            // Resetar Timer
+            btn.disabled = true;
+            btn.classList.remove('timer-ready');
+            document.getElementById('timer-icon').textContent = "Aguarde";
+            timerSeconds = 15;
+            document.getElementById('countdown-timer').textContent = "15s";
+            startTimer();
+        }
+
+        function createCoinParticle(x, y) {
+            const coin = document.createElement('div');
+            coin.className = 'coin-particle';
+            coin.textContent = '🪙';
+            coin.style.left = `${x}px`;
+            coin.style.top = `${y}px`;
+            
+            const randomX = (Math.random() - 0.5) * 150;
+            const randomY = -(Math.random() * 150 + 50);
+            coin.style.setProperty('--tw-x', `${randomX}px`);
+            coin.style.setProperty('--tw-y', `${randomY}px`);
+
+            document.body.appendChild(coin);
+            setTimeout(() => coin.remove(), 800);
+        }
+
+        // --- SISTEMA DE CHECK-IN DIÁRIO ---
+        function claimDailyCheckin() {
+            const todayStr = new Date().toDateString();
+            if (userState.lastCheckInDate === todayStr) {
+                showAlert("📆", "Amanhã tem mais!", "Você já pegou suas moedas diárias hoje. Volte amanhã para ganhar mais!");
+                return;
+            }
+
+            userState.coins += 5;
+            userState.lastCheckInDate = todayStr;
+            saveState();
+            updateUI();
+            showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
+        }
+
+        // --- ROLETA DA SORTE ---
+        function spinRoulette() {
+            if (isSpinning) return;
+            if (userState.coins < 3) {
+                showAlert("🪙", "Moedas Insuficientes", "Você precisa de pelo menos 3 moedas MX para girar a roleta.");
+                return;
+            }
+
+            userState.coins -= 3;
+            isSpinning = true;
+            saveState();
+            updateUI();
+
+            const wheel = document.getElementById('wheel');
+            // Gira pelo menos 5 voltas (1800 graus) + um ângulo aleatório
+            const extraDegrees = Math.floor(Math.random() * 360);
+            currentRotation += 1800 + extraDegrees;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                // Definir prêmio com base no ângulo final (Normalizado em 360)
+                const normalized = (currentRotation % 360);
+                let rewardText = "";
+                let icon = "🎁";
+
+                if (normalized >= 0 && normalized < 90) {
+                    userState.coupons.qcy = true;
+                    rewardText = "Você ganhou um Cupom de 15% de Desconto em toda a Linha QCY![cite: 1] Verifique o seu Baú!";
+                    icon = "🎟️";
+                } else if (normalized >= 90 && normalized < 180) {
+                    userState.coins += 5;
+                    rewardText = "Parabéns! Você ganhou +5 Moedas MX adicionais!";
+                    icon = "🪙";
+                } else if (normalized >= 180 && normalized < 270) {
+                    userState.coupons.edifier = true;
+                    rewardText = "Super Prêmio! Cupom de R$ 200,00 de desconto na marca Edifier[cite: 1] adicionado ao seu Baú!";
+                    icon = "🎟️";
+                } else {
+                    userState.coins += 1;
+                    rewardText = "Você recebeu +1 Moeda MX de volta!";
+                    icon = "🪙";
+                }
+
+                saveState();
+                updateUI();
+                showAlert(icon, "Giro da Sorte", rewardText);
+            }, 4000);
+        }
+
+        // --- SISTEMA DE ABERTURA DE PACOTES ---
+        function triggerPackOpening(type) {
+            if (type === 'coins') {
+                if (userState.coins < 5) {
+                    showAlert("🪙", "Sem moedas", "Você precisa de pelo menos 5 moedas MX para abrir um pacote.");
+                    return;
+                }
+                userState.coins -= 5;
+            } else if (type === 'free') {
+                userState.claimedVipFreePack = true;
+            }
+
+            // Ativa overlay de animação
+            const overlay = document.getElementById('pack-animation-overlay');
+            const pack = document.getElementById('mx-booster-pack');
+            const packText = document.getElementById('pack-opening-text');
+
+            overlay.classList.remove('hidden');
+            pack.className = "w-full max-w-[260px] rounded-2xl shadow-xl animate-pack-shake";
+            packText.textContent = "Sacudindo o pacote...";
+
+            setTimeout(() => {
+                pack.className = "w-full max-w-[260px] rounded-2xl shadow-xl animate-pack-open";
+                packText.textContent = "Rasgando embalagem...";
+
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    openPack();
+                }, 600);
+            }, 1500);
+        }
+
+        function openPack() {
+            // Cada pacote contém 3 cartas aleatórias
+            let cardsPulled = [];
+            for (let i = 0; i < 3; i++) {
+                let cardId = selectCardRandomly();
+                cardsPulled.push(PRODUCTS_DATA.find(p => p.id === cardId));
+                userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
+            }
+
+            userState.packsOpenedToday++;
+            saveState();
+            updateUI();
+
+            // Mensagem de exibição dos cards obtidos
+            const namesList = cardsPulled.map(c => `<li>• <strong>${c.name}</strong></li>`).join('');
+            showAlert("🎴", "Pacote Aberto!", `
+                <p class="mb-2">Você tirou as seguintes cartas:</p>
+                <ul class="text-left bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-1 mb-2">
+                    ${namesList}
+                </ul>
+            `);
+
+            // Gatilho da Oferta Especial no 3º pacote aberto no dia
+            if (userState.packsOpenedToday === 3) {
+                setTimeout(() => {
+                    document.getElementById('modal-oferta-especial').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+
+        function selectCardRandomly() {
+            // Lógica de sorteio respeitando a raridade do CARD 24
+            let availableIds = PRODUCTS_DATA.map(p => p.id);
+            if (!CARD_24_LIBERADO) {
+                // Remove o card ultra raro (id 24) se não estiver liberado administrativamente
+                availableIds = availableIds.filter(id => id !== 24);
+            }
+
+            // 1.5% de chance de vir o Card 24 se liberado
+            if (CARD_24_LIBERADO && Math.random() < 0.015) {
+                return 24;
+            }
+
+            // Sorteia normalmente entre os restantes
+            const idx = Math.floor(Math.random() * availableIds.length);
+            return availableIds[idx];
+        }
+
+        function closeOfertaEspecial() {
+            document.getElementById('modal-oferta-especial').classList.add('hidden');
+        }
+
+        // --- SISTEMA DE BRINDES INSTANTÂNEOS ---
+        function claimInstantBrinde(type) {
+            if (type === 'coins') {
+                if (userState.hasBrindeCoinsReward) {
+                    showAlert("⚠️", "Já Resgatado", "Você já resgatou o prêmio deste brinde hoje!");
+                    return;
+                }
+                userState.coins += 50;
+                userState.hasBrindeCoinsReward = true;
+                showAlert("🪙", "Parabéns!", "Você ganhou +50 Moedas MX bônus na hora![cite: 1]");
+            } else if (type === 'cupom') {
+                showAlert("🎁", "Seu Cupom Especial", "O seu Cupom de desconto de R$ 200 Edifier está ativo[cite: 1] e pode ser resgatado diretamente enviando uma mensagem para o nosso WhatsApp de suporte!");
+            }
+            saveState();
+            updateUI();
+        }
+
+        // --- CHEATS & RESET DO JOGO ---
+        function cheatCoinsAndBrinde() {
+            userState.coins += 50;
+            // Libera cupons artificialmente para testar os Brindes Instantâneos
+            userState.coupons.tronsmart = true;
+            userState.coupons.edifier = true;
+            saveState();
+            updateUI();
+            showAlert("⚡", "Modo Criativo", "+50 Moedas creditadas e Brindes Instantâneos liberados para resgate!");
+        }
+
+        function resetGame() {
+            if (confirm("Tem certeza que deseja resetar todo o seu progresso? Você perderá suas moedas e coleção.")) {
+                userState = {
+                    coins: 10,
+                    claimedVipFreePack: false,
+                    inventory: {},
+                    bonusPackCount: 0,
+                    hasBrindeCoinsReward: false,
+                    coupons: { edifier: false, qcy: false, tronsmart: false },
+                    wonGrandPrize: false,
+                    milestones: { pct25: false, pct50: false, pct75: false },
+                    lastCheckInDate: null,
+                    packsOpenedToday: 0,
+                    lastDateOpened: new Date().toDateString(),
+                };
+                saveState();
+                updateUI();
+                showAlert("♻️", "Jogo Resetado", "Sua jornada recomeçou! Divirta-se.");
+            }
+        }
+
+        // --- INICIALIZAÇÃO ---
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            startTimer();
+        });
     </script>
 </body>
 </html>
