@@ -165,19 +165,21 @@
 
     <div class="max-w-md mx-auto px-4 pt-4 select-none">
         
-        <!-- HEADER COMPACTO CLARO -->
+        <!-- HEADER COM ARTE SUPERIOR INTEGRADA -->
         <header class="flex flex-col mb-4 border-b border-gray-200 pb-3">
-            <div class="flex items-center justify-between">
-                <h1 class="text-xl font-black tracking-wider text-orange-500">MX COMPLETOU GANHOU</h1>
-                <div class="bg-white border border-orange-300 px-3 py-1 rounded-full text-sm font-bold text-orange-500 flex items-center gap-1 shadow-sm">
-                    <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-500">MX</span>
-                </div>
+            <!-- Banner Superior -->
+            <div class="w-full mb-3 rounded-xl overflow-hidden shadow-sm border border-gray-100">
+                <img src="superior.jpg" alt="MX Completou Ganhou" class="w-full h-auto object-cover block">
             </div>
-            <!-- LINK DO REGULAMENTO INTERATIVO -->
-            <div class="mt-2 flex justify-start">
-                <button onclick="switchTab('regulamento')" class="text-[11px] font-bold text-gray-600 hover:text-orange-500 flex items-center gap-1 bg-white border border-gray-200 px-2.5 py-1 rounded-md transition shadow-xs">
+            
+            <!-- Botão de Regulamento e Saldo Alinhados -->
+            <div class="flex items-center justify-between">
+                <button onclick="switchTab('regulamento')" class="text-[11px] font-bold text-gray-600 hover:text-orange-500 flex items-center gap-1 bg-white border border-gray-200 px-2.5 py-1.5 rounded-md transition shadow-xs">
                     📜 Regulamento do Jogo
                 </button>
+                <div class="bg-white border border-orange-300 px-3 py-1.5 rounded-full text-sm font-bold text-orange-500 flex items-center gap-1.5 shadow-sm">
+                    <span>🪙</span> <span id="balance-display">10</span> <span class="text-xs text-gray-500">MX</span>
+                </div>
             </div>
         </header>
 
@@ -293,7 +295,7 @@
                 </div>
             </div>
 
-            <!-- VALE BRINDES INSTANTÂNEOS (REFORMULADOS) -->
+            <!-- VALE BRINDES INSTANTÂNEOS -->
             <div>
                 <h2 class="text-xs font-bold text-orange-500 tracking-wider uppercase mb-3">VALE BRINDES INSTANTÂNEOS</h2>
                 <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container"></div>
@@ -482,7 +484,7 @@
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]" }
         ];
 
-        // CONFIGURAÇÃO DOS SETORES DA ROLETINHA (CONFORME SOLICITADO)
+        // CONFIGURAÇÃO DOS SETORES DA ROLETINHA
         const SPIN_REWARDS = [
             { label: "Vale 2 MX Coins", type: "coins", value: 2, icon: "🪙" },
             { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙" },
@@ -516,7 +518,7 @@
             if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); 
         }
 
-        // NOVO ALERTA SONORO DISCRETO ("tutu, tutu")
+        // ALERTA SONORO DISCRETO ("tutu, tutu")
         function playSoundTutu() {
             initAudio();
             try {
