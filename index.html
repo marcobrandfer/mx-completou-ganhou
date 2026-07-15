@@ -81,7 +81,7 @@
             clear: both;
         }
 
-        /* CONFIGURAÇÕES DA ROLETA REVALORIZADA - CENTRALIZADA E GIGANTE */
+        /* CONFIGURAÇÕES DA ROLETA CENTRALIZADA E GIGANTE */
         .roulette-container {
             position: relative;
             width: 260px;
@@ -294,8 +294,7 @@
             <!-- ÁLBUM REGULAR -->
             <div>
                 <h2 class="text-xs font-bold text-orange-500 tracking-wider uppercase mb-3 flex justify-between">
-                    <span>Sua Coleção (24 Cards)</span>
-                    <span class="text-gray-400 font-normal">Toque para inspecionar</span>
+                    <span>COMPLETE O SEU ÁLBUM DE MX CARDS</span>
                 </h2>
                 <div class="grid grid-cols-2 gap-3.5" id="cards-grid"></div>
             </div>
@@ -468,13 +467,14 @@
         ];
 
         // MAPEAMENTO ESTRUTURADO DOS SETORES DA ROLETINHA CONFORME IMAGEM DO USUÁRIO
+        // Alinhado para que a roleta pare perfeitamente no centro de cada prêmio
         const SPIN_REWARDS = [
-            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 60 },
-            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 120 },
-            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 180 },
-            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 240 },
-            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 300 },
-            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 360 }
+            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 30 },
+            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 90 },
+            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 150 },
+            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 210 },
+            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 270 },
+            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 330 }
         ];
 
         let userState = {
@@ -704,7 +704,7 @@
             if (userState.brindeFisicoDesbloqueado) {
                 cardFisico.innerHTML = `
                     <img src="MXBrindecard.jpg" alt="MX Brindes Card" class="w-24 h-24 object-contain rounded-lg shadow-sm cursor-pointer hover:scale-105 transition" onclick="triggerPackOpening('brinde_fisico')" onerror="this.src='mxpack.jpg'">
-                    <h4 class="font-extrabold text-[11px] text-orange-600 leading-tight mt-1">Pacote Surpresa!</h4>
+                    <h4 class="font-extrabold text-[11px] text-orange-600 leading-tight mt-1">Pacote Saboroso!</h4>
                     <button onclick="triggerPackOpening('brinde_fisico')" class="mt-2 w-full bg-orange-500 text-white font-black py-1.5 rounded-lg text-[9px] uppercase shadow">Abrir Pacote</button>
                 `;
             } else {
@@ -1048,6 +1048,7 @@
             const randomRewardIdx = Math.floor(Math.random() * SPIN_REWARDS.length);
             const reward = SPIN_REWARDS[randomRewardIdx];
 
+            // Rotação básica somada ao deslocamento ideal para o marcador no topo (0° / 360°)
             const baseSpins = 5 * 360; 
             const angleStop = reward.targetAngle;
             currentRotation += baseSpins + (360 - (currentRotation % 360)) - angleStop;
