@@ -47,9 +47,9 @@
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             border: 2px solid #22c55e;
         }
-        .animate-pack-shake { animation: pack-shake 0.5s ease-in-out 2; }
-        .animate-pack-open { animation: pack-open 0.6s ease-in-out forwards; }
-        .animate-card-reveal { animation: card-reveal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .animate-pack-shake { animation: pack-shake 0.6s ease-in-out 2; }
+        .animate-pack-open { animation: pack-open 0.7s ease-in-out forwards; }
+        .animate-card-reveal { animation: card-reveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
         /* Custom Scrollbar Modo Claro */
         ::-webkit-scrollbar { width: 6px; }
@@ -94,7 +94,7 @@
             background-image: url('roleta.png');
             background-size: cover;
             background-position: center;
-            transition: transform 4s cubic-bezier(0.15, 0.85, 0.15, 1);
+            transition: transform 5s cubic-bezier(0.15, 0.85, 0.15, 1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .roulette-marker {
@@ -274,11 +274,6 @@
         <div id="tab-cards" class="tab-content space-y-6">
             <div class="bg-white border border-gray-200 rounded-xl p-4 text-center space-y-3 shadow-xs">
                 <div id="vip-free-pack-box"></div>
-                <div id="bonus-packs-container" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-3 text-center">
-                    <h4 class="font-bold text-amber-700 text-xs uppercase">📦 Pacotes Acumulados</h4>
-                    <p class="text-[10px] text-gray-500 mb-2">Você tem <span id="bonus-pack-qty" class="font-bold">0</span> pacote(s) extra(s) para abrir!</p>
-                    <button onclick="triggerPackOpening('bonus')" class="bg-amber-500 text-white font-black text-xs py-2 px-4 rounded-lg shadow uppercase">Abrir Pacote Grátis</button>
-                </div>
                 <div class="h-px bg-gray-200 my-2"></div>
                 <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide">Abastecer sua Coleção</h3>
                 
@@ -340,7 +335,7 @@
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">🔄 2. Sistema de Trocas (3 por 1)</h4>
-                    <p>Tem cartas repetidas? Assim que você acumular **3 ou mais cópias** de qualquer card, um botão de troca aparecerá logo abaixo dele. Clique para trocar 3 repetidas por um pacote novinho contendo 3 cards surpresas!</p>
+                    <p>Tem cartas repetidas? Assim que você acumular **3 ou mais cópias** de qualquer card, você pode trocá-las instantaneamente por um pacote novinho contendo 3 cards surpresas clicando no botão que aparece abaixo da carta!</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">💰 3. O Grande Prêmio</h4>
@@ -395,7 +390,7 @@
         </div>
     </div>
 
-    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA (ATUALIZADA) -->
+    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA -->
     <div id="modal-oferta-especial" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] hidden flex items-center justify-center p-6">
         <div class="bg-white border-4 border-red-500 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl relative">
             <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider animate-bounce shadow">OFERTA HOJE!</div>
@@ -403,7 +398,6 @@
             <h3 class="text-lg font-black text-red-600 mb-1">PARABÉNS! VOCÊ FOI SELECIONADO!</h3>
             <p class="text-xs text-gray-500 font-bold uppercase mb-3">Adquira HOJE este Produto nessa Oferta ESPECIAL!!!</p>
             
-            <!-- Imagem da Promoção Aplicada Sem os Textos Antigos de Desconto -->
             <div class="bg-gray-50 rounded-xl p-1 mb-4 border border-gray-100 overflow-hidden">
                 <img src="promofifineam8t.jpg" alt="Oferta Especial Fifine" class="mx-auto rounded-lg max-h-72 object-contain shadow-xs" onerror="this.src='MXCARD6.jpg'">
             </div>
@@ -516,36 +510,71 @@
             if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); 
         }
 
-        // ALERTA SONORO DISCRETO ("tutu, tutu")
+        // Bips de áudio sintetizados por código
         function playSoundTutu() {
             initAudio();
             try {
                 const now = soundCtx.currentTime;
                 
-                // Primeiro Bip ("tu")
                 const osc1 = soundCtx.createOscillator();
                 const gain1 = soundCtx.createGain();
                 osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(350, now); 
+                osc1.frequency.setValueAtTime(440, now); 
                 gain1.gain.setValueAtTime(0.1, now);
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
                 osc1.connect(gain1);
                 gain1.connect(soundCtx.destination);
                 osc1.start(now);
-                osc1.stop(now + 0.12);
+                osc1.stop(now + 0.1);
 
-                // Segundo Bip em sequência ("tu")
                 const osc2 = soundCtx.createOscillator();
                 const gain2 = soundCtx.createGain();
                 osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(350, now + 0.15); 
-                gain2.gain.setValueAtTime(0.1, now + 0.15);
+                osc2.frequency.setValueAtTime(554, now + 0.12); 
+                gain2.gain.setValueAtTime(0.1, now + 0.12);
                 gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
                 osc2.connect(gain2);
                 gain2.connect(soundCtx.destination);
-                osc2.start(now + 0.15);
-                osc2.stop(now + 0.27);
+                osc2.start(now + 0.12);
+                osc2.stop(now + 0.25);
+            } catch (e) { console.warn("Audio Context error", e); }
+        }
 
+        function playSoundSpin() {
+            initAudio();
+            try {
+                const now = soundCtx.currentTime;
+                const osc = soundCtx.createOscillator();
+                const gain = soundCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(600, now + 1.5);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+                osc.connect(gain);
+                gain.connect(soundCtx.destination);
+                osc.start(now);
+                osc.stop(now + 1.8);
+            } catch (e) { console.warn("Audio Context error", e); }
+        }
+
+        function playSoundWin() {
+            initAudio();
+            try {
+                const now = soundCtx.currentTime;
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, C
+                notes.forEach((freq, idx) => {
+                    const osc = soundCtx.createOscillator();
+                    const gain = soundCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, now + (idx * 0.1));
+                    gain.gain.setValueAtTime(0.1, now + (idx * 0.1));
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + (idx * 0.1) + 0.4);
+                    osc.connect(gain);
+                    gain.connect(soundCtx.destination);
+                    osc.start(now + (idx * 0.1));
+                    osc.stop(now + (idx * 0.1) + 0.45);
+                });
             } catch (e) { console.warn("Audio Context error", e); }
         }
 
@@ -576,7 +605,6 @@
             if (userState.lastDateOpened !== todayStr) {
                 userState.lastDateOpened = todayStr;
                 userState.packsOpenedToday = 0;
-                // Esvazia tudo conforme a regra de expiração diária
                 userState.brindeFisicoDesbloqueado = false;
                 userState.brindeCoinsDesbloqueado = false;
                 userState.coupons = [];
@@ -652,16 +680,6 @@
                 `;
             }
 
-            // Controle de Exibição dos Pacotes Extras Acumulados
-            const bonusContainer = document.getElementById('bonus-packs-container');
-            const bonusQty = document.getElementById('bonus-pack-qty');
-            if (userState.bonusPackCount > 0) {
-                bonusContainer.classList.remove('hidden');
-                bonusQty.textContent = userState.bonusPackCount;
-            } else {
-                bonusContainer.classList.add('hidden');
-            }
-
             // Badge de Notificação no Baú de Prêmios
             const hasCoupon = userState.brindeFisicoDesbloqueado || userState.brindeCoinsDesbloqueado || userState.coupons.length > 0;
             document.getElementById('reward-badge').classList.toggle('hidden', !hasCoupon);
@@ -677,7 +695,7 @@
             const container = document.getElementById('brindes-duplos-container');
             container.innerHTML = '';
             
-            // Primeiro Espaço: Brinde Físico ("MXBrindecard.jpg" - AGE EXATAMENTE COMO ABRIR PACOTE)
+            // Primeiro Espaço: Brinde Físico ("MXBrindecard.jpg" - abre 3 cartas)
             const cardFisico = document.createElement('div');
             cardFisico.className = `p-2.5 rounded-xl border flex flex-col items-center text-center justify-between min-h-[180px] transition ${userState.brindeFisicoDesbloqueado ? 'bg-green-50 border-green-300' : 'bg-gray-100/50 border-gray-200 border-dashed'}`;
             
@@ -727,6 +745,7 @@
             userState.brindeCoinsDesbloqueado = false; 
             saveState();
             updateUI();
+            playSoundWin();
             showAlert("🪙", "Excelente!", "Você coletou 15 Moedas MX com sucesso!");
         }
 
@@ -774,13 +793,10 @@
 
         function executeCardTrade(cardId) {
             if ((userState.inventory[cardId] || 0) < 3) return;
-            
-            if (confirm("Deseja trocar 3 cópias repetidas deste card por 1 pacote novo com 3 cards?")) {
-                userState.inventory[cardId] -= 3;
-                saveState();
-                updateUI();
-                triggerPackOpening('trade_swap');
-            }
+            userState.inventory[cardId] -= 3;
+            saveState();
+            updateUI();
+            triggerPackOpening('trade_swap');
         }
 
         function renderProducts() {
@@ -937,6 +953,7 @@
             userState.coins += 2;
             saveState();
             updateUI();
+            playSoundWin();
 
             btn.disabled = true;
             btn.classList.remove('timer-ready');
@@ -974,6 +991,7 @@
             userState.lastCheckInDate = todayStr;
             saveState();
             updateUI();
+            playSoundWin();
             showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
         }
 
@@ -989,6 +1007,7 @@
             isSpinning = true;
             saveState();
             updateUI();
+            playSoundSpin();
 
             const wheel = document.getElementById('wheel');
             const randomRewardIdx = Math.floor(Math.random() * SPIN_REWARDS.length);
@@ -1015,8 +1034,9 @@
 
                 saveState();
                 updateUI();
+                playSoundWin();
                 showAlert(reward.icon, "Giro da Sorte", rewardText);
-            }, 4000);
+            }, 5000); // Aguarda o final da rotação (5s) para anunciar
         }
 
         // --- ABERTURA DE PACOTES ---
@@ -1051,8 +1071,8 @@
                 setTimeout(() => {
                     overlay.classList.add('hidden');
                     openPack();
-                }, 600);
-            }, 1500);
+                }, 700);
+            }, 1600);
         }
 
         function openPack() {
@@ -1063,6 +1083,7 @@
                 userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
             }
 
+            // Chance de dar outro vale brinde ao abrir pacotes normais
             if (Math.random() < 0.15) {
                 const rand = Math.random();
                 if (rand < 0.5) {
@@ -1075,6 +1096,7 @@
             userState.packsOpenedToday++;
             saveState();
             updateUI();
+            playSoundWin();
 
             const revealContainer = document.getElementById('reveal-cards-container');
             revealContainer.innerHTML = '';
@@ -1082,7 +1104,7 @@
             cardsPulled.forEach((c, index) => {
                 const cardDiv = document.createElement('div');
                 cardDiv.className = "bg-white border-2 border-orange-400 rounded-xl p-1.5 flex flex-col items-center justify-between text-center shadow-lg opacity-0 animate-card-reveal";
-                cardDiv.style.animationDelay = `${index * 250}ms`; 
+                cardDiv.style.animationDelay = `${index * 300}ms`; 
 
                 cardDiv.innerHTML = `
                     <div class="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
@@ -1099,7 +1121,7 @@
             if (userState.packsOpenedToday === 3) {
                 setTimeout(() => {
                     document.getElementById('modal-oferta-especial').classList.remove('hidden');
-                }, 2000);
+                }, 2200);
             }
         }
 
@@ -1133,6 +1155,7 @@
             userState.inventory[1] = (userState.inventory[1] || 0) + 3;
             saveState();
             updateUI();
+            playSoundWin();
             showAlert("⚡", "Modo Criativo", "+50 Moedas creditadas, Vales-Brindes liberados e +3 cópias do Card #1 adicionadas!");
         }
 
