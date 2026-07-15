@@ -395,7 +395,7 @@
         </div>
     </div>
 
-    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA -->
+    <!-- POP-UP: OFERTA ESPECIAL DIÁRIA (ATUALIZADA) -->
     <div id="modal-oferta-especial" class="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] hidden flex items-center justify-center p-6">
         <div class="bg-white border-4 border-red-500 rounded-2xl p-5 text-center max-w-sm w-full shadow-2xl relative">
             <div class="absolute -top-4 -right-4 bg-red-600 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider animate-bounce shadow">OFERTA HOJE!</div>
@@ -403,17 +403,15 @@
             <h3 class="text-lg font-black text-red-600 mb-1">PARABÉNS! VOCÊ FOI SELECIONADO!</h3>
             <p class="text-xs text-gray-500 font-bold uppercase mb-3">Adquira HOJE este Produto nessa Oferta ESPECIAL!!!</p>
             
-            <div class="bg-gray-50 rounded-xl p-3 mb-4 border border-gray-100">
-                <img src="oferta_especial.jpg" alt="Oferta do Dia" class="mx-auto rounded-lg max-h-48 object-contain mb-2 shadow-xs" onerror="this.src='MXCARD24.jpg'">
-                <p class="text-sm font-black text-gray-800">Fone Premium Edifier R1700BT[cite: 1]</p>
-                <p class="text-xs text-gray-400 line-through">De: R$ 899,90[cite: 1]</p>
-                <p class="text-lg font-black text-green-600">Por apenas: R$ 699,00!</p>
+            <!-- Imagem da Promoção Aplicada Sem os Textos Antigos de Desconto -->
+            <div class="bg-gray-50 rounded-xl p-1 mb-4 border border-gray-100 overflow-hidden">
+                <img src="promofifineam8t.jpg" alt="Oferta Especial Fifine" class="mx-auto rounded-lg max-h-72 object-contain shadow-xs" onerror="this.src='MXCARD6.jpg'">
             </div>
 
             <p class="text-[10px] text-red-500 font-black uppercase mb-4 leading-tight">⏳ Mas corra e aproveite, Amanhã o Preço Volta ao Normal!</p>
             
             <div class="flex flex-col gap-2">
-                <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20aproveitar%20a%20Oferta%20Especial%20Di%C3%A1ria%20do%20App%21', '_blank')" class="w-full bg-green-500 hover:bg-green-600 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider border-0 cursor-pointer shadow">🟢 GARANTIR MINHA OFERTA NO WHATSAPP</button>
+                <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20aproveitar%20a%20Oferta%20Especial%20do%20Dia%3A%20Kit%20Pro%20AM8T%20por%20387%2C99%21', '_blank')" class="w-full bg-green-500 hover:bg-green-600 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider border-0 cursor-pointer shadow">🟢 GARANTIR MINHA OFERTA NO WHATSAPP</button>
                 <button onclick="closeOfertaEspecial()" class="w-full bg-gray-100 text-gray-500 font-bold py-2 rounded-xl text-[10px] uppercase border border-gray-200">Fechar Oferta</button>
             </div>
         </div>
@@ -503,9 +501,9 @@
             lastCheckInDate: null,
             packsOpenedToday: 0,
             lastDateOpened: null,
-            brindeFisicoDesbloqueado: false, // Controla o MXBrindecard
-            brindeCoinsDesbloqueado: false,  // Controla o MXGoldcoins
-            coupons: [] // Cupons ganhos no Giro da Sorte
+            brindeFisicoDesbloqueado: false, 
+            brindeCoinsDesbloqueado: false,  
+            coupons: [] 
         };
 
         let soundCtx = null;
@@ -726,13 +724,13 @@
         function claimGoldCoinsReward() {
             if (!userState.brindeCoinsDesbloqueado) return;
             userState.coins += 15;
-            userState.brindeCoinsDesbloqueado = false; // Consumido
+            userState.brindeCoinsDesbloqueado = false; 
             saveState();
             updateUI();
             showAlert("🪙", "Excelente!", "Você coletou 15 Moedas MX com sucesso!");
         }
 
-        // --- ÁLBUM E BOTÃO DE TROCA DE REPETIDAS (3 por 1) ---
+        // --- ÁLBUM E BOTÃO DE TROCA DE REPETIDAS ---
         function renderAlbum() {
             const container = document.getElementById('cards-grid');
             container.innerHTML = '';
@@ -759,13 +757,12 @@
                 
                 wrapper.appendChild(card);
 
-                // SE TIVER 3 OU MAIS REPETIDAS, ADICIONA O BOTÃO DE TROCA
                 if (copies >= 3) {
                     const tradeBtn = document.createElement('button');
                     tradeBtn.className = "w-full bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-black py-1 px-2 rounded-lg text-[9px] uppercase tracking-wider shadow-xs hover:brightness-105 active:scale-95 transition";
                     tradeBtn.textContent = "♻️ Trocar 3 por 1 Pack";
                     tradeBtn.onclick = (e) => {
-                        e.stopPropagation(); // Evita abrir o modal de inspeção
+                        e.stopPropagation(); 
                         executeCardTrade(p.id);
                     };
                     wrapper.appendChild(tradeBtn);
@@ -775,7 +772,6 @@
             });
         }
 
-        // EXECUÇÃO DA TROCA DE CARDS
         function executeCardTrade(cardId) {
             if ((userState.inventory[cardId] || 0) < 3) return;
             
@@ -783,7 +779,6 @@
                 userState.inventory[cardId] -= 3;
                 saveState();
                 updateUI();
-                // Aciona a abertura de pacote grátis diretamente
                 triggerPackOpening('trade_swap');
             }
         }
@@ -820,7 +815,6 @@
 
             let hasRewards = false;
 
-            // Se o brinde físico (MXBrindecard) estiver desbloqueado
             if (userState.brindeFisicoDesbloqueado) {
                 hasRewards = true;
                 const row = document.createElement('div');
@@ -837,7 +831,6 @@
                 container.appendChild(row);
             }
 
-            // Renderização dos Cupons ganhos na roleta
             userState.coupons.forEach((cup, idx) => {
                 hasRewards = true;
                 const row = document.createElement('div');
@@ -984,7 +977,7 @@
             showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
         }
 
-        // --- ROLETA DA SORTE ATUALIZADA ---
+        // --- ROLETA DA SORTE ---
         function spinRoulette() {
             if (isSpinning) return;
             if (userState.coins < 3) {
@@ -998,7 +991,6 @@
             updateUI();
 
             const wheel = document.getElementById('wheel');
-            // Calcula o giro da roleta
             const randomRewardIdx = Math.floor(Math.random() * SPIN_REWARDS.length);
             const degreeOffset = randomRewardIdx * (360 / SPIN_REWARDS.length);
             currentRotation += 1800 + (360 - degreeOffset); 
@@ -1027,7 +1019,7 @@
             }, 4000);
         }
 
-        // --- SISTEMA DE ABERTURA DE PACOTES COM REVELAÇÃO VISUAL ---
+        // --- ABERTURA DE PACOTES ---
         function triggerPackOpening(type) {
             if (type === 'coins') {
                 if (userState.coins < 5) {
@@ -1041,7 +1033,6 @@
                 if (userState.bonusPackCount <= 0) return;
                 userState.bonusPackCount--;
             } else if (type === 'brinde_fisico') {
-                // Consome o brinde físico desbloqueado (MXBrindecard.jpg)
                 userState.brindeFisicoDesbloqueado = false;
             }
 
@@ -1072,7 +1063,6 @@
                 userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
             }
 
-            // Chance de 15% de conseguir um Brinde Físico ou Moedas extras adicionais ao abrir pacotes
             if (Math.random() < 0.15) {
                 const rand = Math.random();
                 if (rand < 0.5) {
@@ -1086,7 +1076,6 @@
             saveState();
             updateUI();
 
-            // Renderiza Visualmente as Imagens dos Cards no Modal de Revelação
             const revealContainer = document.getElementById('reveal-cards-container');
             revealContainer.innerHTML = '';
 
@@ -1104,7 +1093,6 @@
                 revealContainer.appendChild(cardDiv);
             });
 
-            // Exibe o Novo Modal com Efeito de Cards Reais
             document.getElementById('modal-reveal-cards').classList.remove('hidden');
 
             // Gatilho da Oferta Especial no 3º pacote aberto no dia
@@ -1137,20 +1125,19 @@
             document.getElementById('modal-oferta-especial').classList.add('hidden');
         }
 
-        // --- CHEATS & RESET DO JOGO ---
+        // --- CHEATS & RESET ---
         function cheatCoinsAndBrinde() {
             userState.coins += 50;
             userState.brindeFisicoDesbloqueado = true;
             userState.brindeCoinsDesbloqueado = true;
-            // Adiciona cópias repetidas de teste para ver o botão de troca em ação
             userState.inventory[1] = (userState.inventory[1] || 0) + 3;
             saveState();
             updateUI();
-            showAlert("⚡", "Modo Criativo", "+50 Moedas creditadas, Vales-Brindes liberados e +3 cópias do Card #1 adicionadas para você testar o botão de troca!");
+            showAlert("⚡", "Modo Criativo", "+50 Moedas creditadas, Vales-Brindes liberados e +3 cópias do Card #1 adicionadas!");
         }
 
         function resetGame() {
-            if (confirm("Tem certeza que deseja resetar todo o seu progresso? Você perderá suas moedas e coleção.")) {
+            if (confirm("Tem certeza que deseja resetar todo o seu progresso?")) {
                 userState = {
                     coins: 10,
                     claimedVipFreePack: false,
@@ -1165,11 +1152,10 @@
                 };
                 saveState();
                 updateUI();
-                showAlert("♻️", "Jogo Resetado", "Sua jornada recomeçou! Divirta-se.");
+                showAlert("♻️", "Jogo Resetado", "Sua jornada recomeçou!");
             }
         }
 
-        // --- INICIALIZAÇÃO ---
         window.addEventListener('DOMContentLoaded', () => {
             loadState();
             startTimer();
