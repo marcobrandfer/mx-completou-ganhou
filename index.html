@@ -99,16 +99,16 @@
         }
         .roulette-marker {
             position: absolute;
-            top: -6px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-top: 14px solid #ef4444;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 18px solid #ef4444;
             z-index: 30;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         /* Timer Flutuante e Efeitos */
@@ -244,7 +244,7 @@
                     <div class="flex-1 flex flex-col justify-between h-full py-1">
                         <div>
                             <h4 class="font-black text-orange-500 uppercase tracking-wider text-xs">🎰 MX GIRO DA SORTE</h4>
-                            <p class="text-[10px] text-gray-500 mt-0.5 leading-tight">Ganhe Moedas, Cupons Edifier, QCY ou pacotes de Cards!</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5 leading-tight">Ganhe Moedas, Cupons Edifier, QCY, Fifine ou pacotes de Cards!</p>
                         </div>
                         <button id="btn-spin" onclick="spinRoulette()" class="mt-3 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-black py-2 rounded-lg tracking-wide uppercase shadow border-0 transition active:scale-95 cursor-pointer w-full text-center">
                             🎲 GIRAR POR 🪙3 MX
@@ -310,7 +310,7 @@
         <div id="tab-produtos" class="tab-content hidden space-y-4">
             <div class="bg-orange-50 p-2.5 rounded-lg border border-orange-100 text-[11px] text-orange-700 flex items-center gap-2">
                 <span>🔥</span>
-                <p>Toque em qualquer card de produto para ver as especificações e garantir seu desconto exclusivo no WhatsApp!</p>
+                <p>Toque em qualquer card para comprar no WhatsApp com cupom ativo e garantia de entrega!</p>
             </div>
             <div class="shopee-grid" id="products-list"></div>
         </div>
@@ -331,23 +331,19 @@
             <div class="space-y-4 text-xs text-gray-600 leading-relaxed">
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">🎯 1. Objetivo</h4>
-                    <p>Colecione todos os **24 MX Cards** exclusivos dentro do aplicativo para completar o seu álbum digital de equipamentos de áudio e estúdio[cite: 1].</p>
+                    <p>Colecione todos os **24 MX Cards** para fechar seu álbum digital[cite: 1].</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">🔄 2. Sistema de Trocas (3 por 1)</h4>
-                    <p>Tem cartas repetidas? Assim que você acumular **3 ou mais cópias** de qualquer card, você pode trocá-las instantaneamente por um pacote novinho contendo 3 cards surpresas clicando no botão que aparece abaixo da carta!</p>
+                    <p>Acumule **3 ou mais cópias** de qualquer card para trocá-las instantaneamente por um pacote novinho contendo 3 cartas surpresa!</p>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">💰 3. O Grande Prêmio</h4>
-                    <p>O primeiro participante que completar a coleção completa receberá um **MX SUPER PIX de R$ 1.000,00**[cite: 1]. A retirada é feita clicando no botão oficial de resgate[cite: 1].</p>
+                    <p>O primeiro participante que completar a coleção completa receberá um **MX SUPER PIX de R$ 1.000,00**[cite: 1].</p>
                 </div>
                 <div>
-                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">⏱️ 4. Timer de Recompensas</h4>
-                    <p>Fique de olho no timer flutuante de 15 segundos! Quando a contagem zerar, o botão ficará pronto e verde. Toque nele para coletar +2 MX Coins na hora!</p>
-                </div>
-                <div>
-                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">⚠️ 5. Expiração Diária de Cupons</h4>
-                    <p>Atenção! Todos os prêmios acumulados no Baú (Cupons, Vales-Brindes e pacotes extras) **expiram e deixam de valer no final do dia (à meia-noite)**. Use seus cupons e descontos antes que o dia termine![cite: 1]</p>
+                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">⚠️ 4. Expiração Diária de Cupons</h4>
+                    <p>Atenção! Todos os prêmios acumulados no Baú (Cupons e Vales-Brindes) **expiram e deixam de valer à meia-noite**[cite: 1]. Use seus descontos antes que o dia termine![cite: 1]</p>
                 </div>
             </div>
 
@@ -449,48 +445,48 @@
     <script>
         const CARD_24_LIBERADO = false; 
 
+        // Adicionada a quantidade de vendas simuladas (estilo Shopee) para prova social
         const PRODUCTS_DATA = [
-            { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives." },
-            { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "MXCARD2.jpg", desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos." },
-            { id: 3, name: "Mic Lapela Ulanzi A200", brand: "Ulanzi", price: 299.90, main_image: "MXCARD3.jpg", desc: "Microfone de tempo real sem fio com excelente cancelamento de ruído. Captação limpa e nítida para vlogs." },
-            { id: 4, name: "Microfone FIFINE AM8", brand: "Fifine", price: 439.90, main_image: "MXCARD4.jpg", desc: "Microfone dinâmico profissional com conexões XLR e USB, além de iluminação RGB personalizável." },
-            { id: 5, name: "Suporte Fifine BM88", brand: "Fifine", price: 329.90, main_image: "MXCARD5.jpg", desc: "Braço articulado de perfil baixo (low-profile). Deixa seu setup limpo, escondendo-se abaixo do monitor." },
-            { id: 6, name: "Microfone FIFINE AM8T", brand: "Fifine", price: 499.90, main_image: "MXCARD6.jpg", desc: "Kit completo do consagrado microfone dinâmico AM8 acompanhado de um braço articulado robusto de fábrica." },
-            { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "MXCARD7.jpg", desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Som de alta fidelidade." },
-            { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração e carregamento rápido." },
-            { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "MXCARD9.jpg", desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal perfeita." },
-            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Activo (ANC) avançado e drivers refinados para áudio de alta resolução." },
-            { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "MXCARD11.jpg", desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição." },
-            { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "MXCARD12.jpg", desc: "Fone de ouvido no estilo Headphone com Cancelamento Ativo de Ruído de até 43dB. Almofadas macias."} ,
-            { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "MXCARD13.jpg", desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria." },
-            { id: 14, name: "Tronsmart Mirtune S100", brand: "Tronsmart", price: 459.90, main_image: "MXCARD14.jpg", desc: "Caixa de som portátil premium com alça integrada. Som expansivo de alta potência ideal para qualquer ambiente." },
-            { id: 15, name: "Tronsmart Bang 2", brand: "Tronsmart", price: 699.90, main_image: "MXCARD15.jpg", desc: "Potência sonora animal! Luzes de LED rítmicas integradas e tecnologia patenteada SoundPulse." },
-            { id: 16, name: "Edifier M206BT", brand: "Edifier", price: 399.90, main_image: "MXCARD16.jpg", desc: "Sistema de caixas 2.1 com Subwoofer dedicado em madeira. Graves que fazem o ambiente tremer." },
-            { id: 17, name: "Mi TV STICK 4K 2ª Gen", brand: "Xiaomi", price: 329.90, main_image: "MXCARD17.jpg", desc: "Transforme qualquer TV em uma Smart TV veloz com resolução 4K Ultra HD e suporte a comandos de voz." },
-            { id: 18, name: "Climatizador Ventisol 16L", brand: "Ventisol", price: 489.90, main_image: "MXCARD18.jpg", desc: "Climatizador potente com grande reservatório de 16 litros. Ar fresco, umidificado e filtrado."} ,
-            { id: 19, name: "Gamesir G8 Galileo Plus", brand: "Gamesir", price: 479.90, main_image: "MXCARD19.jpg", desc: "O controle definitivo para jogos de celular. Analógicos com efeito Hall e encaixe ergonômico firme." },
-            { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 999.90, main_image: "MXCARD20.jpg", desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Usado pelos maiores profissionais." },
-            { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal." },
-            { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio activos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio." },
-            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos." },
-            { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]" }
+            { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives.", sales: 42, rating: 4.8 },
+            { id: 2, name: "LED Ulanzi VL120 RGB", brand: "Ulanzi", price: 189.90, main_image: "MXCARD2.jpg", desc: "Iluminador LED compacto de bolso com controle total RGB. Perfeito para dar aquela atmosfera neon estilosa aos seus vídeos.", sales: 79, rating: 4.9 },
+            { id: 3, name: "Mic Lapela Ulanzi A200", brand: "Ulanzi", price: 299.90, main_image: "MXCARD3.jpg", desc: "Microfone de tempo real sem fio com excelente cancelamento de ruído. Captação limpa e nítida para vlogs.", sales: 21, rating: 4.7 },
+            { id: 4, name: "Microfone FIFINE AM8", brand: "Fifine", price: 439.90, main_image: "MXCARD4.jpg", desc: "Microfone dinâmico profissional com conexões XLR e USB, além de iluminação RGB personalizável.", sales: 114, rating: 5.0 },
+            { id: 5, name: "Suporte Fifine BM88", brand: "Fifine", price: 329.90, main_image: "MXCARD5.jpg", desc: "Braço articulado de perfil baixo (low-profile). Deixa seu setup limpo, escondendo-se abaixo do monitor.", sales: 38, rating: 4.8 },
+            { id: 6, name: "Microfone FIFINE AM8T", brand: "Fifine", price: 499.90, main_image: "MXCARD6.jpg", desc: "Kit completo do consagrado microfone dinâmico AM8 acompanhado de um braço articulado robusto de fábrica.", sales: 153, rating: 4.9 },
+            { id: 7, name: "Caixa BT Tronsmart T8", brand: "Tronsmart", price: 219.90, main_image: "MXCARD7.jpg", desc: "Caixa de som Bluetooth portátil com graves reforçados e proteção contra respingos. Som de alta fidelidade.", sales: 55, rating: 4.6 },
+            { id: 8, name: "QCY T13", brand: "QCY", price: 129.90, main_image: "MXCARD8.jpg", desc: "O campeão mundial de custo-benefício em fones TWS. Bateria de longa duração e carregamento rápido.", sales: 341, rating: 4.9 },
+            { id: 9, name: "QCY MELOBUDS N50", brand: "QCY", price: 159.90, main_image: "MXCARD9.jpg", desc: "Fone de ouvido ergonômico focado em isolamento acústico passivo e clareza vocal perfeita.", sales: 88, rating: 4.8 },
+            { id: 10, name: "QCY MELOBUDS PRO BK", brand: "QCY", price: 249.90, main_image: "MXCARD10.jpg", desc: "Versão Pro com Cancelamento de Ruído Activo (ANC) avançado e drivers refinados para áudio de alta resolução.", sales: 167, rating: 4.9 },
+            { id: 11, name: "QCY AILYBUDS PRO+", brand: "QCY", price: 219.90, main_image: "MXCARD11.jpg", desc: "Design semi-in-ear ultra confortável que não incomoda no ouvido, aliado a um codec de alta definição.", sales: 74, rating: 4.7 },
+            { id: 12, name: "QCY H3 ANC", brand: "QCY", price: 299.90, main_image: "MXCARD12.jpg", desc: "Fone de ouvido no estilo Headphone com Cancelamento Ativo de Ruído de até 43dB. Almofadas macias.", sales: 219, rating: 4.9 },
+            { id: 13, name: "QCY H3S", brand: "QCY", price: 349.90, main_image: "MXCARD13.jpg", desc: "Evolução da linha H3 com melhorias nos microfones para chamadas de voz e maior autonomia de bateria.", sales: 95, rating: 4.8 },
+            { id: 14, name: "Tronsmart Mirtune S100", brand: "Tronsmart", price: 459.90, main_image: "MXCARD14.jpg", desc: "Caixa de som portátil premium com alça integrada. Som expansivo de alta potência ideal para qualquer ambiente.", sales: 34, rating: 4.7 },
+            { id: 15, name: "Tronsmart Bang 2", brand: "Tronsmart", price: 699.90, main_image: "MXCARD15.jpg", desc: "Potência sonora animal! Luzes de LED rítmicas integradas e tecnologia patenteada SoundPulse.", sales: 18, rating: 4.9 },
+            { id: 16, name: "Edifier M206BT", brand: "Edifier", price: 399.90, main_image: "MXCARD16.jpg", desc: "Sistema de caixas 2.1 com Subwoofer dedicado em madeira. Graves que fazem o ambiente tremer.", sales: 62, rating: 4.8 },
+            { id: 17, name: "Mi TV STICK 4K 2ª Gen", brand: "Xiaomi", price: 329.90, main_image: "MXCARD17.jpg", desc: "Transforme qualquer TV em uma Smart TV veloz com resolução 4K Ultra HD e suporte a comandos de voz.", sales: 145, rating: 4.8 },
+            { id: 18, name: "Climatizador Ventisol 16L", brand: "Ventisol", price: 489.90, main_image: "MXCARD18.jpg", desc: "Climatizador potente com grande reservatório de 16 litros. Ar fresco, umidificado e filtrado.", sales: 29, rating: 4.5 },
+            { id: 19, name: "Gamesir G8 Galileo Plus", brand: "Gamesir", price: 479.90, main_image: "MXCARD19.jpg", desc: "O controle definitivo para jogos de celular. Analógicos com efeito Hall e encaixe ergonômico firme.", sales: 83, rating: 4.9 },
+            { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 999.90, main_image: "MXCARD20.jpg", desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Usado pelos maiores profissionais.", sales: 14, rating: 5.0 },
+            { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1599.90, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal.", sales: 9, rating: 4.9 },
+            { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 549.90, main_image: "MXCARD22.jpg", desc: "Monitores de áudio activos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio.", sales: 104, rating: 4.8 },
+            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 699.90, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos.", sales: 91, rating: 4.9 },
+            { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]", sales: 48, rating: 5.0 }
         ];
 
-        // CONFIGURAÇÃO DOS SETORES DA ROLETINHA
+        // MAPEAMENTO ESTRUTURADO DOS SETORES DA ROLETINHA CONFORME IMAGEM DO USUÁRIO
         const SPIN_REWARDS = [
-            { label: "Vale 2 MX Coins", type: "coins", value: 2, icon: "🪙" },
-            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙" },
-            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙" },
-            { label: "Cupom R$ 10 QCY", type: "coupon", value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️" },
-            { label: "Cupom R$ 20 Edifier", type: "coupon", value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️" },
-            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦" }
+            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 60 },
+            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 120 },
+            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 180 },
+            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 240 },
+            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 300 },
+            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 360 }
         ];
 
         let userState = {
             coins: 10,
             claimedVipFreePack: false,
             inventory: {},
-            bonusPackCount: 0,          
             wonGrandPrize: false,
             lastCheckInDate: null,
             packsOpenedToday: 0,
@@ -580,11 +576,11 @@
 
         // --- SISTEMA DE PERSISTÊNCIA ---
         function saveState() {
-            localStorage.setItem('mx_state_v2', JSON.stringify(userState));
+            localStorage.setItem('mx_state_v2_stable', JSON.stringify(userState));
         }
 
         function loadState() {
-            const saved = localStorage.getItem('mx_state_v2');
+            const saved = localStorage.getItem('mx_state_v2_stable');
             if (saved) {
                 try {
                     userState = JSON.parse(saved);
@@ -592,7 +588,6 @@
                     if (userState.brindeFisicoDesbloqueado === undefined) userState.brindeFisicoDesbloqueado = false;
                     if (userState.brindeCoinsDesbloqueado === undefined) userState.brindeCoinsDesbloqueado = false;
                     if (!userState.coupons) userState.coupons = [];
-                    if (userState.bonusPackCount === undefined) userState.bonusPackCount = 0;
                 } catch(e) { console.error("Erro ao carregar progresso", e); }
             }
             checkDailyExpiration();
@@ -607,8 +602,7 @@
                 userState.packsOpenedToday = 0;
                 userState.brindeFisicoDesbloqueado = false;
                 userState.brindeCoinsDesbloqueado = false;
-                userState.coupons = [];
-                userState.bonusPackCount = 0;
+                userState.coupons = []; // Zera os cupons[cite: 1]
                 saveState();
             }
         }
@@ -632,6 +626,25 @@
                     activeBtn.className = "py-2.5 text-xs font-bold rounded-lg transition-all bg-orange-400 text-white flex flex-col items-center justify-center gap-0.5 relative";
                 }
             }
+        }
+
+        // --- FUNÇÕES DE AUXÍLIO PARA OS CUPONS ---
+        function getActiveCouponForBrand(brand) {
+            // Busca o cupom ativo correspondente à marca (Fifine, QCY ou Edifier)
+            return userState.coupons.find(c => c.toLowerCase().includes(brand.toLowerCase()));
+        }
+
+        function calculateDiscountedPrice(product) {
+            const cup = getActiveCouponForBrand(product.brand);
+            if (!cup) return product.price;
+
+            // Extrai o valor do desconto (ex: "Cupom R$ 10,00" -> 10)
+            const match = cup.match(/R\$\s*([0-9,.]+)/i);
+            if (match) {
+                const discountValue = parseFloat(match[1].replace(',', '.'));
+                return Math.max(0.1, product.price - discountValue);
+            }
+            return product.price;
         }
 
         // --- UPDATE UI ---
@@ -799,25 +812,45 @@
             triggerPackOpening('trade_swap');
         }
 
+        // --- RENDERIZAR MX PRODUTOS (COM DESCONTO SE ATIVO + DETALHES SHOPEE) ---
         function renderProducts() {
             const container = document.getElementById('products-list');
             container.innerHTML = '';
 
             PRODUCTS_DATA.forEach(p => {
+                const discountCoupon = getActiveCouponForBrand(p.brand);
+                const originalPrice = p.price;
+                const finalPrice = calculateDiscountedPrice(p);
+                const hasDiscount = discountCoupon !== undefined;
+
                 const card = document.createElement('div');
-                card.className = "shopee-card cursor-pointer";
+                card.className = "shopee-card cursor-pointer hover:shadow-md transition duration-200";
                 card.onclick = () => inspectProduct(p.id, true);
 
                 card.innerHTML = `
-                    <div class="w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+                    <div class="w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden relative">
                         <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full" onerror="this.src='roleta.png'">
+                        ${hasDiscount ? `
+                            <span class="absolute top-1.5 left-1.5 bg-red-500 text-white font-black text-[8px] px-1.5 py-0.5 rounded shadow-sm uppercase tracking-wide animate-pulse">
+                                🎟️ R$ ${(originalPrice - finalPrice).toFixed(0)} OFF ATIVO!
+                            </span>
+                        ` : ''}
                     </div>
                     <div class="p-2.5 space-y-1">
-                        <span class="text-[8px] font-black uppercase text-orange-500 tracking-wider bg-orange-50 px-1.5 py-0.5 rounded">${p.brand}</span>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[8px] font-black uppercase text-orange-500 tracking-wider bg-orange-50 px-1.5 py-0.5 rounded">${p.brand}</span>
+                            <!-- Avaliação e Vendas Estilo Shopee -->
+                            <span class="text-[9px] text-gray-400 font-medium">⭐ ${p.rating} (${p.sales} vendidos)</span>
+                        </div>
                         <h4 class="text-xs font-bold text-gray-800 truncate mt-1 leading-tight">${p.name}</h4>
-                        <div class="flex items-baseline justify-between mt-2">
-                            <span class="text-xs font-black text-orange-500">R$ ${p.price.toFixed(2)}</span>
-                            <span class="text-[9px] text-green-600 font-bold">WhatsApp 🟢</span>
+                        <div class="flex flex-col mt-2">
+                            ${hasDiscount ? `
+                                <span class="text-[9px] text-gray-400 line-through leading-none">R$ ${originalPrice.toFixed(2)}</span>
+                                <span class="text-sm font-black text-red-500">R$ ${finalPrice.toFixed(2)}</span>
+                            ` : `
+                                <span class="text-xs font-black text-orange-500">R$ ${originalPrice.toFixed(2)}</span>
+                            `}
+                            <span class="text-[8px] text-green-600 font-bold mt-0.5">🟢 Chamar no WhatsApp</span>
                         </div>
                     </div>
                 `;
@@ -856,9 +889,14 @@
                         <h4 class="text-xs font-black text-gray-800">🎟️ ${cup}</h4>
                         <p class="text-[10px] text-red-500 leading-tight font-bold uppercase">Expira no final do dia![cite: 1]</p>
                     </div>
-                    <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20resgatar%20meu%20${encodeURIComponent(cup)}%20do%20App!', '_blank')" class="bg-green-500 hover:bg-green-600 text-white font-black text-[10px] px-3 py-2 rounded-lg uppercase shadow">
-                        Resgatar
-                    </button>
+                    <div class="flex gap-1.5">
+                        <button onclick="switchTab('produtos')" class="bg-orange-500 text-white font-black text-[10px] px-2.5 py-2 rounded-lg uppercase shadow">
+                            Ver Itens
+                        </button>
+                        <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20resgatar%20meu%20${encodeURIComponent(cup)}%20do%20App!', '_blank')" class="bg-green-500 hover:bg-green-600 text-white font-black text-[10px] px-2.5 py-2 rounded-lg uppercase shadow">
+                            Ativar
+                        </button>
+                    </div>
                 `;
                 container.appendChild(row);
             });
@@ -879,7 +917,7 @@
             const product = PRODUCTS_DATA.find(p => p.id === id);
             if (!product) return;
 
-            document.getElementById('gallery-brand').textContent = product.brand;
+            document.getElementById('gallery-brand').textContent = `${product.brand} | ⭐ ${product.rating} (${product.sales} vendidos)`;
             document.getElementById('gallery-title').textContent = product.name;
             document.getElementById('gallery-desc').textContent = product.desc;
 
@@ -890,12 +928,22 @@
             const priceVal = document.getElementById('gallery-price');
             const buyBtn = document.getElementById('gallery-buy-btn');
 
+            const discountCoupon = getActiveCouponForBrand(product.brand);
+            const originalPrice = product.price;
+            const finalPrice = calculateDiscountedPrice(product);
+
             if (unlocked) {
-                priceOld.classList.remove('hidden');
-                priceOld.textContent = `De: R$ ${(product.price * 1.2).toFixed(2)}`;
-                priceVal.textContent = `Por: R$ ${product.price.toFixed(2)}`;
+                if (discountCoupon) {
+                    priceOld.classList.remove('hidden');
+                    priceOld.textContent = `De: R$ ${originalPrice.toFixed(2)}`;
+                    priceVal.textContent = `Por: R$ ${finalPrice.toFixed(2)} (Cupom Ativo!)`;
+                } else {
+                    priceOld.classList.remove('hidden');
+                    priceOld.textContent = `De: R$ ${(originalPrice * 1.2).toFixed(2)}`;
+                    priceVal.textContent = `Por: R$ ${originalPrice.toFixed(2)}`;
+                }
                 buyBtn.classList.remove('hidden');
-                buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Gostaria%20de%20saber%20mais%20sobre%20o%20${encodeURIComponent(product.name)}`, '_blank');
+                buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Gostaria%20de%20saber%20mais%20sobre%20o%20${encodeURIComponent(product.name)}%20com%20o%20preço%20especial%20de%20R$%20${finalPrice.toFixed(2)}`, '_blank');
             } else {
                 priceOld.classList.add('hidden');
                 priceVal.textContent = "Bloqueado";
@@ -995,7 +1043,7 @@
             showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
         }
 
-        // --- ROLETA DA SORTE ---
+        // --- ROLETA DA SORTE SINCRONIZADA ---
         function spinRoulette() {
             if (isSpinning) return;
             if (userState.coins < 3) {
@@ -1011,14 +1059,17 @@
 
             const wheel = document.getElementById('wheel');
             const randomRewardIdx = Math.floor(Math.random() * SPIN_REWARDS.length);
-            const degreeOffset = randomRewardIdx * (360 / SPIN_REWARDS.length);
-            currentRotation += 1800 + (360 - degreeOffset); 
+            const reward = SPIN_REWARDS[randomRewardIdx];
+
+            // Rotação ideal: acumula o histórico e para no ponto central exato (em graus) da fatia correspondente
+            const baseSpins = 5 * 360; // 5 voltas completas
+            const angleStop = reward.targetAngle;
+            currentRotation += baseSpins + (360 - (currentRotation % 360)) - angleStop;
             
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
             setTimeout(() => {
                 isSpinning = false;
-                const reward = SPIN_REWARDS[randomRewardIdx];
                 let rewardText = "";
 
                 if (reward.type === "coins") {
@@ -1026,17 +1077,18 @@
                     rewardText = `Parabéns! Você ganhou **+${reward.value} MX Coins**!`;
                 } else if (reward.type === "coupon") {
                     userState.coupons.push(reward.value);
-                    rewardText = `Incrível! Você desbloqueou um **${reward.value}**! Ele foi salvo no seu Baú.`;
+                    rewardText = `Incrível! Você desbloqueou um **${reward.value}**!<br><br>Ele foi aplicado aos itens da marca **${reward.brand}** na aba de produtos e salvo no seu Baú.`;
                 } else if (reward.type === "bonus_pack") {
-                    userState.bonusPackCount += reward.value;
-                    rewardText = `Fantástico! Você acumulou **+${reward.value} Pacote(s) de Cards** para abrir de graça!`;
+                    // Direciona IMEDIATAMENTE o bônus para o primeiro espaço dos Vale Brindes
+                    userState.brindeFisicoDesbloqueado = true;
+                    rewardText = `Fantástico! Você ganhou **1 Pacote de Cards**!<br><br>Ele foi enviado ao primeiro espaço dos **Vale Brindes Instantâneos** no Álbum para você abrir agora mesmo!`;
                 }
 
                 saveState();
                 updateUI();
                 playSoundWin();
                 showAlert(reward.icon, "Giro da Sorte", rewardText);
-            }, 5000); // Aguarda o final da rotação (5s) para anunciar
+            }, 5000); // 5 segundos de giro
         }
 
         // --- ABERTURA DE PACOTES ---
@@ -1049,9 +1101,6 @@
                 userState.coins -= 5;
             } else if (type === 'free') {
                 userState.claimedVipFreePack = true;
-            } else if (type === 'bonus') {
-                if (userState.bonusPackCount <= 0) return;
-                userState.bonusPackCount--;
             } else if (type === 'brinde_fisico') {
                 userState.brindeFisicoDesbloqueado = false;
             }
@@ -1083,7 +1132,7 @@
                 userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
             }
 
-            // Chance de dar outro vale brinde ao abrir pacotes normais
+            // Chance de conceder um brinde dinâmico ao abrir pacotes normais
             if (Math.random() < 0.15) {
                 const rand = Math.random();
                 if (rand < 0.5) {
@@ -1165,7 +1214,6 @@
                     coins: 10,
                     claimedVipFreePack: false,
                     inventory: {},
-                    bonusPackCount: 0,
                     lastCheckInDate: null,
                     packsOpenedToday: 0,
                     lastDateOpened: new Date().toDateString(),
