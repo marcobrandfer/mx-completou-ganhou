@@ -92,7 +92,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background-image: url('roleta.jpg');
+            background-image: url('roleta.png'); /* CORRIGIDO DE .jpg PARA .png */
             background-size: cover;
             background-position: center;
             transition: transform 5s cubic-bezier(0.15, 0.85, 0.15, 1);
@@ -356,11 +356,11 @@
         </div>
     </div>
 
-    <!-- NOVO MODAL DE REVELAÇÃO VISUAL DE CARDS -->
+    <!-- NOVO MODAL DE REVELAÇÃO VISUAL DE CARDS (SUPORTA ATÉ 3 CARDS INCLUINDO BRINDES) -->
     <div id="modal-reveal-cards" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[110] hidden flex flex-col items-center justify-center p-4">
         <h3 class="text-orange-500 font-black text-lg tracking-widest uppercase mb-6 animate-pulse">🎉 VOCÊ DETONOU! 🎉</h3>
         
-        <!-- Grid de Cards Revelados -->
+        <!-- Grid de Cards Revelados (Sempre 3 itens no total) -->
         <div class="grid grid-cols-3 gap-3 max-w-md w-full px-2" id="reveal-cards-container">
             <!-- Cards gerados dinamicamente via JS -->
         </div>
@@ -466,8 +466,7 @@
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]", sales: 48, rating: 5.0 }
         ];
 
-        // MAPEAMENTO ESTRUTURADO DOS SETORES DA ROLETINHA CONFORME IMAGEM DO USUÁRIO
-        // Alinhado para que a roleta pare perfeitamente no centro de cada prêmio
+        // MAPEAMENTO ESTRUTURADO DOS SETORES DA ROLETINHA
         const SPIN_REWARDS = [
             { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 30 },
             { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 90 },
@@ -489,6 +488,9 @@
             brindeCoinsDesbloqueado: false,  
             coupons: [] 
         };
+
+        // Estado temporário do último pacote aberto para adicionar à coleção no fechamento do modal
+        let lastPackResults = [];
 
         let soundCtx = null;
         let isSpinning = false;
@@ -722,7 +724,7 @@
             
             if (userState.brindeCoinsDesbloqueado) {
                 cardCoins.innerHTML = `
-                    <img src="MXGoldcoins.jpg" alt="MX Gold Coins" class="w-24 h-24 object-contain rounded-lg shadow-sm" onerror="this.src='roleta.jpg'">
+                    <img src="MXGoldcoins.jpg" alt="MX Gold Coins" class="w-24 h-24 object-contain rounded-lg shadow-sm" onerror="this.src='roleta.png'">
                     <h4 class="font-extrabold text-[11px] text-gray-800 leading-tight mt-1">+15 MX Coins!</h4>
                     <button onclick="claimGoldCoinsReward()" class="mt-2 w-full bg-amber-500 text-white font-black py-1.5 rounded-lg text-[9px] uppercase shadow">Coletar Moedas</button>
                 `;
@@ -768,7 +770,7 @@
 
                 card.innerHTML = `
                     <div class="relative w-full aspect-square bg-gray-50 rounded-lg overflow-hidden flex items-center justify-center">
-                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full ${owned ? '' : 'filter grayscale blur-[1px]'}" onerror="this.src='roleta.jpg'">
+                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full ${owned ? '' : 'filter grayscale blur-[1px]'}" onerror="this.src='roleta.png'">
                         ${p.id === 24 ? '<span class="absolute top-1 left-1 bg-red-600 text-[8px] text-white font-black px-1 rounded uppercase tracking-wider">Raro</span>' : ''}
                         ${owned ? `<span class="absolute bottom-1 right-1 bg-orange-500 text-white font-black rounded-full text-[10px] w-5 h-5 flex items-center justify-center">x${copies}</span>` : ''}
                     </div>
@@ -817,7 +819,7 @@
 
                 card.innerHTML = `
                     <div class="w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden relative">
-                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full" onerror="this.src='roleta.jpg'">
+                        <img src="${p.main_image}" alt="${p.name}" class="object-cover w-full h-full" onerror="this.src='roleta.png'">
                         ${hasDiscount ? `
                             <span class="absolute top-1.5 left-1.5 bg-red-500 text-white font-black text-[8px] px-1.5 py-0.5 rounded shadow-sm uppercase tracking-wide animate-pulse">
                                 🎟️ R$ ${(originalPrice - finalPrice).toFixed(0)} OFF ATIVO!
@@ -909,7 +911,7 @@
             document.getElementById('gallery-desc').textContent = product.desc;
 
             const container = document.getElementById('gallery-main-container');
-            container.innerHTML = `<img src="${product.main_image}" class="object-contain max-h-64 rounded-lg" onerror="this.src='roleta.jpg'">`;
+            container.innerHTML = `<img src="${product.main_image}" class="object-contain max-h-64 rounded-lg" onerror="this.src='roleta.png'">`;
 
             const priceOld = document.getElementById('gallery-price-old');
             const priceVal = document.getElementById('gallery-price');
@@ -952,6 +954,7 @@
             document.getElementById('modal-alert').classList.remove('hidden');
         }
 
+        // Fechamento simples do modal de alerta geral
         function closeModalDirect() {
             document.getElementById('modal-alert').classList.add('hidden');
         }
@@ -1110,21 +1113,52 @@
             }, 1600);
         }
 
+        // LÓGICA DE SORTEIO TOTALMENTE REFORMULADA: 3 ITENS SEMPRE
         function openPack() {
-            let cardsPulled = [];
-            for (let i = 0; i < 3; i++) {
-                let cardId = selectCardRandomly();
-                cardsPulled.push(PRODUCTS_DATA.find(p => p.id === cardId));
-                userState.inventory[cardId] = (userState.inventory[cardId] || 0) + 1;
+            lastPackResults = [];
+            let physicalBrindePulled = false;
+            let goldCoinsBrindePulled = false;
+
+            // Chance de 15% de conter um brinde no total do pacote
+            if (Math.random() < 0.15) {
+                if (Math.random() < 0.5) {
+                    physicalBrindePulled = true;
+                } else {
+                    goldCoinsBrindePulled = true;
+                }
             }
 
-            if (Math.random() < 0.15) {
-                const rand = Math.random();
-                if (rand < 0.5) {
-                    userState.brindeFisicoDesbloqueado = true;
-                } else {
-                    userState.brindeCoinsDesbloqueado = true;
-                }
+            // Define quantos cards normais vamos gerar (se puxar brinde, vira 2, senão vira 3)
+            let normalCardsCount = (physicalBrindePulled || goldCoinsBrindePulled) ? 2 : 3;
+
+            // Sorteia os cards normais
+            for (let i = 0; i < normalCardsCount; i++) {
+                let cardId = selectCardRandomly();
+                let product = PRODUCTS_DATA.find(p => p.id === cardId);
+                lastPackResults.push({
+                    type: 'card',
+                    id: product.id,
+                    name: product.name,
+                    image: product.main_image
+                });
+            }
+
+            // Adiciona o brinde físico se foi sorteado
+            if (physicalBrindePulled) {
+                lastPackResults.push({
+                    type: 'brinde_fisico',
+                    name: 'Pacote Saboroso!',
+                    image: 'MXBrindecard.jpg'
+                });
+            }
+
+            // Adiciona o brinde de moedas se foi sorteado
+            if (goldCoinsBrindePulled) {
+                lastPackResults.push({
+                    type: 'brinde_coins',
+                    name: '+15 MX Coins!',
+                    image: 'MXGoldcoins.jpg'
+                });
             }
 
             userState.packsOpenedToday++;
@@ -1132,25 +1166,27 @@
             updateUI();
             playSoundWin();
 
+            // Renderização no container visual de revelação (Sempre exibe exatamente 3 itens!)
             const revealContainer = document.getElementById('reveal-cards-container');
             revealContainer.innerHTML = '';
 
-            cardsPulled.forEach((c, index) => {
+            lastPackResults.forEach((item, index) => {
                 const cardDiv = document.createElement('div');
                 cardDiv.className = "bg-white border-2 border-orange-400 rounded-xl p-1.5 flex flex-col items-center justify-between text-center shadow-lg opacity-0 animate-card-reveal";
                 cardDiv.style.animationDelay = `${index * 300}ms`; 
 
                 cardDiv.innerHTML = `
-                    <div class="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
-                        <img src="${c.main_image}" alt="${c.name}" class="w-full h-full object-cover" onerror="this.src='roleta.jpg'">
+                    <div class="w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2 flex items-center justify-center">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.src='roleta.png'">
                     </div>
-                    <p class="text-[9px] font-black text-gray-800 leading-tight truncate w-full">${c.name}</p>
+                    <p class="text-[9px] font-black text-gray-800 leading-tight truncate w-full">${item.name}</p>
                 `;
                 revealContainer.appendChild(cardDiv);
             });
 
             document.getElementById('modal-reveal-cards').classList.remove('hidden');
 
+            // Exibe a oferta do dia na terceira abertura de pacotes
             if (userState.packsOpenedToday === 3) {
                 setTimeout(() => {
                     document.getElementById('modal-oferta-especial').classList.remove('hidden');
@@ -1158,7 +1194,21 @@
             }
         }
 
+        // Processa e credita tudo o que saiu no pacote para o usuário
         function closeRevealCards() {
+            lastPackResults.forEach(item => {
+                if (item.type === 'card') {
+                    userState.inventory[item.id] = (userState.inventory[item.id] || 0) + 1;
+                } else if (item.type === 'brinde_fisico') {
+                    userState.brindeFisicoDesbloqueado = true;
+                } else if (item.type === 'brinde_coins') {
+                    userState.brindeCoinsDesbloqueado = true;
+                }
+            });
+
+            lastPackResults = []; // Limpa o temporário
+            saveState();
+            updateUI();
             document.getElementById('modal-reveal-cards').classList.add('hidden');
         }
 
