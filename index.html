@@ -506,14 +506,16 @@
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 899.90, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]", sales: 48, rating: 5.0 }
         ];
 
-        // MAPEAMENTO ESTRUTURADO DOS SETORES DA ROLETINHA
+        // CONFIGURAÇÕES DA ROLETINHA CALIBRADAS AO CONTRÁRIO (INVERTIDAS)
+        // Como sua arte de base estava rotacionada de ponta-cabeça, invertemos as posições dos ângulos-alvo
+        // para que a rotação da roleta sob o marcador vermelho (topo, 0°) corresponda exatamente ao prêmio.
         const SPIN_REWARDS = [
-            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 30 },
-            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 90 },
-            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 150 },
-            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 210 },
-            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 270 },
-            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 330 }
+            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 330 },
+            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 270 },
+            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 210 },
+            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 150 },
+            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 90 },
+            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 30 }
         ];
 
         let userState = {
@@ -742,7 +744,7 @@
             renderRewards();
         }
 
-        // ALTERADO: Imagens do Vales-Brinde agora ficam esmaecidas/grayscale caso o brinde NÃO esteja desbloqueado.
+        // Imagens do Vales-Brinde agora ficam esmaecidas/grayscale caso o brinde NÃO esteja desbloqueado.
         function renderBrindes() {
             const container = document.getElementById('brindes-duplos-container');
             container.innerHTML = '';
