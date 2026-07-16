@@ -116,7 +116,7 @@
         #floating-timer-container {
             position: fixed;
             right: 16px;
-            bottom: 96px;
+            bottom: 156px; /* Ajustado um pouco para cima para não colidir com o novo rodapé fixo */
             z-index: 40;
             display: flex;
             align-items: center;
@@ -154,7 +154,7 @@
         }
     </style>
 </head>
-<body class="bg-[#FAFAFA] text-gray-800 font-sans antialiased min-h-screen pb-24">
+<body class="bg-[#FAFAFA] text-gray-800 font-sans antialiased min-h-screen pb-32">
 
     <!-- TIMER FLUTUANTE DE 15 SEGUNDOS -->
     <div id="floating-timer-container">
@@ -285,16 +285,19 @@
                 </div>
             </div>
 
-            <!-- VALE BRINDES INSTANTÂNEOS -->
+            <!-- VALE BRINDES INSTANTÂNEOS (CENTRALIZADO) -->
             <div>
-                <h2 class="text-xs font-bold text-orange-500 tracking-wider uppercase mb-3">VALE BRINDES INSTANTÂNEOS</h2>
+                <h2 class="text-xs font-black text-orange-500 tracking-wider uppercase mb-3 text-center flex items-center justify-center gap-1.5">
+                    🎁 VALE BRINDES INSTANTÂNEOS 🎁
+                </h2>
                 <div class="grid grid-cols-2 gap-3" id="brindes-duplos-container"></div>
             </div>
 
-            <!-- ÁLBUM REGULAR -->
+            <!-- ÁLBUM REGULAR (CENTRALIZADO) -->
             <div>
-                <h2 class="text-xs font-bold text-orange-500 tracking-wider uppercase mb-3 flex justify-between">
-                    <span>COMPLETE O SEU ÁLBUM DE MX CARDS</span>
+                <h2 class="text-xs font-black text-orange-500 tracking-wider uppercase mb-3 text-center">
+                    🎴 COMPLETE O SEU ÁLBUM DE MX CARDS 🎴
+                    <span class="text-[10px] text-gray-400 block mt-0.5 font-medium">📜 ROLE PARA VER O ÁLBUM • 💡 CLIQUE NO CARD PARA DETALHES</span>
                 </h2>
                 <div class="grid grid-cols-2 gap-3.5" id="cards-grid"></div>
             </div>
@@ -306,6 +309,15 @@
                 <span>🔥</span>
                 <p>Toque em qualquer card para comprar no WhatsApp com cupom ativo e garantia de entrega!</p>
             </div>
+            
+            <!-- Barra de Filtros Interna -->
+            <div class="flex justify-center gap-1 mb-2">
+                <button id="filter-all" onclick="filterByLine('all')" class="px-3 py-1.5 text-[10px] font-bold rounded-lg border border-orange-400 bg-orange-400 text-white uppercase">Todos</button>
+                <button id="filter-basic" onclick="filterByLine('Basic')" class="px-3 py-1.5 text-[10px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 uppercase">Basic</button>
+                <button id="filter-intermedium" onclick="filterByLine('Intermedium')" class="px-3 py-1.5 text-[10px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 uppercase">Intermedium</button>
+                <button id="filter-premium" onclick="filterByLine('Premium')" class="px-3 py-1.5 text-[10px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 uppercase">Premium</button>
+            </div>
+
             <div class="shopee-grid" id="products-list"></div>
         </div>
 
@@ -332,8 +344,13 @@
                     <p>Acumule **3 ou mais cópias** de qualquer card para trocá-las instantaneamente por um pacote novinho contendo 3 cartas surpresa!</p>
                 </div>
                 <div>
-                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">💰 3. O Grande Prêmio</h4>
-                    <p>O primeiro participante que completar a coleção completa receberá um **Pix de Prêmios (R$ 50,00 - R$ 100,00 - R$ 200,00)**[cite: 1].</p>
+                    <h4 class="font-extrabold text-gray-900 text-sm mb-1">💰 3. O Grande Prêmio (PIX de Prêmios)</h4>
+                    <p class="mb-1">Ao completar o álbum com todos os **24 MX Cards**, o participante ganha direito a um prêmio Pix. O resgate ocorre na hora no momento da compra de qualquer produto na **MX Digital Shop**:</p>
+                    <ul class="list-disc pl-4 space-y-1 mt-1 font-semibold text-gray-800">
+                        <li>🟢 Compre qualquer Produto da <span class="text-blue-600">Linha Basic</span> e receba um Pix de <span class="text-green-600">R$ 50,00</span></li>
+                        <li>🔵 Compre qualquer Produto da <span class="text-orange-600">Linha Intermedium</span> e receba um Pix de <span class="text-green-600">R$ 100,00</span></li>
+                        <li>🟣 Compre qualquer Produto da <span class="text-purple-600">Linha Premium</span> e receba um Pix de <span class="text-green-600">R$ 200,00</span></li>
+                    </ul>
                 </div>
                 <div>
                     <h4 class="font-extrabold text-gray-900 text-sm mb-1">⚠️ 4. Expiração Diária de Cupons</h4>
@@ -434,8 +451,33 @@
         </div>
     </div>
 
+    <!-- ================= NOVO RODAPÉ FIXO: LINHAS DE PRODUTOS MX ================= -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-40 p-2">
+        <div class="max-w-md mx-auto">
+            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest text-center mb-1">⚡ LINHAS DE PRODUTOS MX ⚡</p>
+            <div class="grid grid-cols-3 gap-1.5">
+                <button onclick="shortcutToProducts('Basic')" class="bg-blue-50 border border-blue-200 hover:bg-blue-100 active:scale-95 transition rounded-lg py-1.5 flex flex-col items-center justify-center">
+                    <span class="text-xs">🟢</span>
+                    <span class="text-[9px] font-extrabold text-blue-700 leading-none">LINHA BASIC</span>
+                    <span class="text-[7px] text-blue-500 font-bold mt-0.5">PIX R$ 50</span>
+                </button>
+                <button onclick="shortcutToProducts('Intermedium')" class="bg-orange-50 border border-orange-200 hover:bg-orange-100 active:scale-95 transition rounded-lg py-1.5 flex flex-col items-center justify-center">
+                    <span class="text-xs">🔵</span>
+                    <span class="text-[9px] font-extrabold text-orange-700 leading-none">INTERMEDIUM</span>
+                    <span class="text-[7px] text-orange-500 font-bold mt-0.5">PIX R$ 100</span>
+                </button>
+                <button onclick="shortcutToProducts('Premium')" class="bg-purple-50 border border-purple-200 hover:bg-purple-100 active:scale-95 transition rounded-lg py-1.5 flex flex-col items-center justify-center">
+                    <span class="text-xs">🟣</span>
+                    <span class="text-[9px] font-extrabold text-purple-700 leading-none">PREMIUM</span>
+                    <span class="text-[7px] text-purple-500 font-bold mt-0.5">PIX R$ 200</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const CARD_24_LIBERADO = false; 
+        let currentFilter = 'all';
 
         const PRODUCTS_DATA = [
             { id: 1, name: "Tripé Ulanzi TT88", brand: "Ulanzi", price: 149.90, main_image: "MXCARD1.jpg", desc: "Tripé portátil de alta qualidade para criadores de conteúdo. Super leve, robusto e ideal para gravações de lives.", sales: 42, rating: 4.8 },
@@ -493,6 +535,20 @@
         let currentRotation = 0;
         let timerSeconds = 15;
         let timerInterval = null;
+
+        // Função auxiliar para obter a classificação do produto por preço
+        function getProductLine(price) {
+            if (price <= 250.00) return 'Basic';
+            if (price <= 500.00) return 'Intermedium';
+            return 'Premium';
+        }
+
+        // Função auxiliar para renderizar estilos visuais de acordo com as linhas
+        function getLineBadgeStyles(line) {
+            if (line === 'Basic') return 'bg-blue-50 text-blue-700 border-blue-200';
+            if (line === 'Intermedium') return 'bg-orange-50 text-orange-700 border-orange-200';
+            return 'bg-purple-50 text-purple-700 border-purple-200';
+        }
 
         function initAudio() { 
             if (!soundCtx) soundCtx = new (window.AudioContext || window.webkitAudioContext)(); 
@@ -686,22 +742,23 @@
             renderRewards();
         }
 
+        // ALTERADO: Imagens do Vales-Brinde agora ficam esmaecidas/grayscale caso o brinde NÃO esteja desbloqueado.
         function renderBrindes() {
             const container = document.getElementById('brindes-duplos-container');
             container.innerHTML = '';
             
             const cardFisico = document.createElement('div');
-            cardFisico.className = `p-2.5 rounded-xl border flex flex-col items-center text-center justify-between min-h-[180px] transition ${userState.brindeFisicoDesbloqueado ? 'bg-green-50 border-green-300' : 'bg-gray-100/50 border-gray-200 border-dashed'}`;
+            cardFisico.className = `p-2.5 rounded-xl border flex flex-col items-center text-center justify-between min-h-[180px] transition ${userState.brindeFisicoDesbloqueado ? 'bg-green-50 border-green-300' : 'bg-gray-100/50 border-gray-200 border-dashed opacity-60'}`;
             
             if (userState.brindeFisicoDesbloqueado) {
                 cardFisico.innerHTML = `
-                    <img src="MXBrindecard.jpg" alt="MX Brindes Card" class="w-24 h-24 object-contain rounded-lg shadow-sm cursor-pointer hover:scale-105 transition" onclick="triggerPackOpening('brinde_fisico')" onerror="this.src='mxpack.jpg'">
+                    <img src="MXBrindecards.jpg" alt="MX Brindes Card" class="w-24 h-24 object-contain rounded-lg shadow-sm cursor-pointer hover:scale-105 transition" onclick="triggerPackOpening('brinde_fisico')" onerror="this.src='mxpack.jpg'">
                     <h4 class="font-extrabold text-[11px] text-orange-600 leading-tight mt-1">Pacote Saboroso!</h4>
                     <button onclick="triggerPackOpening('brinde_fisico')" class="mt-2 w-full bg-orange-500 text-white font-black py-1.5 rounded-lg text-[9px] uppercase shadow">Abrir Pacote</button>
                 `;
             } else {
                 cardFisico.innerHTML = `
-                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center text-2xl text-gray-400 mt-4">?</div>
+                    <img src="MXBrindecards.jpg" alt="MX Brindes Card" class="w-24 h-24 object-contain rounded-lg shadow-sm filter grayscale opacity-40">
                     <div class="mt-2">
                         <h4 class="font-bold text-[10px] text-gray-400 uppercase">Espaço Vazio</h4>
                         <span class="text-[9px] text-gray-400 block mt-0.5 leading-tight">Ganhe na Roleta ou nos Pacotes</span>
@@ -710,17 +767,17 @@
             }
 
             const cardCoins = document.createElement('div');
-            cardCoins.className = `p-2.5 rounded-xl border flex flex-col items-center text-center justify-between min-h-[180px] transition ${userState.brindeCoinsDesbloqueado ? 'bg-amber-50 border-amber-300' : 'bg-gray-100/50 border-gray-200 border-dashed'}`;
+            cardCoins.className = `p-2.5 rounded-xl border flex flex-col items-center text-center justify-between min-h-[180px] transition ${userState.brindeCoinsDesbloqueado ? 'bg-amber-50 border-amber-300' : 'bg-gray-100/50 border-gray-200 border-dashed opacity-60'}`;
             
             if (userState.brindeCoinsDesbloqueado) {
                 cardCoins.innerHTML = `
-                    <img src="MXGoldcoins.jpg" alt="MX Gold Coins" class="w-24 h-24 object-contain rounded-lg shadow-sm" onerror="this.src='roleta.png'">
+                    <img src="MXGoldcoins.jpg" alt="MX Gold Coins" class="w-24 h-24 object-contain rounded-lg shadow-sm cursor-pointer hover:scale-105 transition" onclick="claimGoldCoinsReward()" onerror="this.src='roleta.png'">
                     <h4 class="font-extrabold text-[11px] text-gray-800 leading-tight mt-1">+15 MX Coins!</h4>
                     <button onclick="claimGoldCoinsReward()" class="mt-2 w-full bg-amber-500 text-white font-black py-1.5 rounded-lg text-[9px] uppercase shadow">Coletar Moedas</button>
                 `;
             } else {
                 cardCoins.innerHTML = `
-                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center text-2xl text-gray-400 mt-4">🪙</div>
+                    <img src="MXGoldcoins.jpg" alt="MX Gold Coins" class="w-24 h-24 object-contain rounded-lg shadow-sm filter grayscale opacity-40">
                     <div class="mt-2">
                         <h4 class="font-bold text-[10px] text-gray-400 uppercase">Espaço Vazio</h4>
                         <span class="text-[9px] text-gray-400 block mt-0.5 leading-tight">Ganhe na Roleta ou nos Pacotes</span>
@@ -791,15 +848,65 @@
             triggerPackOpening('trade_swap');
         }
 
+        // Filtro manual ou através dos botões inferiores
+        function filterByLine(line) {
+            currentFilter = line;
+            
+            // Ajustando a ativação dos botões de controle de filtro
+            const filters = ['all', 'Basic', 'Intermedium', 'Premium'];
+            filters.forEach(f => {
+                const btn = document.getElementById(`filter-${f.toLowerCase()}`);
+                if (btn) {
+                    if (f === line) {
+                        btn.className = "px-3 py-1.5 text-[10px] font-bold rounded-lg border border-orange-400 bg-orange-400 text-white uppercase";
+                    } else {
+                        btn.className = "px-3 py-1.5 text-[10px] font-bold rounded-lg border border-gray-200 bg-white text-gray-600 uppercase";
+                    }
+                }
+            });
+
+            renderProducts();
+        }
+
+        // Atalho do rodapé: Vai para a aba Produtos e aplica o filtro
+        function shortcutToProducts(line) {
+            switchTab('produtos');
+            filterByLine(line);
+            
+            // Rolar suavemente para a área de produtos filtrados
+            setTimeout(() => {
+                document.getElementById('products-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
         function renderProducts() {
             const container = document.getElementById('products-list');
             container.innerHTML = '';
 
-            PRODUCTS_DATA.forEach(p => {
+            // Filtrar produtos baseados na seleção do usuário
+            const filteredProducts = PRODUCTS_DATA.filter(p => {
+                if (currentFilter === 'all') return true;
+                return getProductLine(p.price) === currentFilter;
+            });
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400 w-full col-span-2">
+                        <span class="text-3xl">🛍️</span>
+                        <p class="text-xs mt-2 font-medium">Nenhum produto cadastrado nesta categoria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredProducts.forEach(p => {
                 const discountCoupon = getActiveCouponForBrand(p.brand);
                 const originalPrice = p.price;
                 const finalPrice = calculateDiscountedPrice(p);
                 const hasDiscount = discountCoupon !== undefined;
+
+                const line = getProductLine(originalPrice);
+                const badgeStyle = getLineBadgeStyles(line);
 
                 const card = document.createElement('div');
                 card.className = "shopee-card cursor-pointer hover:shadow-md transition duration-200";
@@ -815,9 +922,9 @@
                         ` : ''}
                     </div>
                     <div class="p-2.5 space-y-1">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-1 flex-wrap">
                             <span class="text-[8px] font-black uppercase text-orange-500 tracking-wider bg-orange-50 px-1.5 py-0.5 rounded">${p.brand}</span>
-                            <span class="text-[9px] text-gray-400 font-medium">⭐ ${p.rating} (${p.sales} vendidos)</span>
+                            <span class="text-[7.5px] font-black border px-1.5 py-0.5 rounded uppercase ${badgeStyle}">${line}</span>
                         </div>
                         <h4 class="text-xs font-bold text-gray-800 truncate mt-1 leading-tight">${p.name}</h4>
                         <div class="flex flex-col mt-2">
@@ -847,7 +954,7 @@
                 row.className = "bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between gap-2 shadow-xs";
                 row.innerHTML = `
                     <div class="space-y-0.5">
-                        <h4 class="text-xs font-black text-gray-800">🎁 MXBrindecard Desbloqueado</h4>
+                        <h4 class="text-xs font-black text-gray-800">🎁 MXBrindecards Desbloqueado</h4>
                         <p class="text-[10px] text-gray-500 leading-tight">Vá na aba do Álbum para abrir seu pacote surpresa!</p>
                     </div>
                     <button onclick="switchTab('cards')" class="bg-orange-500 text-white font-black text-[10px] px-3 py-2 rounded-lg uppercase shadow">
@@ -893,7 +1000,8 @@
             const product = PRODUCTS_DATA.find(p => p.id === id);
             if (!product) return;
 
-            document.getElementById('gallery-brand').textContent = `${product.brand} | ⭐ ${product.rating} (${product.sales} vendidos)`;
+            const line = getProductLine(product.price);
+            document.getElementById('gallery-brand').textContent = `${product.brand} | Linha ${line} | ⭐ ${product.rating} (${product.sales} vendidos)`;
             document.getElementById('gallery-title').textContent = product.name;
             document.getElementById('gallery-desc').textContent = product.desc;
 
@@ -1123,7 +1231,7 @@
                 lastPackResults.push({
                     type: 'brinde_fisico',
                     name: 'Pacote Saboroso!',
-                    image: 'MXBrindecard.jpg'
+                    image: 'MXBrindecards.jpg'
                 });
             }
 
