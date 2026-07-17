@@ -1126,53 +1126,137 @@
         }
 
         function spinRoulette() {
-            if (isSpinning) return;
-            if (userState.coins < 3) {
-                showAlert("🪙", "Moedas Insuficientes", "Você precisa de pelo menos 3 moedas MX para girar a roleta.");
-                return;
-            }
 
-            userState.coins -= 3;
-            isSpinning = true;
-            saveState();
-            updateUI();
-            playSoundSpin();
+    if (isSpinning) return;
 
-            const wheel = document.getElementById('wheel');
-            
-            // Sorteia o índice do prêmio
-            const randomRewardIdx = Math.floor(Math.random() * SPIN_REWARDS.length);
-            const reward = SPIN_REWARDS[randomRewardIdx];
+    if (userState.coins < 3) {
+        showAlert(
+            "🪙",
+            "Moedas Insuficientes",
+            "Você precisa de pelo menos 3 moedas MX para girar a roleta."
+        );
+        return;
+    }
 
-            const voltas = 8; 
-            const centro = reward.targetAngle; 
-            const erro = Math.random() * 20 - 10; 
+    userState.coins -= 3;
 
-            currentRotation = (360 * voltas) + (360 - centro - erro);
-            wheel.style.transform = `rotate(${currentRotation}deg)`;
+    isSpinning = true;
 
-            setTimeout(() => {
-                isSpinning = false;
-                let rewardText = "";
+    saveState();
 
-                if (reward.type === "coins") {
-                    userState.coins += reward.value;
-                    rewardText = `Parabéns! Você ganhou **+${reward.value} MX Coins**!`;
-                } else if (reward.type === "coupon") {
-                    userState.coupons.push(reward.value);
-                    rewardText = `Incrível! Você desbloqueou um **${reward.value}**!<br><br>Ele foi aplicado aos itens da marca **${reward.brand}** na aba de produtos e salvo no seu Baú de forma segura.`;
-                } else if (reward.type === "bonus_pack") {
-                    userState.brindeFisicoDesbloqueado = true;
-                    rewardText = `Fantástico! Você ganhou **1 Pacote de Cards**!<br><br>Ele foi enviado ao primeiro espaço dos **Vale Brindes Instantâneos** no Álbum para você abrir agora mesmo!`;
-                }
+    updateUI();
 
-                saveState();
-                updateUI();
-                playSoundWin();
-                showAlert(reward.icon, "Giro da Sorte", rewardText);
-            }, 5000); 
+    playSoundSpin();
+
+    const wheel = document.getElementById("wheel");
+
+
+
+    const rewardIndex =
+        Math.floor(Math.random()*SPIN_REWARDS.length);
+
+    const reward =
+        SPIN_REWARDS[rewardIndex];
+
+
+
+    //----------------------------------------
+    // CONFIGURAÇÃO
+    //----------------------------------------
+
+    const voltas =
+        Math.floor(Math.random()*4)+8;
+
+    const setor = 360 / SPIN_REWARDS.length;
+
+    const margem = setor*0.10;
+
+    const offset =
+        (Math.random()*margem*2)-margem;
+
+    //----------------------------------------
+    // ANGULO
+    //----------------------------------------
+
+    const alvo =
+        reward.targetAngle + offset;
+
+    //----------------------------------------
+    // ACUMULA GIRO
+    //----------------------------------------
+
+    currentRotation +=
+        (voltas*360) +
+        (360-alvo);
+
+    //----------------------------------------
+    // TEMPO ALEATÓRIO
+    //----------------------------------------
+
+    const tempo =
+        5200+
+        Math.random()*1400;
+
+    wheel.style.transition =
+        `transform ${tempo}ms cubic-bezier(.12,.95,.18,1)`;
+
+    wheel.style.transform =
+        `rotate(${currentRotation}deg)`;
+
+
+
+    setTimeout(()=>{
+
+        isSpinning=false;
+
+        let rewardText="";
+
+        if(reward.type==="coins"){
+
+            userState.coins+=reward.value;
+
+            rewardText=
+            `Parabéns! Você ganhou +${reward.value} MX Coins!`;
+
         }
 
+        else if(reward.type==="coupon"){
+
+            userState.coupons.push(reward.value);
+
+            rewardText=
+            `Você ganhou ${reward.value}!`;
+
+        }
+
+        else if(reward.type==="bonus_pack"){
+
+            userState.brindeFisicoDesbloqueado=true;
+
+            rewardText=
+            "Você ganhou um Pacote MX Cards!";
+
+        }
+
+        saveState();
+
+        updateUI();
+
+        playSoundWin();
+
+        showAlert(
+
+            reward.icon,
+
+            reward.label,
+
+            rewardText
+
+        );
+
+    },tempo+100);
+
+}
         function triggerPackOpening(type) {
             if (type === 'coins') {
                 if (userState.coins < 5) {
