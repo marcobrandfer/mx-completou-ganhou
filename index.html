@@ -116,7 +116,7 @@
         #floating-timer-container {
             position: fixed;
             right: 16px;
-            bottom: 156px;
+            bottom: 180px;
             z-index: 40;
             display: flex;
             align-items: center;
@@ -154,7 +154,7 @@
         }
     </style>
 </head>
-<body class="bg-[#FAFAFA] text-gray-800 font-sans antialiased min-h-screen pb-32">
+<body class="bg-[#FAFAFA] text-gray-800 font-sans antialiased min-h-screen pb-36">
 
     <!-- TIMER FLUTUANTE DE 15 SEGUNDOS -->
     <div id="floating-timer-container">
@@ -238,7 +238,7 @@
                 <div id="prize-status-completed" class="hidden">
                     <p class="text-green-600 font-extrabold tracking-widest text-xs">🎉 PARABÉNS! VOCÊ COMPLETOU E GANHOU! 🎉</p>
                     <p class="text-gray-900 font-black text-lg tracking-wide mt-1">GANHE PIX DE PRÊMIOS ATIVO</p>
-                    <button onclick="window.open('https://wa.me/5541997257227?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20PIX!', '_blank')" class="mt-3 w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black py-2.5 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
+                    <button onclick="window.open('https://wa.me/5543996981688?text=COMPLETEI%20O%20ALBUM%20MX!%20Quero%20meu%20Premio%20PIX!', '_blank')" class="mt-3 w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-black py-2.5 rounded-lg text-xs uppercase tracking-wider border-0 shadow-md active:scale-95 transition">
                         🎁 RECLAMAR MEU PIX
                     </button>
                 </div>
@@ -292,7 +292,6 @@
                 </div>
                 
                 <div class="flex justify-center gap-4 mt-1 border-t border-gray-100 pt-2.5">
-                    <button onclick="cheatCoinsAndBrinde()" class="text-[10px] text-gray-400 hover:text-gray-600 underline bg-transparent border-0 cursor-pointer">🪙 Cheats & Liberar Brindes</button>
                     <button onclick="resetGame()" class="text-[10px] text-red-500 hover:text-red-600 font-bold underline bg-transparent border-0 cursor-pointer">♻️ Resetar Jogo</button>
                 </div>
             </div>
@@ -415,7 +414,7 @@
                     </div>
                     <button id="btn-claim-m3" onclick="claimMission(3)" class="bg-gray-200 text-gray-400 font-bold text-[10px] px-2.5 py-1.5 rounded-lg uppercase" disabled>+5 🪙</button>
                 </div>
-                <!-- Missão 4 (NOVA) -->
+                <!-- Missão 4 -->
                 <div class="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-xl p-2.5 flex items-center justify-between">
                     <div>
                         <h4 class="font-bold text-xs text-purple-900">4. Seguir/Curtir/Comentar Insta</h4>
@@ -476,7 +475,7 @@
             <p class="text-[10px] text-red-500 font-black uppercase mb-4 leading-tight">⏳ Mas corra e aproveite, Amanhã o Preço Volta ao Normal!</p>
             
             <div class="flex flex-col gap-2">
-                <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20aproveitar%20a%20Oferta%20Especial%20do%20Dia%3A%20Kit%20Pro%20AM8T%20por%20R%24%20379%2C99%21', '_blank')" class="w-full bg-green-500 hover:bg-green-600 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider border-0 cursor-pointer shadow">🟢 GARANTIR MINHA OFERTA NO WHATSAPP</button>
+                <button onclick="window.open('https://wa.me/5543996981688?text=Quero%20aproveitar%20a%20Oferta%20Especial%20do%20Dia%3A%20Kit%20Pro%20AM8T%20por%20R%24%20379%2C99%21', '_blank')" class="w-full bg-green-500 hover:bg-green-600 text-white font-black py-3 rounded-xl text-xs uppercase tracking-wider border-0 cursor-pointer shadow">🟢 GARANTIR MINHA OFERTA NO WHATSAPP</button>
                 <button onclick="closeOfertaEspecial()" class="w-full bg-gray-100 text-gray-500 font-bold py-2 rounded-xl text-[10px] uppercase border border-gray-200">Fechar Oferta</button>
             </div>
         </div>
@@ -517,10 +516,10 @@
         </div>
     </div>
 
-    <!-- ================= NOVO RODAPÉ FIXO: LINHAS DE PRODUTOS MX ================= -->
+    <!-- ================= NOVO RODAPÉ FIXO: LINHAS DE PRODUTOS E BOTÃO FAVORITAR ================= -->
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] z-40 p-2">
-        <div class="max-w-md mx-auto">
-            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest text-center mb-1">⚡ LINHAS DE PRODUTOS MX ⚡</p>
+        <div class="max-w-md mx-auto space-y-1.5">
+            <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest text-center">⚡ LINHAS DE PRODUTOS MX ⚡</p>
             <div class="grid grid-cols-3 gap-1.5">
                 <button onclick="shortcutToProducts('Basic')" class="bg-blue-50 border border-blue-200 hover:bg-blue-100 active:scale-95 transition rounded-lg py-1.5 flex flex-col items-center justify-center">
                     <span class="text-xs">🟢</span>
@@ -538,6 +537,10 @@
                     <span class="text-[7px] text-purple-500 font-bold mt-0.5">PIX R$ 200</span>
                 </button>
             </div>
+            <!-- BOTÃO FAVORITAR NO RODAPÉ -->
+            <button onclick="bookmarkApp()" class="w-full bg-amber-400 hover:bg-amber-500 text-white font-black py-1.5 rounded-lg text-[10px] uppercase tracking-wider flex items-center justify-center gap-1 shadow-xs transition active:scale-95 cursor-pointer">
+                ⭐ FAVORITAR ESTE APP NO NAVEGADOR
+            </button>
         </div>
     </div>
 
@@ -569,11 +572,11 @@
             { id: 20, name: "Mic Lapela Hollyland Lark M2", brand: "Hollyland", price: 799.99, limitPrice: 729.99, main_image: "MXCARD20.jpg", desc: "Microfone sem fio nível cinematográfico do tamanho de um botão. Usado pelos maiores profissionais.", sales: 14, rating: 5.0 },
             { id: 21, name: "Tribit Stormbox Blast 2", brand: "Tribit", price: 1799.99, limitPrice: 1579.99, main_image: "MXCARD21.jpg", desc: "Considerada uma das melhores caixas de som Bluetooth do mundo na sua categoria. Potência descomunal.", sales: 9, rating: 4.9 },
             { id: 22, name: "Edifier R1000T4", brand: "Edifier", price: 749.99, limitPrice: 679.99, main_image: "MXCARD22.jpg", desc: "Monitores de áudio activos clássicos em madeira. Som puríssimo, excelente para edição ou audição de estúdio.", sales: 104, rating: 4.8 },
-            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 899.99, limitPrice: 799.99, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para músicos.", sales: 91, rating: 4.9 },
+            { id: 23, name: "Edifier MR4", brand: "Edifier", price: 899.99, limitPrice: 799.99, main_image: "MXCARD23.jpg", desc: "Monitores de áudio profissionais calibrados para alta precisão acústica. Perfeitos para музыканtos.", sales: 91, rating: 4.9 },
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 1249.99, limitPrice: 1149.99, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]", sales: 48, rating: 5.0 }
         ];
 
-        // SETORES DA ROLETA COM RECALIBRAGEM PRECISA BASEADA NA IMAGEM
+        // SETORES DA ROLETA
         const SPIN_REWARDS = [
             { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 30 },
             { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 90 },
@@ -594,7 +597,6 @@
             brindeFisicoDesbloqueado: false, 
             brindeCoinsDesbloqueado: false,  
             coupons: [],
-            // CONTROLES DE MISSÕES DIÁRIAS E COMPARTILHAMENTO
             sharedTodayWhatsApp: false,
             missionsProgress: {
                 m1PacksOpened: 0,
@@ -858,7 +860,7 @@
 
         function shareProgressWhatsApp() {
             const ownedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
-            const message = `Estou jogando o MX Completou Ganhou da MX Digital Shop!\nJá tenho ${ownedCount}/24 Cards no meu álbum e estou perto de levar um SUPER PIX de R$ 200!\nVem completar e ganhar você também!`;
+            const message = `Estou jogando o MX Completou Ganhou da MX Digital Shop!\nJá tenho ${ownedCount}/24 Cards no meu álbum e estou perto de levar um SUPER PIX de R$ 200!\nEntre no nosso grupo e venha completar e ganhar você também:\nhttps://chat.whatsapp.com/CtBoLCjZzEg2ZROr8DqE3P`;
             const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
 
             window.open(whatsappUrl, '_blank');
@@ -871,6 +873,10 @@
                 playSoundWin();
                 showAlert("💬", "Progresso Compartilhado!", "Você ganhou +10 MX Coins por compartilhar no WhatsApp!");
             }
+        }
+
+        function bookmarkApp() {
+            showAlert("⭐", "Favoritar App", "Para favoritar este jogo no seu celular ou PC:<br><br><b>No Chrome/Android:</b> Toque nos 3 pontinhos no topo superior e selecione <b>'Adicionar à tela inicial'</b> ou o ícone de Estrela ⭐.<br><br><b>No Safari/iPhone:</b> Toque no ícone de Compartilhar e selecione <b>'Adicionar à Tela de Início'</b>.");
         }
 
         function openMissionsModal() {
@@ -1217,7 +1223,7 @@
                         <button onclick="switchTab('produtos')" class="bg-orange-500 text-white font-black text-[10px] px-2.5 py-2 rounded-lg uppercase shadow">
                             Ver Itens
                         </button>
-                        <button onclick="window.open('https://wa.me/5541997257227?text=Quero%20resgatar%20meu%20${encodeURIComponent(cup)}%20do%20App!', '_blank')" class="bg-green-500 hover:bg-green-600 text-white font-black text-[10px] px-2.5 py-2 rounded-lg uppercase shadow">
+                        <button onclick="window.open('https://wa.me/5543996981688?text=Quero%20resgatar%20meu%20${encodeURIComponent(cup)}%20do%20App!', '_blank')" class="bg-green-500 hover:bg-green-600 text-white font-black text-[10px] px-2.5 py-2 rounded-lg uppercase shadow">
                             Ativar
                         </button>
                     </div>
@@ -1267,7 +1273,7 @@
                     priceVal.textContent = `Por: R$ ${originalPrice.toFixed(2)}`;
                 }
                 buyBtn.classList.remove('hidden');
-                buyBtn.onclick = () => window.open(`https://wa.me/5541997257227?text=Gostaria%20de%20saber%20mais%20sobre%20o%20${encodeURIComponent(product.name)}%20com%20o%20preço%20especial%20de%20R$%20${finalPrice.toFixed(2)}`, '_blank');
+                buyBtn.onclick = () => window.open(`https://wa.me/5543996981688?text=Gostaria%20de%20saber%20mais%20sobre%20o%20${encodeURIComponent(product.name)}%20com%20o%20preço%20especial%20de%20R$%20${finalPrice.toFixed(2)}`, '_blank');
             } else {
                 priceOld.classList.add('hidden');
                 priceVal.textContent = "Bloqueado";
@@ -1364,7 +1370,7 @@
             showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
         }
 
-        // LÓGICA DA ROLETA RECALIBRADA COM PRECISÃO MILIMÉTRICA
+        // LÓGICA DA ROLETA
         function spinRoulette() {
             if (isSpinning) return;
 
@@ -1386,12 +1392,11 @@
             const rewardIndex = Math.floor(Math.random() * SPIN_REWARDS.length);
             const reward = SPIN_REWARDS[rewardIndex];
 
-            const voltas = Math.floor(Math.random() * 4) + 8; // 8 a 11 voltas completas
-            const setor = 360 / SPIN_REWARDS.length; // 60 graus por setor
-            const margem = setor * 0.15; // Margem segura dentro do centro da fatia
+            const voltas = Math.floor(Math.random() * 4) + 8;
+            const setor = 360 / SPIN_REWARDS.length;
+            const margem = setor * 0.15;
             const offset = (Math.random() * margem * 2) - margem;
             
-            // Ângulo exato que o elemento de roleta precisa girar para colocar o centro do setor sorteado no topo (0° / 360°)
             const alvo = reward.targetAngle + offset;
 
             currentRotation += (voltas * 360) + (360 - (currentRotation % 360)) + (360 - alvo);
@@ -1562,17 +1567,6 @@
 
         function closeOfertaEspecial() {
             document.getElementById('modal-oferta-especial').classList.add('hidden');
-        }
-
-        function cheatCoinsAndBrinde() {
-            userState.coins += 50;
-            userState.brindeFisicoDesbloqueado = true;
-            userState.brindeCoinsDesbloqueado = true;
-            userState.inventory[1] = (userState.inventory[1] || 0) + 4;
-            saveState();
-            updateUI();
-            playSoundWin();
-            showAlert("⚡", "Modo Criativo", "+50 Moedas creditadas, Vales-Brindes liberados e +4 cópias do Card #1 adicionadas!");
         }
 
         function resetGame() {
