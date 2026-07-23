@@ -573,14 +573,14 @@
             { id: 24, name: "Edifier R1700BT", brand: "Edifier", price: 1249.99, limitPrice: 1149.99, main_image: "MXCARD24.jpg", desc: "Caixas de som residenciais Bluetooth com design angulado elegante e controle remoto incluso. [CARD ULTRA RARO]", sales: 48, rating: 5.0 }
         ];
 
-        // SETORES DA ROLETA
+        // SETORES DA ROLETA COM RECALIBRAGEM PRECISA BASEADA NA IMAGEM
         const SPIN_REWARDS = [
-            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 0 },
-            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 60 },
-            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 120 },
-            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 180 },
-            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 240 },
-            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 300 }
+            { label: "Vale 5 MX Coins", type: "coins", value: 5, icon: "🪙", targetAngle: 30 },
+            { label: "Vale 10 MX Coins", type: "coins", value: 10, icon: "🪙", targetAngle: 90 },
+            { label: "Vale Cupom R$ 10 QCY", type: "coupon", brand: "QCY", discount: 10.00, value: "Cupom R$ 10,00 OFF Fones QCY", icon: "🎟️", targetAngle: 150 },
+            { label: "Vale Cupom R$ 20 Edifier", type: "coupon", brand: "Edifier", discount: 20.00, value: "Cupom R$ 20,00 OFF Caixas Edifier", icon: "🎟️", targetAngle: 210 },
+            { label: "Vale 1 Pacote MX Cards", type: "bonus_pack", value: 1, icon: "📦", targetAngle: 270 },
+            { label: "Vale Cupom R$ 10 Fifine", type: "coupon", brand: "Fifine", discount: 10.00, value: "Cupom R$ 10,00 OFF Produtos Fifine", icon: "🎟️", targetAngle: 330 }
         ];
 
         let userState = {
@@ -603,7 +603,7 @@
                 m2Claimed: false,
                 m3WheelSpun: false,
                 m3Claimed: false,
-                m4InstaClaimed: false // Nova missão Instagram
+                m4InstaClaimed: false
             }
         };
 
@@ -735,9 +735,8 @@
                 userState.brindeFisicoDesbloqueado = false;
                 userState.brindeCoinsDesbloqueado = false;
                 userState.coupons = [];
-                userState.sharedTodayWhatsApp = false; // Reset da cota diária de compartilhamento
+                userState.sharedTodayWhatsApp = false;
                 
-                // Reset das Missões Diárias
                 userState.missionsProgress = {
                     m1PacksOpened: 0,
                     m1Claimed: false,
@@ -771,7 +770,6 @@
                 }
             }
 
-            // Registrar progresso da Missão 2 (Abrir a Aba MX Produtos)
             if (tabId === 'produtos') {
                 userState.missionsProgress.m2TabOpened = true;
                 saveState();
@@ -799,13 +797,11 @@
         function updateUI() {
             document.getElementById('balance-display').textContent = userState.coins;
 
-            // Progresso do Álbum
             const ownedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
             const progressPct = Math.round((ownedCount / 24) * 100);
             document.getElementById('progress-text').textContent = `${ownedCount} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${progressPct}%`;
 
-            // Estado do Botão de Compartilhar
             const btnShare = document.getElementById('btn-share-whatsapp');
             if (userState.sharedTodayWhatsApp) {
                 btnShare.innerHTML = "<span>✅ Progresso Compartilhado Hoje</span>";
@@ -817,7 +813,6 @@
                 btnShare.classList.add('bg-green-500', 'hover:bg-green-600');
             }
 
-            // FOMO Banner ativo com 23 cards
             const fomoBanner = document.getElementById('fomo-banner');
             if (ownedCount === 23) {
                 fomoBanner.classList.remove('hidden');
@@ -825,7 +820,6 @@
                 fomoBanner.classList.add('hidden');
             }
 
-            // Ativação do Grande Prêmio Pix
             const mainPrizeBox = document.getElementById('main-prize-box');
             if (ownedCount === 24) {
                 mainPrizeBox.className = "premio-box-completo rounded-2xl p-4 text-center mb-4 text-sm shadow-xs";
@@ -837,7 +831,6 @@
                 document.getElementById('prize-status-completed').classList.add('hidden');
             }
 
-            // VIP Booster Pack
             const vipBox = document.getElementById('vip-free-pack-box');
             if (!userState.claimedVipFreePack) {
                 vipBox.innerHTML = `
@@ -853,7 +846,6 @@
                 `;
             }
 
-            // Indicador de novidades no Baú
             const hasCoupon = userState.brindeFisicoDesbloqueado || userState.brindeCoinsDesbloqueado || userState.coupons.length > 0;
             document.getElementById('reward-badge').classList.toggle('hidden', !hasCoupon);
 
@@ -864,7 +856,6 @@
             updateMissionsUI();
         }
 
-        // Função de compartilhamento no WhatsApp com acréscimo de moedas
         function shareProgressWhatsApp() {
             const ownedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
             const message = `Estou jogando o MX Completou Ganhou da MX Digital Shop!\nJá tenho ${ownedCount}/24 Cards no meu álbum e estou perto de levar um SUPER PIX de R$ 200!\nVem completar e ganhar você também!`;
@@ -882,7 +873,6 @@
             }
         }
 
-        // LÓGICA DAS MISSÕES DIÁRIAS
         function openMissionsModal() {
             updateMissionsUI();
             document.getElementById('modal-missions').classList.remove('hidden');
@@ -895,7 +885,6 @@
         function updateMissionsUI() {
             const m = userState.missionsProgress;
 
-            // Missão 1: Pacotes
             const m1Prog = Math.min(m.m1PacksOpened, 2);
             document.getElementById('m1-progress').textContent = `${m1Prog}/2`;
             const btnM1 = document.getElementById('btn-claim-m1');
@@ -913,7 +902,6 @@
                 btnM1.disabled = true;
             }
 
-            // Missão 2: Produtos
             const m2Prog = m.m2TabOpened ? 1 : 0;
             document.getElementById('m2-progress').textContent = `${m2Prog}/1`;
             const btnM2 = document.getElementById('btn-claim-m2');
@@ -931,7 +919,6 @@
                 btnM2.disabled = true;
             }
 
-            // Missão 3: Roleta
             const m3Prog = m.m3WheelSpun ? 1 : 0;
             document.getElementById('m3-progress').textContent = `${m3Prog}/1`;
             const btnM3 = document.getElementById('btn-claim-m3');
@@ -949,7 +936,6 @@
                 btnM3.disabled = true;
             }
 
-            // Missão 4: Instagram
             const btnM4 = document.getElementById('btn-claim-m4');
             if (m.m4InstaClaimed) {
                 btnM4.textContent = "Coletado";
@@ -986,12 +972,11 @@
                 playSoundWin();
                 showAlert("🪙", "Missão Cumprida!", "Você resgatou +5 MX Coins!");
             } else if (missionNum === 4 && !m.m4InstaClaimed) {
-                // Redireciona para o Instagram
                 window.open("https://www.instagram.com/cesarmxdigitalshop/", "_blank");
                 
                 m.m4InstaClaimed = true;
                 userState.coins += 15;
-                userState.brindeFisicoDesbloqueado = true; // Libera +1 Pacote MX Cards
+                userState.brindeFisicoDesbloqueado = true;
                 
                 saveState();
                 updateUI();
@@ -1083,7 +1068,6 @@
                 
                 wrapper.appendChild(card);
 
-                // Permite a troca quando o jogador tiver 4 ou mais cópias (muda 3 e permanece com 1 colada no álbum)
                 if (copies >= 4) {
                     const tradeBtn = document.createElement('button');
                     tradeBtn.className = "w-full bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-black py-1 px-2 rounded-lg text-[9px] uppercase tracking-wider shadow-xs hover:brightness-105 active:scale-95 transition";
@@ -1099,7 +1083,6 @@
             });
         }
 
-        // Correção na troca: reduz 3 cópias mantendo a 1ª colada e abre o pacote
         function executeCardTrade(cardId) {
             if ((userState.inventory[cardId] || 0) < 4) return;
             
@@ -1381,6 +1364,7 @@
             showAlert("🪙", "Sucesso!", "Você recebeu 5 MX Coins de bônus diário!");
         }
 
+        // LÓGICA DA ROLETA RECALIBRADA COM PRECISÃO MILIMÉTRICA
         function spinRoulette() {
             if (isSpinning) return;
 
@@ -1392,7 +1376,6 @@
             userState.coins -= 3;
             isSpinning = true;
 
-            // Registrar progresso da Missão 3 (Girar 1x a Roleta)
             userState.missionsProgress.m3WheelSpun = true;
 
             saveState();
@@ -1403,13 +1386,15 @@
             const rewardIndex = Math.floor(Math.random() * SPIN_REWARDS.length);
             const reward = SPIN_REWARDS[rewardIndex];
 
-            const voltas = Math.floor(Math.random() * 4) + 8;
-            const setor = 360 / SPIN_REWARDS.length;
-            const margem = setor * 0.10;
+            const voltas = Math.floor(Math.random() * 4) + 8; // 8 a 11 voltas completas
+            const setor = 360 / SPIN_REWARDS.length; // 60 graus por setor
+            const margem = setor * 0.15; // Margem segura dentro do centro da fatia
             const offset = (Math.random() * margem * 2) - margem;
+            
+            // Ângulo exato que o elemento de roleta precisa girar para colocar o centro do setor sorteado no topo (0° / 360°)
             const alvo = reward.targetAngle + offset;
 
-            currentRotation += (voltas * 360) + (360 - alvo);
+            currentRotation += (voltas * 360) + (360 - (currentRotation % 360)) + (360 - alvo);
             const tempo = 5200 + Math.random() * 1400;
 
             wheel.style.transition = `transform ${tempo}ms cubic-bezier(.12,.95,.18,1)`;
@@ -1450,7 +1435,6 @@
                 userState.brindeFisicoDesbloqueado = false;
             }
 
-            // Registrar progresso da Missão 1 (Abrir 2 pacotes)
             userState.missionsProgress.m1PacksOpened++;
 
             const overlay = document.getElementById('pack-animation-overlay');
@@ -1584,7 +1568,7 @@
             userState.coins += 50;
             userState.brindeFisicoDesbloqueado = true;
             userState.brindeCoinsDesbloqueado = true;
-            userState.inventory[1] = (userState.inventory[1] || 0) + 4; // Adiciona 4 cópias para testar a troca mantendo 1 fixo
+            userState.inventory[1] = (userState.inventory[1] || 0) + 4;
             saveState();
             updateUI();
             playSoundWin();
