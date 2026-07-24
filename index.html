@@ -270,10 +270,6 @@
                     <div class="w-full bg-gray-200 h-2.5 rounded-full overflow-hidden border border-gray-300">
                         <div id="progress-bar" class="bg-gradient-to-r from-orange-400 to-green-400 h-full transition-all duration-500" style="width: 0%"></div>
                     </div>
-                    
-                    <button id="btn-share-whatsapp" onclick="shareProgressWhatsApp()" class="w-full mt-3 bg-green-500 hover:bg-green-600 text-white font-black py-2 px-3 rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition active:scale-95 cursor-pointer">
-                        <span>💬 Compartilhar no Zap (+10 🪙 MX)</span>
-                    </button>
                 </div>
             </div>
 
@@ -661,7 +657,6 @@
             brindeFisicoDesbloqueado: false, 
             brindeCoinsDesbloqueado: false,  
             coupons: [],
-            sharedTodayWhatsApp: false,
             missionsProgress: {
                 m1PacksOpened: 0,
                 m1Claimed: false,
@@ -840,7 +835,6 @@
                     if (userState.brindeFisicoDesbloqueado === undefined) userState.brindeFisicoDesbloqueado = false;
                     if (userState.brindeCoinsDesbloqueado === undefined) userState.brindeCoinsDesbloqueado = false;
                     if (!userState.coupons) userState.coupons = [];
-                    if (userState.sharedTodayWhatsApp === undefined) userState.sharedTodayWhatsApp = false;
                     if (!userState.missionsProgress) {
                         userState.missionsProgress = {
                             m1PacksOpened: 0,
@@ -866,7 +860,6 @@
                 userState.brindeFisicoDesbloqueado = false;
                 userState.brindeCoinsDesbloqueado = false;
                 userState.coupons = [];
-                userState.sharedTodayWhatsApp = false;
                 
                 userState.missionsProgress = {
                     m1PacksOpened: 0,
@@ -933,17 +926,6 @@
             document.getElementById('progress-text').textContent = `${ownedCount} / 24 Cards`;
             document.getElementById('progress-bar').style.width = `${progressPct}%`;
 
-            const btnShare = document.getElementById('btn-share-whatsapp');
-            if (userState.sharedTodayWhatsApp) {
-                btnShare.innerHTML = "<span>✅ Progresso Compartilhado Hoje</span>";
-                btnShare.classList.remove('bg-green-500', 'hover:bg-green-600');
-                btnShare.classList.add('bg-gray-400', 'cursor-not-allowed');
-            } else {
-                btnShare.innerHTML = "<span>💬 Compartilhar no Zap (+10 🪙 MX)</span>";
-                btnShare.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                btnShare.classList.add('bg-green-500', 'hover:bg-green-600');
-            }
-
             // FOMO BANNER PARA QUANDO FALTAR SÓ 1 CARD (23 CARDS POSSUÍDOS)
             const fomoBanner = document.getElementById('fomo-banner');
             if (ownedCount === 23) {
@@ -986,23 +968,6 @@
             renderProducts();
             renderRewards();
             updateMissionsUI();
-        }
-
-        function shareProgressWhatsApp() {
-            const ownedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
-            const message = `Estou jogando o MX Completou Ganhou da MX Digital Shop!\nJá tenho ${ownedCount}/24 Cards no meu álbum e estou perto de levar meu MX CASHBACK de até R$ 30!\nEntre no nosso grupo e venha completar e ganhar você também:\nhttps://chat.whatsapp.com/CtBoLCjZzEg2ZROr8DqE3P?s=cl&p=a&ilr=0`;
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(message)}`;
-
-            window.open(whatsappUrl, '_blank');
-
-            if (!userState.sharedTodayWhatsApp) {
-                userState.sharedTodayWhatsApp = true;
-                userState.coins += 10;
-                saveState();
-                updateUI();
-                playSoundWin();
-                showAlert("💬", "Progresso Compartilhado!", "Você ganhou +10 MX Coins por compartilhar no WhatsApp!");
-            }
         }
 
         function bookmarkApp() {
@@ -1655,7 +1620,6 @@
                     brindeFisicoDesbloqueado: false,
                     brindeCoinsDesbloqueado: false,
                     coupons: [],
-                    sharedTodayWhatsApp: false,
                     missionsProgress: {
                         m1PacksOpened: 0,
                         m1Claimed: false,
