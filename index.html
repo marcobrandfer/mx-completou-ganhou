@@ -424,7 +424,7 @@
                 <div class="bg-gradient-to-r from-pink-50 to-purple-50 border border-pink-200 rounded-xl p-2.5 flex items-center justify-between">
                     <div>
                         <h4 class="font-bold text-xs text-purple-900">4. Seguir/Curtir/Comentar Insta</h4>
-                        <p class="text-[9px] text-purple-600 font-medium">Ganhe 1 Pack + 15 MX Coins!</p>
+                        <p class="text-[9px] text-purple-600 font-medium">Ganhe 1 Pack + 5 MX Coins!</p>
                     </div>
                     <button id="btn-claim-m4" onclick="claimMission(4)" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black text-[10px] px-2.5 py-1.5 rounded-lg uppercase shadow active:scale-95 cursor-pointer">
                         📸 Ir p/ Insta
@@ -1091,14 +1091,14 @@
                 window.open("https://www.instagram.com/cesarmxdigitalshop/", "_blank");
                 
                 m.m4InstaClaimed = true;
-                userState.coins += 15;
+                userState.coins += 5;
                 userState.brindeFisicoDesbloqueado = true;
                 
                 saveState();
                 updateUI();
                 playSoundWin();
                 closeMissionsModal();
-                showAlert("📸", "Missão Instagram Concluída!", "Você ganhou <b>+1 Pacote MX Cards</b> + <b>15 MX Coins</b>! Seu pacote já está disponível para abrir na aba de Cards!");
+                showAlert("📸", "Missão Instagram Concluída!", "Você ganhou <b>+1 Pacote MX Cards</b> + <b>5 MX Coins</b>! Seu pacote já está disponível para abrir na aba de Cards!");
             }
         }
 
