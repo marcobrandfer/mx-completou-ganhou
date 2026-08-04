@@ -327,7 +327,7 @@
             </div>
 
             <div>
-                <h2 class="text-xs font-black text-orange-500 tracking-wider uppercase mb-3 text-center">
+                <h2 id="album-title-header" class="text-xs font-black text-orange-500 tracking-wider uppercase mb-3 text-center">
                     🎴 COMPLETE O SEU ÁLBUM DE MX CARDS 🎴
                     <span class="text-[10px] text-gray-400 block mt-0.5 font-medium">📜 ROLE PARA VER O ÁLBUM • 💡 CLIQUE NO CARD PARA DETALHES</span>
                 </h2>
@@ -686,7 +686,7 @@
         let timerInterval = null;
 
         // CONTADOR FICTÍCIO DE MX VIPS ONLINE (ENTRE 2 E 10)
-        let onlineVipsCount = Math.floor(Math.random() * 5) + 3; // Inicia entre 3 e 7
+        let onlineVipsCount = Math.floor(Math.random() * 5) + 3;
 
         function startOnlineVipsCounter() {
             const el = document.getElementById('online-vips-count');
@@ -945,14 +945,31 @@
             }
 
             const mainPrizeBox = document.getElementById('main-prize-box');
+            const albumTitleHeader = document.getElementById('album-title-header');
+
             if (ownedCount >= 24) {
                 mainPrizeBox.className = "premio-box-completo rounded-2xl p-4 text-center mb-4 text-sm shadow-xs";
                 document.getElementById('prize-status-collecting').classList.add('hidden');
                 document.getElementById('prize-status-completed').classList.remove('hidden');
+
+                // TROCA O TEXTO QUANDO O ÁLBUM É COMPLETADO
+                if (albumTitleHeader) {
+                    albumTitleHeader.innerHTML = `
+                        🎴 SEU ÁLBUM ESTÁ COMPLETO 🎴
+                        <span class="text-[10px] text-green-500 block mt-0.5 font-bold">🎉 PARABÉNS! VOCÊ CONSEGUIU TODOS OS CARDS! • 💡 CLIQUE NO CARD PARA DETALHES</span>
+                    `;
+                }
             } else {
                 mainPrizeBox.className = "premio-box rounded-2xl p-4 text-center mb-4 text-sm shadow-xs";
                 document.getElementById('prize-status-collecting').classList.remove('hidden');
                 document.getElementById('prize-status-completed').classList.add('hidden');
+
+                if (albumTitleHeader) {
+                    albumTitleHeader.innerHTML = `
+                        🎴 COMPLETE O SEU ÁLBUM DE MX CARDS 🎴
+                        <span class="text-[10px] text-gray-400 block mt-0.5 font-medium">📜 ROLE PARA VER O ÁLBUM • 💡 CLIQUE NO CARD PARA DETALHES</span>
+                    `;
+                }
             }
 
             const vipBox = document.getElementById('vip-free-pack-box');
@@ -1565,14 +1582,23 @@
 
         function generatePackCards() {
             const results = [];
-            // O CARD 24 FICA BLOQUEADO PARA OS PACOTES COMUNS SE CARD_24_LIBERADO FOR FALSE
-            const availableProducts = PRODUCTS_DATA.filter(p => p.id !== 24 || CARD_24_LIBERADO);
+            // VERIFICA SE O JOGADOR JÁ TEM 23 CARDS DIFERENTES PARA ENTÃO DESBLOQUEAR/CONCEDER O CARD 24
+            const currentOwnedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
+            const is23Collected = currentOwnedCount >= 23 && !userState.inventory[24];
+
+            // SE TIVER 23 CARDS E AINDA NÃO TIVER O 24, LIBERA O CARD 24 PARA A RECOMPENSA FINAL
+            const availableProducts = PRODUCTS_DATA.filter(p => p.id !== 24 || CARD_24_LIBERADO || is23Collected);
 
             for (let i = 0; i < 3; i++) {
-                const randomIndex = Math.floor(Math.random() * availableProducts.length);
-                const selected = availableProducts[randomIndex];
+                let selected;
+                // Se o jogador acumulou 23 cards, o 3º card sorteado será obrigatoriamente o Card 24 para coroar o álbum
+                if (is23Collected && i === 2) {
+                    selected = PRODUCTS_DATA.find(p => p.id === 24);
+                } else {
+                    const randomIndex = Math.floor(Math.random() * availableProducts.length);
+                    selected = availableProducts[randomIndex];
+                }
                 results.push(selected);
-
                 userState.inventory[selected.id] = (userState.inventory[selected.id] || 0) + 1;
             }
 
@@ -1608,6 +1634,8 @@
             document.getElementById('modal-reveal-cards').classList.add('hidden');
             
             const ownedCount = Object.keys(userState.inventory).filter(id => userState.inventory[id] > 0).length;
+            
+            // QUANDO COMPLETAR OS 24 CARDS: DEPOIS DA ABA DE PARABÉNS, COLOCA O CARD 24 NO DEVIDO LUGAR E ATUALIZA O TEXTO
             if (ownedCount >= 24 && !userState.wonGrandPrize) {
                 userState.wonGrandPrize = true;
                 saveState();
